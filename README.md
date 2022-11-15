@@ -29,3 +29,31 @@ func main() {
 }
 ```
 
+### Mocking
+
+```go
+func TestMockClientAPI(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	owner := "connormckelvey"
+	repo := "go-github-mockable"
+	expected := fmt.Sprintf("%s/%s", owner, repo)
+
+	rm := mocks.NewMockRepositoriesService(ctrl)
+	rm.EXPECT().Get(gomock.Any(), gomock.Eq(owner), gomock.Eq(repo)).Return(
+		&github.Repository{
+			FullName: &expected,
+		},
+		&github.Response{},
+		nil,
+	)
+
+	cm := mocks.NewMockClientAPI(ctrl)
+	cm.EXPECT().Repositories().Return(rm)
+
+	service := NewMyService(cm)
+	fullName, err := service.FullName()
+	require.NoError(t, err)
+	assert.Equal(t, expected, fullName)
+}
+```
+

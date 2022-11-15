@@ -1,6 +1,7 @@
 package gogithubmockable_test
 
 import (
+	"context"
 	"testing"
 
 	gogithubmockable "github.com/connormckelvey/go-github-mockable"
@@ -9,9 +10,14 @@ import (
 )
 
 func TestNewClient(t *testing.T) {
-	g := github.NewClient(nil)
-	var c gogithubmockable.ClientAPI
-	c = gogithubmockable.NewClient(g)
+	gh := github.NewClient(nil)
+
+	var c gogithubmockable.ClientAPI = gogithubmockable.NewClient(gh)
 	_, ok := c.(*gogithubmockable.Client)
 	assert.True(t, ok)
+
+	r, _, err := c.Repositories().Get(context.Background(), "connormckelvey", "go-github-mockable")
+	assert.NoError(t, err)
+
+	assert.Equal(t, "go-github-mockable", *r.Name)
 }
