@@ -6,6 +6,7 @@ require (
 	github.com/dave/jennifer v1.6.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v48 v48.0.0
+	github.com/google/uuid v1.3.0
 	github.com/stretchr/testify v1.8.1
 )
 

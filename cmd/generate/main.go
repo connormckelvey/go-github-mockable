@@ -20,6 +20,6 @@ func main() {
 
 	err := generator.New().Generate(w)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 }

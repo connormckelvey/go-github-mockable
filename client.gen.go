@@ -12,6 +12,9 @@ import (
 	"time"
 )
 
+/*
+A Client manages communication with the GitHub API.
+*/
 type Client struct {
 	client *github.Client
 }
@@ -22,517 +25,2591 @@ func NewClient(client *github.Client) *Client {
 	return c
 }
 
+/*
+GetBaseURL returns the Base URL for API requests. Defaults to the public GitHub API, but can be
+set to a domain endpoint to use with GitHub Enterprise. BaseURL should
+always be specified with a trailing slash.
+*/
 func (c *Client) GetBaseURL() *url.URL {
 	return c.client.BaseURL
 }
 
+/*
+SetBaseURL sets the Base URL for API requests. Defaults to the public GitHub API, but can be
+set to a domain endpoint to use with GitHub Enterprise. BaseURL should
+always be specified with a trailing slash.
+*/
 func (c *Client) SetBaseURL(baseurl *url.URL) {
 	c.client.BaseURL = baseurl
 }
 
+/*
+GetUploadURL returns the Base URL for uploading files.
+*/
 func (c *Client) GetUploadURL() *url.URL {
 	return c.client.UploadURL
 }
 
+/*
+SetUploadURL sets the Base URL for uploading files.
+*/
 func (c *Client) SetUploadURL(uploadurl *url.URL) {
 	c.client.UploadURL = uploadurl
 }
 
+/*
+GetUserAgent returns the User agent used when communicating with the GitHub API.
+*/
 func (c *Client) GetUserAgent() string {
 	return c.client.UserAgent
 }
 
+/*
+SetUserAgent sets the User agent used when communicating with the GitHub API.
+*/
 func (c *Client) SetUserAgent(useragent string) {
 	c.client.UserAgent = useragent
 }
 
-func (c *Client) GetActions() ActionsService {
+/*
+ActionsService handles communication with the actions related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/actions/
+*/
+func (c *Client) Actions() ActionsService {
 	return c.client.Actions
 }
 
-func (c *Client) GetActivity() ActivityService {
+/*
+ActivityService handles communication with the activity related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/activity/
+*/
+func (c *Client) Activity() ActivityService {
 	return c.client.Activity
 }
 
-func (c *Client) GetAdmin() AdminService {
+/*
+AdminService handles communication with the admin related methods of the
+GitHub API. These API routes are normally only accessible for GitHub
+Enterprise installations.
+
+GitHub API docs: https://docs.github.com/en/rest/enterprise-admin
+*/
+func (c *Client) Admin() AdminService {
 	return c.client.Admin
 }
 
-func (c *Client) GetApps() AppsService {
+/*
+AppsService provides access to the installation related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/apps/
+*/
+func (c *Client) Apps() AppsService {
 	return c.client.Apps
 }
 
-func (c *Client) GetAuthorizations() AuthorizationsService {
+/*
+AuthorizationsService handles communication with the authorization related
+methods of the GitHub API.
+
+This service requires HTTP Basic Authentication; it cannot be accessed using
+an OAuth token.
+
+GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations
+*/
+func (c *Client) Authorizations() AuthorizationsService {
 	return c.client.Authorizations
 }
 
-func (c *Client) GetBilling() BillingService {
+/*
+BillingService provides access to the billing related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/billing
+*/
+func (c *Client) Billing() BillingService {
 	return c.client.Billing
 }
 
-func (c *Client) GetChecks() ChecksService {
+/*
+ChecksService provides access to the Checks API in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/checks/
+*/
+func (c *Client) Checks() ChecksService {
 	return c.client.Checks
 }
 
-func (c *Client) GetCodeScanning() CodeScanningService {
+/*
+CodeScanningService handles communication with the code scanning related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/code-scanning
+*/
+func (c *Client) CodeScanning() CodeScanningService {
 	return c.client.CodeScanning
 }
 
-func (c *Client) GetDependabot() DependabotService {
+/*
+DependabotService handles communication with the Dependabot related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/dependabot/
+*/
+func (c *Client) Dependabot() DependabotService {
 	return c.client.Dependabot
 }
 
-func (c *Client) GetEnterprise() EnterpriseService {
+/*
+EnterpriseService provides access to the enterprise related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/
+*/
+func (c *Client) Enterprise() EnterpriseService {
 	return c.client.Enterprise
 }
 
-func (c *Client) GetGists() GistsService {
+/*
+GistsService handles communication with the Gist related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/gists
+*/
+func (c *Client) Gists() GistsService {
 	return c.client.Gists
 }
 
-func (c *Client) GetGit() GitService {
+/*
+GitService handles communication with the git data related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/git/
+*/
+func (c *Client) Git() GitService {
 	return c.client.Git
 }
 
-func (c *Client) GetGitignores() GitignoresService {
+/*
+GitignoresService provides access to the gitignore related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/gitignore/
+*/
+func (c *Client) Gitignores() GitignoresService {
 	return c.client.Gitignores
 }
 
-func (c *Client) GetInteractions() InteractionsService {
+/*
+InteractionsService handles communication with the repository and organization related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/interactions/
+*/
+func (c *Client) Interactions() InteractionsService {
 	return c.client.Interactions
 }
 
-func (c *Client) GetIssueImport() IssueImportService {
+/*
+IssueImportService handles communication with the issue import related
+methods of the Issue Import GitHub API.
+*/
+func (c *Client) IssueImport() IssueImportService {
 	return c.client.IssueImport
 }
 
-func (c *Client) GetIssues() IssuesService {
+/*
+IssuesService handles communication with the issue related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/issues/
+*/
+func (c *Client) Issues() IssuesService {
 	return c.client.Issues
 }
 
-func (c *Client) GetLicenses() LicensesService {
+/*
+LicensesService handles communication with the license related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/licenses/
+*/
+func (c *Client) Licenses() LicensesService {
 	return c.client.Licenses
 }
 
-func (c *Client) GetMarketplace() MarketplaceService {
+/*
+MarketplaceService handles communication with the marketplace related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/apps#marketplace
+*/
+func (c *Client) Marketplace() MarketplaceService {
 	return c.client.Marketplace
 }
 
-func (c *Client) GetMigrations() MigrationsService {
+func (c *Client) Migrations() MigrationsService {
 	return c.client.Migrations
 }
 
-func (c *Client) GetOrganizations() OrganizationsService {
+/*
+OrganizationsService provides access to the organization related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/orgs/
+*/
+func (c *Client) Organizations() OrganizationsService {
 	return c.client.Organizations
 }
 
-func (c *Client) GetProjects() ProjectsService {
+/*
+ProjectsService provides access to the projects functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/projects
+*/
+func (c *Client) Projects() ProjectsService {
 	return c.client.Projects
 }
 
-func (c *Client) GetPullRequests() PullRequestsService {
+/*
+PullRequestsService handles communication with the pull request related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/pulls/
+*/
+func (c *Client) PullRequests() PullRequestsService {
 	return c.client.PullRequests
 }
 
-func (c *Client) GetReactions() ReactionsService {
+/*
+ReactionsService provides access to the reactions-related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/reactions
+*/
+func (c *Client) Reactions() ReactionsService {
 	return c.client.Reactions
 }
 
-func (c *Client) GetRepositories() RepositoriesService {
+/*
+RepositoriesService handles communication with the repository related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/repos/
+*/
+func (c *Client) Repositories() RepositoriesService {
 	return c.client.Repositories
 }
 
-func (c *Client) GetSCIM() SCIMService {
+/*
+SCIMService provides access to SCIM related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/scim
+*/
+func (c *Client) SCIM() SCIMService {
 	return c.client.SCIM
 }
 
-func (c *Client) GetSearch() SearchService {
+/*
+SearchService provides access to the search related functions
+in the GitHub API.
+
+Each method takes a query string defining the search keywords and any search qualifiers.
+For example, when searching issues, the query "gopher is:issue language:go" will search
+for issues containing the word "gopher" in Go repositories. The method call
+
+	opts :=  &github.SearchOptions{Sort: "created", Order: "asc"}
+	cl.Search.Issues(ctx, "gopher is:issue language:go", opts)
+
+will search for such issues, sorting by creation date in ascending order
+(i.e., oldest first).
+
+If query includes multiple conditions, it MUST NOT include "+" as the condition separator.
+You have to use " " as the separator instead.
+For example, querying with "language:c++" and "leveldb", then query should be
+"language:c++ leveldb" but not "language:c+++leveldb".
+
+GitHub API docs: https://docs.github.com/en/rest/search/
+*/
+func (c *Client) Search() SearchService {
 	return c.client.Search
 }
 
-func (c *Client) GetSecretScanning() SecretScanningService {
+/*
+SecretScanningService handles communication with the secret scanning related
+methods of the GitHub API.
+*/
+func (c *Client) SecretScanning() SecretScanningService {
 	return c.client.SecretScanning
 }
 
-func (c *Client) GetTeams() TeamsService {
+/*
+TeamsService provides access to the team-related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/teams/
+*/
+func (c *Client) Teams() TeamsService {
 	return c.client.Teams
 }
 
-func (c *Client) GetUsers() UsersService {
+/*
+UsersService handles communication with the user related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/users/
+*/
+func (c *Client) Users() UsersService {
 	return c.client.Users
 }
 
 type ClientAPI interface {
+	/*
+	   GetBaseURL returns the Base URL for API requests. Defaults to the public GitHub API, but can be
+	   set to a domain endpoint to use with GitHub Enterprise. BaseURL should
+	   always be specified with a trailing slash.
+	*/
 	GetBaseURL() *url.URL
+	/*
+	   SetBaseURL sets the Base URL for API requests. Defaults to the public GitHub API, but can be
+	   set to a domain endpoint to use with GitHub Enterprise. BaseURL should
+	   always be specified with a trailing slash.
+	*/
 	SetBaseURL(*url.URL)
+	/*
+	   GetUploadURL returns the Base URL for uploading files.
+	*/
 	GetUploadURL() *url.URL
+	/*
+	   SetUploadURL sets the Base URL for uploading files.
+	*/
 	SetUploadURL(*url.URL)
+	/*
+	   GetUserAgent returns the User agent used when communicating with the GitHub API.
+	*/
 	GetUserAgent() string
+	/*
+	   SetUserAgent sets the User agent used when communicating with the GitHub API.
+	*/
 	SetUserAgent(string)
-	GetActions() ActionsService
-	GetActivity() ActivityService
-	GetAdmin() AdminService
-	GetApps() AppsService
-	GetAuthorizations() AuthorizationsService
-	GetBilling() BillingService
-	GetChecks() ChecksService
-	GetCodeScanning() CodeScanningService
-	GetDependabot() DependabotService
-	GetEnterprise() EnterpriseService
-	GetGists() GistsService
-	GetGit() GitService
-	GetGitignores() GitignoresService
-	GetInteractions() InteractionsService
-	GetIssueImport() IssueImportService
-	GetIssues() IssuesService
-	GetLicenses() LicensesService
-	GetMarketplace() MarketplaceService
-	GetMigrations() MigrationsService
-	GetOrganizations() OrganizationsService
-	GetProjects() ProjectsService
-	GetPullRequests() PullRequestsService
-	GetReactions() ReactionsService
-	GetRepositories() RepositoriesService
-	GetSCIM() SCIMService
-	GetSearch() SearchService
-	GetSecretScanning() SecretScanningService
-	GetTeams() TeamsService
-	GetUsers() UsersService
+	/*
+	   ActionsService handles communication with the actions related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/
+	*/
+	Actions() ActionsService
+	/*
+	   ActivityService handles communication with the activity related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/
+	*/
+	Activity() ActivityService
+	/*
+	   AdminService handles communication with the admin related methods of the
+	   GitHub API. These API routes are normally only accessible for GitHub
+	   Enterprise installations.
+
+	   GitHub API docs: https://docs.github.com/en/rest/enterprise-admin
+	*/
+	Admin() AdminService
+	/*
+	   AppsService provides access to the installation related functions
+	   in the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/
+	*/
+	Apps() AppsService
+	/*
+	   AuthorizationsService handles communication with the authorization related
+	   methods of the GitHub API.
+
+	   This service requires HTTP Basic Authentication; it cannot be accessed using
+	   an OAuth token.
+
+	   GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations
+	*/
+	Authorizations() AuthorizationsService
+	/*
+	   BillingService provides access to the billing related functions
+	   in the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing
+	*/
+	Billing() BillingService
+	/*
+	   ChecksService provides access to the Checks API in the
+	   GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/
+	*/
+	Checks() ChecksService
+	/*
+	   CodeScanningService handles communication with the code scanning related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning
+	*/
+	CodeScanning() CodeScanningService
+	/*
+	   DependabotService handles communication with the Dependabot related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/
+	*/
+	Dependabot() DependabotService
+	/*
+	   EnterpriseService provides access to the enterprise related functions
+	   in the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/
+	*/
+	Enterprise() EnterpriseService
+	/*
+	   GistsService handles communication with the Gist related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists
+	*/
+	Gists() GistsService
+	/*
+	   GitService handles communication with the git data related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/
+	*/
+	Git() GitService
+	/*
+	   GitignoresService provides access to the gitignore related functions in the
+	   GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gitignore/
+	*/
+	Gitignores() GitignoresService
+	/*
+	   InteractionsService handles communication with the repository and organization related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/
+	*/
+	Interactions() InteractionsService
+	/*
+	   IssueImportService handles communication with the issue import related
+	   methods of the Issue Import GitHub API.
+	*/
+	IssueImport() IssueImportService
+	/*
+	   IssuesService handles communication with the issue related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/
+	*/
+	Issues() IssuesService
+	/*
+	   LicensesService handles communication with the license related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/licenses/
+	*/
+	Licenses() LicensesService
+	/*
+	   MarketplaceService handles communication with the marketplace related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#marketplace
+	*/
+	Marketplace() MarketplaceService
+	Migrations() MigrationsService
+	/*
+	   OrganizationsService provides access to the organization related functions
+	   in the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/
+	*/
+	Organizations() OrganizationsService
+	/*
+	   ProjectsService provides access to the projects functions in the
+	   GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects
+	*/
+	Projects() ProjectsService
+	/*
+	   PullRequestsService handles communication with the pull request related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/
+	*/
+	PullRequests() PullRequestsService
+	/*
+	   ReactionsService provides access to the reactions-related functions in the
+	   GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions
+	*/
+	Reactions() ReactionsService
+	/*
+	   RepositoriesService handles communication with the repository related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/
+	*/
+	Repositories() RepositoriesService
+	/*
+	   SCIMService provides access to SCIM related functions in the
+	   GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim
+	*/
+	SCIM() SCIMService
+	/*
+	   SearchService provides access to the search related functions
+	   in the GitHub API.
+
+	   Each method takes a query string defining the search keywords and any search qualifiers.
+	   For example, when searching issues, the query "gopher is:issue language:go" will search
+	   for issues containing the word "gopher" in Go repositories. The method call
+
+	   	opts :=  &github.SearchOptions{Sort: "created", Order: "asc"}
+	   	cl.Search.Issues(ctx, "gopher is:issue language:go", opts)
+
+	   will search for such issues, sorting by creation date in ascending order
+	   (i.e., oldest first).
+
+	   If query includes multiple conditions, it MUST NOT include "+" as the condition separator.
+	   You have to use " " as the separator instead.
+	   For example, querying with "language:c++" and "leveldb", then query should be
+	   "language:c++ leveldb" but not "language:c+++leveldb".
+
+	   GitHub API docs: https://docs.github.com/en/rest/search/
+	*/
+	Search() SearchService
+	/*
+	   SecretScanningService handles communication with the secret scanning related
+	   methods of the GitHub API.
+	*/
+	SecretScanning() SecretScanningService
+	/*
+	   TeamsService provides access to the team-related functions
+	   in the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/
+	*/
+	Teams() TeamsService
+	/*
+	   UsersService handles communication with the user related
+	   methods of the GitHub API.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/
+	*/
+	Users() UsersService
 }
 
+/*
+ActionsService handles communication with the actions related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/actions/
+*/
 type ActionsService interface {
-	AddEnabledReposInOrg(context.Context, string, int64) (*github.Response, error)
-	AddRepositoryAccessRunnerGroup(context.Context, string, int64, int64) (*github.Response, error)
-	AddRunnerGroupRunners(context.Context, string, int64, int64) (*github.Response, error)
-	AddSelectedRepoToOrgSecret(context.Context, string, string, *github.Repository) (*github.Response, error)
-	CancelWorkflowRunByID(context.Context, string, string, int64) (*github.Response, error)
-	CreateOrUpdateEnvSecret(context.Context, int, string, *github.EncryptedSecret) (*github.Response, error)
-	CreateOrUpdateOrgSecret(context.Context, string, *github.EncryptedSecret) (*github.Response, error)
-	CreateOrUpdateRepoSecret(context.Context, string, string, *github.EncryptedSecret) (*github.Response, error)
-	CreateOrganizationRegistrationToken(context.Context, string) (*github.RegistrationToken, *github.Response, error)
-	CreateOrganizationRemoveToken(context.Context, string) (*github.RemoveToken, *github.Response, error)
-	CreateOrganizationRunnerGroup(context.Context, string, github.CreateRunnerGroupRequest) (*github.RunnerGroup, *github.Response, error)
-	CreateRegistrationToken(context.Context, string, string) (*github.RegistrationToken, *github.Response, error)
-	CreateRemoveToken(context.Context, string, string) (*github.RemoveToken, *github.Response, error)
-	CreateWorkflowDispatchEventByFileName(context.Context, string, string, string, github.CreateWorkflowDispatchEventRequest) (*github.Response, error)
-	CreateWorkflowDispatchEventByID(context.Context, string, string, int64, github.CreateWorkflowDispatchEventRequest) (*github.Response, error)
-	DeleteArtifact(context.Context, string, string, int64) (*github.Response, error)
-	DeleteEnvSecret(context.Context, int, string, string) (*github.Response, error)
-	DeleteOrgSecret(context.Context, string, string) (*github.Response, error)
-	DeleteOrganizationRunnerGroup(context.Context, string, int64) (*github.Response, error)
-	DeleteRepoSecret(context.Context, string, string, string) (*github.Response, error)
-	DeleteWorkflowRun(context.Context, string, string, int64) (*github.Response, error)
-	DeleteWorkflowRunLogs(context.Context, string, string, int64) (*github.Response, error)
-	DisableWorkflowByFileName(context.Context, string, string, string) (*github.Response, error)
-	DisableWorkflowByID(context.Context, string, string, int64) (*github.Response, error)
-	DownloadArtifact(context.Context, string, string, int64, bool) (*url.URL, *github.Response, error)
-	EnableWorkflowByFileName(context.Context, string, string, string) (*github.Response, error)
-	EnableWorkflowByID(context.Context, string, string, int64) (*github.Response, error)
-	GetArtifact(context.Context, string, string, int64) (*github.Artifact, *github.Response, error)
-	GetEnvPublicKey(context.Context, int, string) (*github.PublicKey, *github.Response, error)
-	GetEnvSecret(context.Context, int, string, string) (*github.Secret, *github.Response, error)
-	GetOrgPublicKey(context.Context, string) (*github.PublicKey, *github.Response, error)
-	GetOrgSecret(context.Context, string, string) (*github.Secret, *github.Response, error)
-	GetOrganizationRunner(context.Context, string, int64) (*github.Runner, *github.Response, error)
-	GetOrganizationRunnerGroup(context.Context, string, int64) (*github.RunnerGroup, *github.Response, error)
-	GetRepoPublicKey(context.Context, string, string) (*github.PublicKey, *github.Response, error)
-	GetRepoSecret(context.Context, string, string, string) (*github.Secret, *github.Response, error)
-	GetRunner(context.Context, string, string, int64) (*github.Runner, *github.Response, error)
-	GetWorkflowByFileName(context.Context, string, string, string) (*github.Workflow, *github.Response, error)
-	GetWorkflowByID(context.Context, string, string, int64) (*github.Workflow, *github.Response, error)
-	GetWorkflowJobByID(context.Context, string, string, int64) (*github.WorkflowJob, *github.Response, error)
-	GetWorkflowJobLogs(context.Context, string, string, int64, bool) (*url.URL, *github.Response, error)
-	GetWorkflowRunAttempt(context.Context, string, string, int64, int, *github.WorkflowRunAttemptOptions) (*github.WorkflowRun, *github.Response, error)
-	GetWorkflowRunByID(context.Context, string, string, int64) (*github.WorkflowRun, *github.Response, error)
-	GetWorkflowRunLogs(context.Context, string, string, int64, bool) (*url.URL, *github.Response, error)
-	GetWorkflowRunUsageByID(context.Context, string, string, int64) (*github.WorkflowRunUsage, *github.Response, error)
-	GetWorkflowUsageByFileName(context.Context, string, string, string) (*github.WorkflowUsage, *github.Response, error)
-	GetWorkflowUsageByID(context.Context, string, string, int64) (*github.WorkflowUsage, *github.Response, error)
-	ListArtifacts(context.Context, string, string, *github.ListOptions) (*github.ArtifactList, *github.Response, error)
-	ListEnabledReposInOrg(context.Context, string, *github.ListOptions) (*github.ActionsEnabledOnOrgRepos, *github.Response, error)
-	ListEnvSecrets(context.Context, int, string, *github.ListOptions) (*github.Secrets, *github.Response, error)
-	ListOrgSecrets(context.Context, string, *github.ListOptions) (*github.Secrets, *github.Response, error)
-	ListOrganizationRunnerApplicationDownloads(context.Context, string) ([]*github.RunnerApplicationDownload, *github.Response, error)
-	ListOrganizationRunnerGroups(context.Context, string, *github.ListOrgRunnerGroupOptions) (*github.RunnerGroups, *github.Response, error)
-	ListOrganizationRunners(context.Context, string, *github.ListOptions) (*github.Runners, *github.Response, error)
-	ListRepoSecrets(context.Context, string, string, *github.ListOptions) (*github.Secrets, *github.Response, error)
-	ListRepositoryAccessRunnerGroup(context.Context, string, int64, *github.ListOptions) (*github.ListRepositories, *github.Response, error)
-	ListRepositoryWorkflowRuns(context.Context, string, string, *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
-	ListRunnerApplicationDownloads(context.Context, string, string) ([]*github.RunnerApplicationDownload, *github.Response, error)
-	ListRunnerGroupRunners(context.Context, string, int64, *github.ListOptions) (*github.Runners, *github.Response, error)
-	ListRunners(context.Context, string, string, *github.ListOptions) (*github.Runners, *github.Response, error)
-	ListSelectedReposForOrgSecret(context.Context, string, string, *github.ListOptions) (*github.SelectedReposList, *github.Response, error)
-	ListWorkflowJobs(context.Context, string, string, int64, *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error)
-	ListWorkflowRunArtifacts(context.Context, string, string, int64, *github.ListOptions) (*github.ArtifactList, *github.Response, error)
-	ListWorkflowRunsByFileName(context.Context, string, string, string, *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
-	ListWorkflowRunsByID(context.Context, string, string, int64, *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
-	ListWorkflows(context.Context, string, string, *github.ListOptions) (*github.Workflows, *github.Response, error)
-	PendingDeployments(context.Context, string, string, int64, *github.PendingDeploymentsRequest) ([]*github.Deployment, *github.Response, error)
-	RemoveEnabledRepoInOrg(context.Context, string, int64) (*github.Response, error)
-	RemoveOrganizationRunner(context.Context, string, int64) (*github.Response, error)
-	RemoveRepositoryAccessRunnerGroup(context.Context, string, int64, int64) (*github.Response, error)
-	RemoveRunner(context.Context, string, string, int64) (*github.Response, error)
-	RemoveRunnerGroupRunners(context.Context, string, int64, int64) (*github.Response, error)
-	RemoveSelectedRepoFromOrgSecret(context.Context, string, string, *github.Repository) (*github.Response, error)
-	RerunFailedJobsByID(context.Context, string, string, int64) (*github.Response, error)
-	RerunJobByID(context.Context, string, string, int64) (*github.Response, error)
-	RerunWorkflowByID(context.Context, string, string, int64) (*github.Response, error)
-	SetEnabledReposInOrg(context.Context, string, []int64) (*github.Response, error)
-	SetRepositoryAccessRunnerGroup(context.Context, string, int64, github.SetRepoAccessRunnerGroupRequest) (*github.Response, error)
-	SetRunnerGroupRunners(context.Context, string, int64, github.SetRunnerGroupRunnersRequest) (*github.Response, error)
-	SetSelectedReposForOrgSecret(context.Context, string, string, github.SelectedRepoIDs) (*github.Response, error)
-	UpdateOrganizationRunnerGroup(context.Context, string, int64, github.UpdateRunnerGroupRequest) (*github.RunnerGroup, *github.Response, error)
+	/*
+	   AddEnabledReposInOrg adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#enable-a-selected-repository-for-github-actions-in-an-organization
+	*/
+	AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*github.Response, error)
+	/*
+	   AddRepositoryAccessRunnerGroup adds a repository to the list of selected repositories that can access a self-hosted runner group.
+	   The runner group must have visibility set to 'selected'.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#add-repository-access-to-a-self-hosted-runner-group-in-an-organization
+	*/
+	AddRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, repoID int64) (*github.Response, error)
+	/*
+	   AddRunnerGroupRunners adds a self-hosted runner to a runner group configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#add-a-self-hosted-runner-to-a-group-for-an-organization
+	*/
+	AddRunnerGroupRunners(ctx context.Context, org string, groupID int64, runnerID int64) (*github.Response, error)
+	/*
+	   AddSelectedRepoToOrgSecret adds a repository to an organization secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#add-selected-repository-to-an-organization-secret
+	*/
+	AddSelectedRepoToOrgSecret(ctx context.Context, org string, name string, repo *github.Repository) (*github.Response, error)
+	/*
+	   CancelWorkflowRunByID cancels a workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#cancel-a-workflow-run
+	*/
+	CancelWorkflowRunByID(ctx context.Context, owner string, repo string, runID int64) (*github.Response, error)
+	/*
+	   CreateOrUpdateEnvSecret creates or updates a single environment secret with an encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-an-environment-secret
+	*/
+	CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *github.EncryptedSecret) (*github.Response, error)
+	/*
+	   CreateOrUpdateOrgSecret creates or updates an organization secret with an encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-an-organization-secret
+	*/
+	CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *github.EncryptedSecret) (*github.Response, error)
+	/*
+	   CreateOrUpdateRepoSecret creates or updates a repository secret with an encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-a-repository-secret
+	*/
+	CreateOrUpdateRepoSecret(ctx context.Context, owner string, repo string, eSecret *github.EncryptedSecret) (*github.Response, error)
+	/*
+	   CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-organization
+	*/
+	CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*github.RegistrationToken, *github.Response, error)
+	/*
+	   CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-an-organization
+	*/
+	CreateOrganizationRemoveToken(ctx context.Context, owner string) (*github.RemoveToken, *github.Response, error)
+	/*
+	   CreateOrganizationRunnerGroup creates a new self-hosted runner group for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#create-a-self-hosted-runner-group-for-an-organization
+	*/
+	CreateOrganizationRunnerGroup(ctx context.Context, org string, createReq github.CreateRunnerGroupRequest) (*github.RunnerGroup, *github.Response, error)
+	/*
+	   CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
+	*/
+	CreateRegistrationToken(ctx context.Context, owner string, repo string) (*github.RegistrationToken, *github.Response, error)
+	/*
+	   CreateRemoveToken creates a token that can be used to remove a self-hosted runner from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-a-repository
+	*/
+	CreateRemoveToken(ctx context.Context, owner string, repo string) (*github.RemoveToken, *github.Response, error)
+	/*
+	   CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+	*/
+	CreateWorkflowDispatchEventByFileName(ctx context.Context, owner string, repo string, workflowFileName string, event github.CreateWorkflowDispatchEventRequest) (*github.Response, error)
+	/*
+	   CreateWorkflowDispatchEventByID manually triggers a GitHub Actions workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+	*/
+	CreateWorkflowDispatchEventByID(ctx context.Context, owner string, repo string, workflowID int64, event github.CreateWorkflowDispatchEventRequest) (*github.Response, error)
+	/*
+	   DeleteArtifact deletes a workflow run artifact.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#delete-an-artifact
+	*/
+	DeleteArtifact(ctx context.Context, owner string, repo string, artifactID int64) (*github.Response, error)
+	/*
+	   DeleteEnvSecret deletes a secret in an environment using the secret name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-an-environment-secret
+	*/
+	DeleteEnvSecret(ctx context.Context, repoID int, env string, secretName string) (*github.Response, error)
+	/*
+	   DeleteOrgSecret deletes a secret in an organization using the secret name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-an-organization-secret
+	*/
+	DeleteOrgSecret(ctx context.Context, org string, name string) (*github.Response, error)
+	/*
+	   DeleteOrganizationRunnerGroup deletes a self-hosted runner group from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#delete-a-self-hosted-runner-group-from-an-organization
+	*/
+	DeleteOrganizationRunnerGroup(ctx context.Context, org string, groupID int64) (*github.Response, error)
+	/*
+	   DeleteRepoSecret deletes a secret in a repository using the secret name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-a-repository-secret
+	*/
+	DeleteRepoSecret(ctx context.Context, owner string, repo string, name string) (*github.Response, error)
+	/*
+	   DeleteWorkflowRun deletes a workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-a-workflow-run
+	*/
+	DeleteWorkflowRun(ctx context.Context, owner string, repo string, runID int64) (*github.Response, error)
+	/*
+	   DeleteWorkflowRunLogs deletes all logs for a workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-workflow-run-logs
+	*/
+	DeleteWorkflowRunLogs(ctx context.Context, owner string, repo string, runID int64) (*github.Response, error)
+	/*
+	   DisableWorkflowByFileName disables a workflow and sets the state of the workflow to "disabled_manually".
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#disable-a-workflow
+	*/
+	DisableWorkflowByFileName(ctx context.Context, owner string, repo string, workflowFileName string) (*github.Response, error)
+	/*
+	   DisableWorkflowByID disables a workflow and sets the state of the workflow to "disabled_manually".
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#disable-a-workflow
+	*/
+	DisableWorkflowByID(ctx context.Context, owner string, repo string, workflowID int64) (*github.Response, error)
+	/*
+	   DownloadArtifact gets a redirect URL to download an archive for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#download-an-artifact
+	*/
+	DownloadArtifact(ctx context.Context, owner string, repo string, artifactID int64, followRedirects bool) (*url.URL, *github.Response, error)
+	/*
+	   EnableWorkflowByFileName enables a workflow and sets the state of the workflow to "active".
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#enable-a-workflow
+	*/
+	EnableWorkflowByFileName(ctx context.Context, owner string, repo string, workflowFileName string) (*github.Response, error)
+	/*
+	   EnableWorkflowByID enables a workflow and sets the state of the workflow to "active".
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#enable-a-workflow
+	*/
+	EnableWorkflowByID(ctx context.Context, owner string, repo string, workflowID int64) (*github.Response, error)
+	/*
+	   GetArtifact gets a specific artifact for a workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#get-an-artifact
+	*/
+	GetArtifact(ctx context.Context, owner string, repo string, artifactID int64) (*github.Artifact, *github.Response, error)
+	/*
+	   GetEnvPublicKey gets a public key that should be used for secret encryption.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-public-key
+	*/
+	GetEnvPublicKey(ctx context.Context, repoID int, env string) (*github.PublicKey, *github.Response, error)
+	/*
+	   GetEnvSecret gets a single environment secret without revealing its encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-secret
+	*/
+	GetEnvSecret(ctx context.Context, repoID int, env string, secretName string) (*github.Secret, *github.Response, error)
+	/*
+	   GetOrgPublicKey gets a public key that should be used for secret encryption.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-organization-public-key
+	*/
+	GetOrgPublicKey(ctx context.Context, org string) (*github.PublicKey, *github.Response, error)
+	/*
+	   GetOrgSecret gets a single organization secret without revealing its encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-organization-secret
+	*/
+	GetOrgSecret(ctx context.Context, org string, name string) (*github.Secret, *github.Response, error)
+	/*
+	   GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-organization
+	*/
+	GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*github.Runner, *github.Response, error)
+	/*
+	   GetOrganizationRunnerGroup gets a specific self-hosted runner group for an organization using its RunnerGroup ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#get-a-self-hosted-runner-group-for-an-organization
+	*/
+	GetOrganizationRunnerGroup(ctx context.Context, org string, groupID int64) (*github.RunnerGroup, *github.Response, error)
+	/*
+	   GetRepoPublicKey gets a public key that should be used for secret encryption.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-a-repository-public-key
+	*/
+	GetRepoPublicKey(ctx context.Context, owner string, repo string) (*github.PublicKey, *github.Response, error)
+	/*
+	   GetRepoSecret gets a single repository secret without revealing its encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-a-repository-secret
+	*/
+	GetRepoSecret(ctx context.Context, owner string, repo string, name string) (*github.Secret, *github.Response, error)
+	/*
+	   GetRunner gets a specific self-hosted runner for a repository using its runner ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-a-repository
+	*/
+	GetRunner(ctx context.Context, owner string, repo string, runnerID int64) (*github.Runner, *github.Response, error)
+	/*
+	   GetWorkflowByFileName gets a specific workflow by file name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-a-workflow
+	*/
+	GetWorkflowByFileName(ctx context.Context, owner string, repo string, workflowFileName string) (*github.Workflow, *github.Response, error)
+	/*
+	   GetWorkflowByID gets a specific workflow by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-a-workflow
+	*/
+	GetWorkflowByID(ctx context.Context, owner string, repo string, workflowID int64) (*github.Workflow, *github.Response, error)
+	/*
+	   GetWorkflowJobByID gets a specific job in a workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#get-a-job-for-a-workflow-run
+	*/
+	GetWorkflowJobByID(ctx context.Context, owner string, repo string, jobID int64) (*github.WorkflowJob, *github.Response, error)
+	/*
+	   GetWorkflowJobLogs gets a redirect URL to download a plain text file of logs for a workflow job.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run
+	*/
+	GetWorkflowJobLogs(ctx context.Context, owner string, repo string, jobID int64, followRedirects bool) (*url.URL, *github.Response, error)
+	/*
+	   GetWorkflowRunAttempt gets a specific workflow run attempt.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run-attempt
+	*/
+	GetWorkflowRunAttempt(ctx context.Context, owner string, repo string, runID int64, attemptNumber int, opts *github.WorkflowRunAttemptOptions) (*github.WorkflowRun, *github.Response, error)
+	/*
+	   GetWorkflowRunByID gets a specific workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run
+	*/
+	GetWorkflowRunByID(ctx context.Context, owner string, repo string, runID int64) (*github.WorkflowRun, *github.Response, error)
+	/*
+	   GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-logs
+	*/
+	GetWorkflowRunLogs(ctx context.Context, owner string, repo string, runID int64, followRedirects bool) (*url.URL, *github.Response, error)
+	/*
+	   GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-workflow-run-usage
+	*/
+	GetWorkflowRunUsageByID(ctx context.Context, owner string, repo string, runID int64) (*github.WorkflowRunUsage, *github.Response, error)
+	/*
+	   GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
+	*/
+	GetWorkflowUsageByFileName(ctx context.Context, owner string, repo string, workflowFileName string) (*github.WorkflowUsage, *github.Response, error)
+	/*
+	   GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
+	*/
+	GetWorkflowUsageByID(ctx context.Context, owner string, repo string, workflowID int64) (*github.WorkflowUsage, *github.Response, error)
+	/*
+	   ListArtifacts lists all artifacts that belong to a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#list-artifacts-for-a-repository
+	*/
+	ListArtifacts(ctx context.Context, owner string, repo string, opts *github.ListOptions) (*github.ArtifactList, *github.Response, error)
+	/*
+	   ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
+	*/
+	ListEnabledReposInOrg(ctx context.Context, owner string, opts *github.ListOptions) (*github.ActionsEnabledOnOrgRepos, *github.Response, error)
+	/*
+	   ListEnvSecrets lists all secrets available in an environment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-environment-secrets
+	*/
+	ListEnvSecrets(ctx context.Context, repoID int, env string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListOrgSecrets lists all secrets available in an organization
+	   without revealing their encrypted values.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-organization-secrets
+	*/
+	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
+	*/
+	ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*github.RunnerApplicationDownload, *github.Response, error)
+	/*
+	   ListOrganizationRunnerGroups lists all self-hosted runner groups configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#list-self-hosted-runner-groups-for-an-organization
+	*/
+	ListOrganizationRunnerGroups(ctx context.Context, org string, opts *github.ListOrgRunnerGroupOptions) (*github.RunnerGroups, *github.Response, error)
+	/*
+	   ListOrganizationRunners lists all the self-hosted runners for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
+	*/
+	ListOrganizationRunners(ctx context.Context, owner string, opts *github.ListOptions) (*github.Runners, *github.Response, error)
+	/*
+	   ListRepoSecrets lists all secrets available in a repository
+	   without revealing their encrypted values.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-repository-secrets
+	*/
+	ListRepoSecrets(ctx context.Context, owner string, repo string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListRepositoryAccessRunnerGroup lists the repositories with access to a self-hosted runner group configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#list-repository-access-to-a-self-hosted-runner-group-in-an-organization
+	*/
+	ListRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, opts *github.ListOptions) (*github.ListRepositories, *github.Response, error)
+	/*
+	   ListRepositoryWorkflowRuns lists all workflow runs for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository
+	*/
+	ListRepositoryWorkflowRuns(ctx context.Context, owner string, repo string, opts *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
+	/*
+	   ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-a-repository
+	*/
+	ListRunnerApplicationDownloads(ctx context.Context, owner string, repo string) ([]*github.RunnerApplicationDownload, *github.Response, error)
+	/*
+	   ListRunnerGroupRunners lists self-hosted runners that are in a specific organization group.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#list-self-hosted-runners-in-a-group-for-an-organization
+	*/
+	ListRunnerGroupRunners(ctx context.Context, org string, groupID int64, opts *github.ListOptions) (*github.Runners, *github.Response, error)
+	/*
+	   ListRunners lists all the self-hosted runners for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-a-repository
+	*/
+	ListRunners(ctx context.Context, owner string, repo string, opts *github.ListOptions) (*github.Runners, *github.Response, error)
+	/*
+	   ListSelectedReposForOrgSecret lists all repositories that have access to a secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-selected-repositories-for-an-organization-secret
+	*/
+	ListSelectedReposForOrgSecret(ctx context.Context, org string, name string, opts *github.ListOptions) (*github.SelectedReposList, *github.Response, error)
+	/*
+	   ListWorkflowJobs lists all jobs for a workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#list-jobs-for-a-workflow-run
+	*/
+	ListWorkflowJobs(ctx context.Context, owner string, repo string, runID int64, opts *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error)
+	/*
+	   ListWorkflowRunArtifacts lists all artifacts that belong to a workflow run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#list-workflow-run-artifacts
+	*/
+	ListWorkflowRunArtifacts(ctx context.Context, owner string, repo string, runID int64, opts *github.ListOptions) (*github.ArtifactList, *github.Response, error)
+	/*
+	   ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
+	*/
+	ListWorkflowRunsByFileName(ctx context.Context, owner string, repo string, workflowFileName string, opts *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
+	/*
+	   ListWorkflowRunsByID lists all workflow runs by workflow ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
+	*/
+	ListWorkflowRunsByID(ctx context.Context, owner string, repo string, workflowID int64, opts *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
+	/*
+	   ListWorkflows lists all workflows in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflows#list-repository-workflows
+	*/
+	ListWorkflows(ctx context.Context, owner string, repo string, opts *github.ListOptions) (*github.Workflows, *github.Response, error)
+	/*
+	   PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
+	*/
+	PendingDeployments(ctx context.Context, owner string, repo string, runID int64, request *github.PendingDeploymentsRequest) ([]*github.Deployment, *github.Response, error)
+	/*
+	   RemoveEnabledRepoInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
+	*/
+	RemoveEnabledRepoInOrg(ctx context.Context, owner string, repositoryID int64) (*github.Response, error)
+	/*
+	   RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-organization
+	*/
+	RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*github.Response, error)
+	/*
+	   RemoveRepositoryAccessRunnerGroup removes a repository from the list of selected repositories that can access a self-hosted runner group.
+	   The runner group must have visibility set to 'selected'.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#remove-repository-access-to-a-self-hosted-runner-group-in-an-organization
+	*/
+	RemoveRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, repoID int64) (*github.Response, error)
+	/*
+	   RemoveRunner forces the removal of a self-hosted runner in a repository using the runner id.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-a-repository
+	*/
+	RemoveRunner(ctx context.Context, owner string, repo string, runnerID int64) (*github.Response, error)
+	/*
+	   RemoveRunnerGroupRunners removes a self-hosted runner from a group configured in an organization.
+	   The runner is then returned to the default group.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#remove-a-self-hosted-runner-from-a-group-for-an-organization
+	*/
+	RemoveRunnerGroupRunners(ctx context.Context, org string, groupID int64, runnerID int64) (*github.Response, error)
+	/*
+	   RemoveSelectedRepoFromOrgSecret removes a repository from an organization secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#remove-selected-repository-from-an-organization-secret
+	*/
+	RemoveSelectedRepoFromOrgSecret(ctx context.Context, org string, name string, repo *github.Repository) (*github.Response, error)
+	/*
+	   RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
+	*/
+	RerunFailedJobsByID(ctx context.Context, owner string, repo string, runID int64) (*github.Response, error)
+	/*
+	   RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
+	*/
+	RerunJobByID(ctx context.Context, owner string, repo string, jobID int64) (*github.Response, error)
+	/*
+	   RerunWorkflowByID re-runs a workflow by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-workflow
+	*/
+	RerunWorkflowByID(ctx context.Context, owner string, repo string, runID int64) (*github.Response, error)
+	/*
+	   SetEnabledReposInOrg replaces the list of selected repositories that are enabled for GitHub Actions in an organization..
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-selected-repositories-enabled-for-github-actions-in-an-organization
+	*/
+	SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*github.Response, error)
+	/*
+	   SetRepositoryAccessRunnerGroup replaces the list of repositories that have access to a self-hosted runner group configured in an organization
+	   with a new List of repositories.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#set-repository-access-for-a-self-hosted-runner-group-in-an-organization
+	*/
+	SetRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, ids github.SetRepoAccessRunnerGroupRequest) (*github.Response, error)
+	/*
+	   SetRunnerGroupRunners replaces the list of self-hosted runners that are part of an organization runner group
+	   with a new list of runners.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#set-self-hosted-runners-in-a-group-for-an-organization
+	*/
+	SetRunnerGroupRunners(ctx context.Context, org string, groupID int64, ids github.SetRunnerGroupRunnersRequest) (*github.Response, error)
+	/*
+	   SetSelectedReposForOrgSecret sets the repositories that have access to a secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/secrets#set-selected-repositories-for-an-organization-secret
+	*/
+	SetSelectedReposForOrgSecret(ctx context.Context, org string, name string, ids github.SelectedRepoIDs) (*github.Response, error)
+	/*
+	   UpdateOrganizationRunnerGroup updates a self-hosted runner group for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runner-groups#update-a-self-hosted-runner-group-for-an-organization
+	*/
+	UpdateOrganizationRunnerGroup(ctx context.Context, org string, groupID int64, updateReq github.UpdateRunnerGroupRequest) (*github.RunnerGroup, *github.Response, error)
 }
 
+/*
+ActivityService handles communication with the activity related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/activity/
+*/
 type ActivityService interface {
-	DeleteRepositorySubscription(context.Context, string, string) (*github.Response, error)
-	DeleteThreadSubscription(context.Context, string) (*github.Response, error)
-	GetRepositorySubscription(context.Context, string, string) (*github.Subscription, *github.Response, error)
-	GetThread(context.Context, string) (*github.Notification, *github.Response, error)
-	GetThreadSubscription(context.Context, string) (*github.Subscription, *github.Response, error)
-	IsStarred(context.Context, string, string) (bool, *github.Response, error)
-	ListEvents(context.Context, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListEventsForOrganization(context.Context, string, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListEventsForRepoNetwork(context.Context, string, string, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListEventsPerformedByUser(context.Context, string, bool, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListEventsReceivedByUser(context.Context, string, bool, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListFeeds(context.Context) (*github.Feeds, *github.Response, error)
-	ListIssueEventsForRepository(context.Context, string, string, *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
-	ListNotifications(context.Context, *github.NotificationListOptions) ([]*github.Notification, *github.Response, error)
-	ListRepositoryEvents(context.Context, string, string, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListRepositoryNotifications(context.Context, string, string, *github.NotificationListOptions) ([]*github.Notification, *github.Response, error)
-	ListStargazers(context.Context, string, string, *github.ListOptions) ([]*github.Stargazer, *github.Response, error)
-	ListStarred(context.Context, string, *github.ActivityListStarredOptions) ([]*github.StarredRepository, *github.Response, error)
-	ListUserEventsForOrganization(context.Context, string, string, *github.ListOptions) ([]*github.Event, *github.Response, error)
-	ListWatched(context.Context, string, *github.ListOptions) ([]*github.Repository, *github.Response, error)
-	ListWatchers(context.Context, string, string, *github.ListOptions) ([]*github.User, *github.Response, error)
-	MarkNotificationsRead(context.Context, time.Time) (*github.Response, error)
-	MarkRepositoryNotificationsRead(context.Context, string, string, time.Time) (*github.Response, error)
-	MarkThreadRead(context.Context, string) (*github.Response, error)
-	SetRepositorySubscription(context.Context, string, string, *github.Subscription) (*github.Subscription, *github.Response, error)
-	SetThreadSubscription(context.Context, string, *github.Subscription) (*github.Subscription, *github.Response, error)
-	Star(context.Context, string, string) (*github.Response, error)
-	Unstar(context.Context, string, string) (*github.Response, error)
+	/*
+	   DeleteRepositorySubscription deletes the subscription for the specified
+	   repository for the authenticated user.
+
+	   This is used to stop watching a repository. To control whether or not to
+	   receive notifications from a repository, use SetRepositorySubscription.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#delete-a-repository-subscription
+	*/
+	DeleteRepositorySubscription(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   DeleteThreadSubscription deletes the subscription for the specified thread
+	   for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#delete-a-thread-subscription
+	*/
+	DeleteThreadSubscription(ctx context.Context, id string) (*github.Response, error)
+	/*
+	   GetRepositorySubscription returns the subscription for the specified
+	   repository for the authenticated user. If the authenticated user is not
+	   watching the repository, a nil Subscription is returned.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#get-a-repository-subscription
+	*/
+	GetRepositorySubscription(ctx context.Context, owner string, repo string) (*github.Subscription, *github.Response, error)
+	/*
+	   GetThread gets the specified notification thread.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#get-a-thread
+	*/
+	GetThread(ctx context.Context, id string) (*github.Notification, *github.Response, error)
+	/*
+	   GetThreadSubscription checks to see if the authenticated user is subscribed
+	   to a thread.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#get-a-thread-subscription-for-the-authenticated-user
+	*/
+	GetThreadSubscription(ctx context.Context, id string) (*github.Subscription, *github.Response, error)
+	/*
+	   IsStarred checks if a repository is starred by authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#check-if-a-repository-is-starred-by-the-authenticated-user
+	*/
+	IsStarred(ctx context.Context, owner string, repo string) (bool, *github.Response, error)
+	/*
+	   ListEvents drinks from the firehose of all public events across GitHub.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events
+	*/
+	ListEvents(ctx context.Context, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListEventsForOrganization lists public events for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-organization-events
+	*/
+	ListEventsForOrganization(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListEventsForRepoNetwork lists public events for a network of repositories.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-for-a-network-of-repositories
+	*/
+	ListEventsForRepoNetwork(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
+	   true, only public events will be returned.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-events-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-for-a-user
+	*/
+	ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListEventsReceivedByUser lists the events received by a user. If publicOnly is
+	   true, only public events will be returned.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-events-received-by-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-received-by-a-user
+	*/
+	ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListFeeds lists all the feeds available to the authenticated user.
+
+	   GitHub provides several timeline resources in Atom format:
+
+	   	Timeline: The GitHub global public timeline
+	   	User: The public timeline for any user, using URI template
+	   	Current user public: The public timeline for the authenticated user
+	   	Current user: The private timeline for the authenticated user
+	   	Current user actor: The private timeline for activity created by the
+	   	    authenticated user
+	   	Current user organizations: The private timeline for the organizations
+	   	    the authenticated user is a member of.
+
+	   Note: Private feeds are only returned when authenticating via Basic Auth
+	   since current feed URIs use the older, non revocable auth tokens.
+	*/
+	ListFeeds(ctx context.Context) (*github.Feeds, *github.Response, error)
+	/*
+	   ListIssueEventsForRepository lists issue events for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events-for-a-repository
+	*/
+	ListIssueEventsForRepository(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
+	/*
+	   ListNotifications lists all notifications for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#list-notifications-for-the-authenticated-user
+	*/
+	ListNotifications(ctx context.Context, opts *github.NotificationListOptions) ([]*github.Notification, *github.Response, error)
+	/*
+	   ListRepositoryEvents lists events for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-repository-events
+	*/
+	ListRepositoryEvents(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListRepositoryNotifications lists all notifications in a given repository
+	   for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#list-repository-notifications-for-the-authenticated-user
+	*/
+	ListRepositoryNotifications(ctx context.Context, owner string, repo string, opts *github.NotificationListOptions) ([]*github.Notification, *github.Response, error)
+	/*
+	   ListStargazers lists people who have starred the specified repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#list-stargazers
+	*/
+	ListStargazers(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Stargazer, *github.Response, error)
+	/*
+	   ListStarred lists all the repos starred by a user. Passing the empty string
+	   will list the starred repositories for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#list-repositories-starred-by-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#list-repositories-starred-by-a-user
+	*/
+	ListStarred(ctx context.Context, user string, opts *github.ActivityListStarredOptions) ([]*github.StarredRepository, *github.Response, error)
+	/*
+	   ListUserEventsForOrganization provides the user’s organization dashboard. You
+	   must be authenticated as the user to view this.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/events#list-organization-events-for-the-authenticated-user
+	*/
+	ListUserEventsForOrganization(ctx context.Context, org string, user string, opts *github.ListOptions) ([]*github.Event, *github.Response, error)
+	/*
+	   ListWatched lists the repositories the specified user is watching. Passing
+	   the empty string will fetch watched repos for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#list-repositories-watched-by-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#list-repositories-watched-by-a-user
+	*/
+	ListWatched(ctx context.Context, user string, opts *github.ListOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListWatchers lists watchers of a particular repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#list-watchers
+	*/
+	ListWatchers(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   MarkNotificationsRead marks all notifications up to lastRead as read.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity#mark-as-read
+	*/
+	MarkNotificationsRead(ctx context.Context, lastRead time.Time) (*github.Response, error)
+	/*
+	   MarkRepositoryNotificationsRead marks all notifications up to lastRead in
+	   the specified repository as read.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#mark-repository-notifications-as-read
+	*/
+	MarkRepositoryNotificationsRead(ctx context.Context, owner string, repo string, lastRead time.Time) (*github.Response, error)
+	/*
+	   MarkThreadRead marks the specified thread as read.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#mark-a-thread-as-read
+	*/
+	MarkThreadRead(ctx context.Context, id string) (*github.Response, error)
+	/*
+	   SetRepositorySubscription sets the subscription for the specified repository
+	   for the authenticated user.
+
+	   To watch a repository, set subscription.Subscribed to true.
+	   To ignore notifications made within a repository, set subscription.Ignored to true.
+	   To stop watching a repository, use DeleteRepositorySubscription.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/watching#set-a-repository-subscription
+	*/
+	SetRepositorySubscription(ctx context.Context, owner string, repo string, subscription *github.Subscription) (*github.Subscription, *github.Response, error)
+	/*
+	   SetThreadSubscription sets the subscription for the specified thread for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/notifications#set-a-thread-subscription
+	*/
+	SetThreadSubscription(ctx context.Context, id string, subscription *github.Subscription) (*github.Subscription, *github.Response, error)
+	/*
+	   Star a repository as the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#star-a-repository-for-the-authenticated-user
+	*/
+	Star(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   Unstar a repository as the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/activity/starring#unstar-a-repository-for-the-authenticated-user
+	*/
+	Unstar(ctx context.Context, owner string, repo string) (*github.Response, error)
 }
 
+/*
+AdminService handles communication with the admin related methods of the
+GitHub API. These API routes are normally only accessible for GitHub
+Enterprise installations.
+
+GitHub API docs: https://docs.github.com/en/rest/enterprise-admin
+*/
 type AdminService interface {
-	CreateOrg(context.Context, *github.Organization, string) (*github.Organization, *github.Response, error)
-	CreateUser(context.Context, string, string) (*github.User, *github.Response, error)
-	CreateUserImpersonation(context.Context, string, *github.ImpersonateUserOptions) (*github.UserAuthorization, *github.Response, error)
-	DeleteUser(context.Context, string) (*github.Response, error)
-	DeleteUserImpersonation(context.Context, string) (*github.Response, error)
-	GetAdminStats(context.Context) (*github.AdminStats, *github.Response, error)
-	RenameOrg(context.Context, *github.Organization, string) (*github.RenameOrgResponse, *github.Response, error)
-	RenameOrgByName(context.Context, string, string) (*github.RenameOrgResponse, *github.Response, error)
-	UpdateTeamLDAPMapping(context.Context, int64, *github.TeamLDAPMapping) (*github.TeamLDAPMapping, *github.Response, error)
-	UpdateUserLDAPMapping(context.Context, string, *github.UserLDAPMapping) (*github.UserLDAPMapping, *github.Response, error)
+	/*
+	   CreateOrg creates a new organization in GitHub Enterprise.
+
+	   Note that only a subset of the org fields are used and org must
+	   not be nil.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#create-an-organization
+	*/
+	CreateOrg(ctx context.Context, org *github.Organization, admin string) (*github.Organization, *github.Response, error)
+	/*
+	   CreateUser creates a new user in GitHub Enterprise.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-a-new-user
+	*/
+	CreateUser(ctx context.Context, login string, email string) (*github.User, *github.Response, error)
+	/*
+	   CreateUserImpersonation creates an impersonation OAuth token.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
+	*/
+	CreateUserImpersonation(ctx context.Context, username string, opts *github.ImpersonateUserOptions) (*github.UserAuthorization, *github.Response, error)
+	/*
+	   DeleteUser deletes a user in GitHub Enterprise.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
+	*/
+	DeleteUser(ctx context.Context, username string) (*github.Response, error)
+	/*
+	   DeleteUserImpersonation deletes an impersonation OAuth token.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
+	*/
+	DeleteUserImpersonation(ctx context.Context, username string) (*github.Response, error)
+	/*
+	   GetAdminStats returns a variety of metrics about a GitHub Enterprise
+	   installation.
+
+	   Please note that this is only available to site administrators,
+	   otherwise it will error with a 404 not found (instead of 401 or 403).
+
+	   GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/admin_stats/
+	*/
+	GetAdminStats(ctx context.Context) (*github.AdminStats, *github.Response, error)
+	/*
+	   RenameOrg renames an organization in GitHub Enterprise.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+	*/
+	RenameOrg(ctx context.Context, org *github.Organization, newName string) (*github.RenameOrgResponse, *github.Response, error)
+	/*
+	   RenameOrgByName renames an organization in GitHub Enterprise using its current name.
+
+	   GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+	*/
+	RenameOrgByName(ctx context.Context, org string, newName string) (*github.RenameOrgResponse, *github.Response, error)
+	/*
+	   UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
+
+	   GitHub API docs: https://docs.github.com/en/rest/enterprise/ldap/#update-ldap-mapping-for-a-team
+	*/
+	UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *github.TeamLDAPMapping) (*github.TeamLDAPMapping, *github.Response, error)
+	/*
+	   UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
+	*/
+	UpdateUserLDAPMapping(ctx context.Context, user string, mapping *github.UserLDAPMapping) (*github.UserLDAPMapping, *github.Response, error)
 }
 
+/*
+AppsService provides access to the installation related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/apps/
+*/
 type AppsService interface {
-	AddRepository(context.Context, int64, int64) (*github.Repository, *github.Response, error)
-	CompleteAppManifest(context.Context, string) (*github.AppConfig, *github.Response, error)
-	CreateAttachment(context.Context, int64, string, string) (*github.Attachment, *github.Response, error)
-	CreateInstallationToken(context.Context, int64, *github.InstallationTokenOptions) (*github.InstallationToken, *github.Response, error)
-	DeleteInstallation(context.Context, int64) (*github.Response, error)
-	FindOrganizationInstallation(context.Context, string) (*github.Installation, *github.Response, error)
-	FindRepositoryInstallation(context.Context, string, string) (*github.Installation, *github.Response, error)
-	FindRepositoryInstallationByID(context.Context, int64) (*github.Installation, *github.Response, error)
-	FindUserInstallation(context.Context, string) (*github.Installation, *github.Response, error)
-	Get(context.Context, string) (*github.App, *github.Response, error)
-	GetHookConfig(context.Context) (*github.HookConfig, *github.Response, error)
-	GetHookDelivery(context.Context, int64) (*github.HookDelivery, *github.Response, error)
-	GetInstallation(context.Context, int64) (*github.Installation, *github.Response, error)
-	ListHookDeliveries(context.Context, *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
-	ListInstallations(context.Context, *github.ListOptions) ([]*github.Installation, *github.Response, error)
-	ListRepos(context.Context, *github.ListOptions) (*github.ListRepositories, *github.Response, error)
-	ListUserInstallations(context.Context, *github.ListOptions) ([]*github.Installation, *github.Response, error)
-	ListUserRepos(context.Context, int64, *github.ListOptions) (*github.ListRepositories, *github.Response, error)
-	RedeliverHookDelivery(context.Context, int64) (*github.HookDelivery, *github.Response, error)
-	RemoveRepository(context.Context, int64, int64) (*github.Response, error)
-	RevokeInstallationToken(context.Context) (*github.Response, error)
-	SuspendInstallation(context.Context, int64) (*github.Response, error)
-	UnsuspendInstallation(context.Context, int64) (*github.Response, error)
-	UpdateHookConfig(context.Context, *github.HookConfig) (*github.HookConfig, *github.Response, error)
+	/*
+	   AddRepository adds a single repository to an installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#add-a-repository-to-an-app-installation
+	*/
+	AddRepository(ctx context.Context, instID int64, repoID int64) (*github.Repository, *github.Response, error)
+	/*
+	   CompleteAppManifest completes the App manifest handshake flow for the given
+	   code.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#create-a-github-app-from-a-manifest
+	*/
+	CompleteAppManifest(ctx context.Context, code string) (*github.AppConfig, *github.Response, error)
+	/*
+	   CreateAttachment creates a new attachment on user comment containing a url.
+
+	   TODO: Find GitHub API docs.
+	*/
+	CreateAttachment(ctx context.Context, contentReferenceID int64, title string, body string) (*github.Attachment, *github.Response, error)
+	/*
+	   CreateInstallationToken creates a new installation token.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#create-an-installation-access-token-for-an-app
+	*/
+	CreateInstallationToken(ctx context.Context, id int64, opts *github.InstallationTokenOptions) (*github.InstallationToken, *github.Response, error)
+	/*
+	   DeleteInstallation deletes the specified installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#delete-an-installation-for-the-authenticated-app
+	*/
+	DeleteInstallation(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   FindOrganizationInstallation finds the organization's installation information.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-organization-installation-for-the-authenticated-app
+	*/
+	FindOrganizationInstallation(ctx context.Context, org string) (*github.Installation, *github.Response, error)
+	/*
+	   FindRepositoryInstallation finds the repository's installation information.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-a-repository-installation-for-the-authenticated-app
+	*/
+	FindRepositoryInstallation(ctx context.Context, owner string, repo string) (*github.Installation, *github.Response, error)
+	/*
+	   FindRepositoryInstallationByID finds the repository's installation information.
+
+	   Note: FindRepositoryInstallationByID uses the undocumented GitHub API endpoint /repositories/:id/installation.
+	*/
+	FindRepositoryInstallationByID(ctx context.Context, id int64) (*github.Installation, *github.Response, error)
+	/*
+	   FindUserInstallation finds the user's installation information.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-a-user-installation-for-the-authenticated-app
+	*/
+	FindUserInstallation(ctx context.Context, user string) (*github.Installation, *github.Response, error)
+	/*
+	   Get a single GitHub App. Passing the empty string will get
+	   the authenticated GitHub App.
+
+	   Note: appSlug is just the URL-friendly name of your GitHub App.
+	   You can find this on the settings page for your GitHub App
+	   (e.g., https://github.com/settings/apps/:app_slug).
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-the-authenticated-app
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-app
+	*/
+	Get(ctx context.Context, appSlug string) (*github.App, *github.Response, error)
+	/*
+	   GetHookConfig returns the webhook configuration for a GitHub App.
+	   The underlying transport must be authenticated as an app.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#get-a-webhook-configuration-for-an-app
+	*/
+	GetHookConfig(ctx context.Context) (*github.HookConfig, *github.Response, error)
+	/*
+	   GetHookDelivery returns the App webhook delivery with the specified ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#get-a-delivery-for-an-app-webhook
+	*/
+	GetHookDelivery(ctx context.Context, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   GetInstallation returns the specified installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-installation-for-the-authenticated-app
+	*/
+	GetInstallation(ctx context.Context, id int64) (*github.Installation, *github.Response, error)
+	/*
+	   ListHookDeliveries lists deliveries of an App webhook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
+	*/
+	ListHookDeliveries(ctx context.Context, opts *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
+	/*
+	   ListInstallations lists the installations that the current GitHub App has.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#list-installations-for-the-authenticated-app
+	*/
+	ListInstallations(ctx context.Context, opts *github.ListOptions) ([]*github.Installation, *github.Response, error)
+	/*
+	   ListRepos lists the repositories that are accessible to the authenticated installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-app-installation
+	*/
+	ListRepos(ctx context.Context, opts *github.ListOptions) (*github.ListRepositories, *github.Response, error)
+	/*
+	   ListUserInstallations lists installations that are accessible to the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-app-installations-accessible-to-the-user-access-token
+	*/
+	ListUserInstallations(ctx context.Context, opts *github.ListOptions) ([]*github.Installation, *github.Response, error)
+	/*
+	   ListUserRepos lists repositories that are accessible
+	   to the authenticated user for an installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-user-access-token
+	*/
+	ListUserRepos(ctx context.Context, id int64, opts *github.ListOptions) (*github.ListRepositories, *github.Response, error)
+	/*
+	   RedeliverHookDelivery redelivers a delivery for an App webhook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#redeliver-a-delivery-for-an-app-webhook
+	*/
+	RedeliverHookDelivery(ctx context.Context, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   RemoveRepository removes a single repository from an installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#remove-a-repository-from-an-app-installation
+	*/
+	RemoveRepository(ctx context.Context, instID int64, repoID int64) (*github.Response, error)
+	/*
+	   RevokeInstallationToken revokes an installation token.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/installations#revoke-an-installation-access-token
+	*/
+	RevokeInstallationToken(ctx context.Context) (*github.Response, error)
+	/*
+	   SuspendInstallation suspends the specified installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#suspend-an-app-installation
+	*/
+	SuspendInstallation(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   UnsuspendInstallation unsuspends the specified installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/apps#unsuspend-an-app-installation
+	*/
+	UnsuspendInstallation(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   UpdateHookConfig updates the webhook configuration for a GitHub App.
+	   The underlying transport must be authenticated as an app.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#update-a-webhook-configuration-for-an-app
+	*/
+	UpdateHookConfig(ctx context.Context, config *github.HookConfig) (*github.HookConfig, *github.Response, error)
 }
 
+/*
+AuthorizationsService handles communication with the authorization related
+methods of the GitHub API.
+
+This service requires HTTP Basic Authentication; it cannot be accessed using
+an OAuth token.
+
+GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations
+*/
 type AuthorizationsService interface {
-	Check(context.Context, string, string) (*github.Authorization, *github.Response, error)
-	CreateImpersonation(context.Context, string, *github.AuthorizationRequest) (*github.Authorization, *github.Response, error)
-	DeleteGrant(context.Context, string, string) (*github.Response, error)
-	DeleteImpersonation(context.Context, string) (*github.Response, error)
-	Reset(context.Context, string, string) (*github.Authorization, *github.Response, error)
-	Revoke(context.Context, string, string) (*github.Response, error)
+	/*
+	   Check if an OAuth token is valid for a specific app.
+
+	   Note that this operation requires the use of BasicAuth, but where the
+	   username is the OAuth application clientID, and the password is its
+	   clientSecret. Invalid tokens will return a 404 Not Found.
+
+	   The returned Authorization.User field will be populated.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#check-a-token
+	*/
+	Check(ctx context.Context, clientID string, accessToken string) (*github.Authorization, *github.Response, error)
+	/*
+	   CreateImpersonation creates an impersonation OAuth token.
+
+	   This requires admin permissions. With the returned Authorization.Token
+	   you can e.g. create or delete a user's public SSH key. NOTE: creating a
+	   new token automatically revokes an existing one.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
+	*/
+	CreateImpersonation(ctx context.Context, username string, authReq *github.AuthorizationRequest) (*github.Authorization, *github.Response, error)
+	/*
+	   DeleteGrant deletes an OAuth application grant. Deleting an application's
+	   grant will also delete all OAuth tokens associated with the application for
+	   the user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-authorization
+	*/
+	DeleteGrant(ctx context.Context, clientID string, accessToken string) (*github.Response, error)
+	/*
+	   DeleteImpersonation deletes an impersonation OAuth token.
+
+	   NOTE: there can be only one at a time.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
+	*/
+	DeleteImpersonation(ctx context.Context, username string) (*github.Response, error)
+	/*
+	   Reset is used to reset a valid OAuth token without end user involvement.
+	   Applications must save the "token" property in the response, because changes
+	   take effect immediately.
+
+	   Note that this operation requires the use of BasicAuth, but where the
+	   username is the OAuth application clientID, and the password is its
+	   clientSecret. Invalid tokens will return a 404 Not Found.
+
+	   The returned Authorization.User field will be populated.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#reset-a-token
+	*/
+	Reset(ctx context.Context, clientID string, accessToken string) (*github.Authorization, *github.Response, error)
+	/*
+	   Revoke an authorization for an application.
+
+	   Note that this operation requires the use of BasicAuth, but where the
+	   username is the OAuth application clientID, and the password is its
+	   clientSecret. Invalid tokens will return a 404 Not Found.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-token
+	*/
+	Revoke(ctx context.Context, clientID string, accessToken string) (*github.Response, error)
 }
 
+/*
+BillingService provides access to the billing related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/billing
+*/
 type BillingService interface {
-	GetActionsBillingOrg(context.Context, string) (*github.ActionBilling, *github.Response, error)
-	GetActionsBillingUser(context.Context, string) (*github.ActionBilling, *github.Response, error)
-	GetAdvancedSecurityActiveCommittersOrg(context.Context, string) (*github.ActiveCommitters, *github.Response, error)
-	GetPackagesBillingOrg(context.Context, string) (*github.PackageBilling, *github.Response, error)
-	GetPackagesBillingUser(context.Context, string) (*github.PackageBilling, *github.Response, error)
-	GetStorageBillingOrg(context.Context, string) (*github.StorageBilling, *github.Response, error)
-	GetStorageBillingUser(context.Context, string) (*github.StorageBilling, *github.Response, error)
+	/*
+	   GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-an-organization
+	*/
+	GetActionsBillingOrg(ctx context.Context, org string) (*github.ActionBilling, *github.Response, error)
+	/*
+	   GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-a-user
+	*/
+	GetActionsBillingUser(ctx context.Context, user string) (*github.ActionBilling, *github.Response, error)
+	/*
+	   GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-github-advanced-security-active-committers-for-an-organization
+	*/
+	GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string) (*github.ActiveCommitters, *github.Response, error)
+	/*
+	   GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-an-organization
+	*/
+	GetPackagesBillingOrg(ctx context.Context, org string) (*github.PackageBilling, *github.Response, error)
+	/*
+	   GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-a-user
+	*/
+	GetPackagesBillingUser(ctx context.Context, user string) (*github.PackageBilling, *github.Response, error)
+	/*
+	   GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions
+	   and GitHub Packages in gigabytes for an Org.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-an-organization
+	*/
+	GetStorageBillingOrg(ctx context.Context, org string) (*github.StorageBilling, *github.Response, error)
+	/*
+	   GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions
+	   and GitHub Packages in gigabytes for a user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-a-user
+	*/
+	GetStorageBillingUser(ctx context.Context, user string) (*github.StorageBilling, *github.Response, error)
 }
 
+/*
+ChecksService provides access to the Checks API in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/checks/
+*/
 type ChecksService interface {
-	CreateCheckRun(context.Context, string, string, github.CreateCheckRunOptions) (*github.CheckRun, *github.Response, error)
-	CreateCheckSuite(context.Context, string, string, github.CreateCheckSuiteOptions) (*github.CheckSuite, *github.Response, error)
-	GetCheckRun(context.Context, string, string, int64) (*github.CheckRun, *github.Response, error)
-	GetCheckSuite(context.Context, string, string, int64) (*github.CheckSuite, *github.Response, error)
-	ListCheckRunAnnotations(context.Context, string, string, int64, *github.ListOptions) ([]*github.CheckRunAnnotation, *github.Response, error)
-	ListCheckRunsCheckSuite(context.Context, string, string, int64, *github.ListCheckRunsOptions) (*github.ListCheckRunsResults, *github.Response, error)
-	ListCheckRunsForRef(context.Context, string, string, string, *github.ListCheckRunsOptions) (*github.ListCheckRunsResults, *github.Response, error)
-	ListCheckSuitesForRef(context.Context, string, string, string, *github.ListCheckSuiteOptions) (*github.ListCheckSuiteResults, *github.Response, error)
-	ReRequestCheckRun(context.Context, string, string, int64) (*github.Response, error)
-	ReRequestCheckSuite(context.Context, string, string, int64) (*github.Response, error)
-	SetCheckSuitePreferences(context.Context, string, string, github.CheckSuitePreferenceOptions) (*github.CheckSuitePreferenceResults, *github.Response, error)
-	UpdateCheckRun(context.Context, string, string, int64, github.UpdateCheckRunOptions) (*github.CheckRun, *github.Response, error)
+	/*
+	   CreateCheckRun creates a check run for repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#create-a-check-run
+	*/
+	CreateCheckRun(ctx context.Context, owner string, repo string, opts github.CreateCheckRunOptions) (*github.CheckRun, *github.Response, error)
+	/*
+	   CreateCheckSuite manually creates a check suite for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/suites#create-a-check-suite
+	*/
+	CreateCheckSuite(ctx context.Context, owner string, repo string, opts github.CreateCheckSuiteOptions) (*github.CheckSuite, *github.Response, error)
+	/*
+	   GetCheckRun gets a check-run for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#get-a-check-run
+	*/
+	GetCheckRun(ctx context.Context, owner string, repo string, checkRunID int64) (*github.CheckRun, *github.Response, error)
+	/*
+	   GetCheckSuite gets a single check suite.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/suites#get-a-check-suite
+	*/
+	GetCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64) (*github.CheckSuite, *github.Response, error)
+	/*
+	   ListCheckRunAnnotations lists the annotations for a check run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#list-check-run-annotations
+	*/
+	ListCheckRunAnnotations(ctx context.Context, owner string, repo string, checkRunID int64, opts *github.ListOptions) ([]*github.CheckRunAnnotation, *github.Response, error)
+	/*
+	   ListCheckRunsCheckSuite lists check runs for a check suite.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#list-check-runs-in-a-check-suite
+	*/
+	ListCheckRunsCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64, opts *github.ListCheckRunsOptions) (*github.ListCheckRunsResults, *github.Response, error)
+	/*
+	   ListCheckRunsForRef lists check runs for a specific ref.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#list-check-runs-for-a-git-reference
+	*/
+	ListCheckRunsForRef(ctx context.Context, owner string, repo string, ref string, opts *github.ListCheckRunsOptions) (*github.ListCheckRunsResults, *github.Response, error)
+	/*
+	   ListCheckSuitesForRef lists check suite for a specific ref.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/suites#list-check-suites-for-a-git-reference
+	*/
+	ListCheckSuitesForRef(ctx context.Context, owner string, repo string, ref string, opts *github.ListCheckSuiteOptions) (*github.ListCheckSuiteResults, *github.Response, error)
+	/*
+	   ReRequestCheckRun triggers GitHub to rerequest an existing check run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#rerequest-a-check-run
+	*/
+	ReRequestCheckRun(ctx context.Context, owner string, repo string, checkRunID int64) (*github.Response, error)
+	/*
+	   ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/suites#rerequest-a-check-suite
+	*/
+	ReRequestCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64) (*github.Response, error)
+	/*
+	   SetCheckSuitePreferences changes the default automatic flow when creating check suites.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/suites#update-repository-preferences-for-check-suites
+	*/
+	SetCheckSuitePreferences(ctx context.Context, owner string, repo string, opts github.CheckSuitePreferenceOptions) (*github.CheckSuitePreferenceResults, *github.Response, error)
+	/*
+	   UpdateCheckRun updates a check run for a specific commit in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/checks/runs#update-a-check-run
+	*/
+	UpdateCheckRun(ctx context.Context, owner string, repo string, checkRunID int64, opts github.UpdateCheckRunOptions) (*github.CheckRun, *github.Response, error)
 }
 
+/*
+CodeScanningService handles communication with the code scanning related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/code-scanning
+*/
 type CodeScanningService interface {
-	GetAlert(context.Context, string, string, int64) (*github.Alert, *github.Response, error)
-	GetAnalysis(context.Context, string, string, int64) (*github.ScanningAnalysis, *github.Response, error)
-	ListAlertsForOrg(context.Context, string, *github.AlertListOptions) ([]*github.Alert, *github.Response, error)
-	ListAlertsForRepo(context.Context, string, string, *github.AlertListOptions) ([]*github.Alert, *github.Response, error)
-	ListAnalysesForRepo(context.Context, string, string, *github.AnalysesListOptions) ([]*github.ScanningAnalysis, *github.Response, error)
-	UploadSarif(context.Context, string, string, *github.SarifAnalysis) (*github.SarifID, *github.Response, error)
+	/*
+	   GetAlert gets a single code scanning alert for a repository.
+
+	   You must use an access token with the security_events scope to use this endpoint.
+	   GitHub Apps must have the security_events read permission to use this endpoint.
+
+	   The security alert_id is the number at the end of the security alert's URL.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-alert
+	*/
+	GetAlert(ctx context.Context, owner string, repo string, id int64) (*github.Alert, *github.Response, error)
+	/*
+	   GetAnalysis gets a single code scanning analysis for a repository.
+
+	   You must use an access token with the security_events scope to use this endpoint.
+	   GitHub Apps must have the security_events read permission to use this endpoint.
+
+	   The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-analysis-for-a-repository
+	*/
+	GetAnalysis(ctx context.Context, owner string, repo string, id int64) (*github.ScanningAnalysis, *github.Response, error)
+	/*
+	   ListAlertsForOrg lists code scanning alerts for an org.
+
+	   You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+	   read permission to use this endpoint.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-an-organization
+	*/
+	ListAlertsForOrg(ctx context.Context, org string, opts *github.AlertListOptions) ([]*github.Alert, *github.Response, error)
+	/*
+	   ListAlertsForRepo lists code scanning alerts for a repository.
+
+	   Lists all open code scanning alerts for the default branch (usually master) and protected branches in a repository.
+	   You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+	   read permission to use this endpoint.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-a-repository
+	*/
+	ListAlertsForRepo(ctx context.Context, owner string, repo string, opts *github.AlertListOptions) ([]*github.Alert, *github.Response, error)
+	/*
+	   ListAnalysesForRepo lists code scanning analyses for a repository.
+
+	   Lists the details of all code scanning analyses for a repository, starting with the most recent.
+	   You must use an access token with the security_events scope to use this endpoint.
+	   GitHub Apps must have the security_events read permission to use this endpoint.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-analyses-for-a-repository
+	*/
+	ListAnalysesForRepo(ctx context.Context, owner string, repo string, opts *github.AnalysesListOptions) ([]*github.ScanningAnalysis, *github.Response, error)
+	/*
+	   UploadSarif uploads the result of code scanning job to GitHub.
+
+	   For the parameter sarif, you must first compress your SARIF file using gzip and then translate the contents of the file into a Base64 encoding string.
+	   You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+	   write permission to use this endpoint.
+
+	   GitHub API docs: https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
+	*/
+	UploadSarif(ctx context.Context, owner string, repo string, sarif *github.SarifAnalysis) (*github.SarifID, *github.Response, error)
 }
 
+/*
+DependabotService handles communication with the Dependabot related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/dependabot/
+*/
 type DependabotService interface {
-	AddSelectedRepoToOrgSecret(context.Context, string, string, *github.Repository) (*github.Response, error)
-	CreateOrUpdateOrgSecret(context.Context, string, *github.DependabotEncryptedSecret) (*github.Response, error)
-	CreateOrUpdateRepoSecret(context.Context, string, string, *github.DependabotEncryptedSecret) (*github.Response, error)
-	DeleteOrgSecret(context.Context, string, string) (*github.Response, error)
-	DeleteRepoSecret(context.Context, string, string, string) (*github.Response, error)
-	GetOrgPublicKey(context.Context, string) (*github.PublicKey, *github.Response, error)
-	GetOrgSecret(context.Context, string, string) (*github.Secret, *github.Response, error)
-	GetRepoPublicKey(context.Context, string, string) (*github.PublicKey, *github.Response, error)
-	GetRepoSecret(context.Context, string, string, string) (*github.Secret, *github.Response, error)
-	ListOrgSecrets(context.Context, string, *github.ListOptions) (*github.Secrets, *github.Response, error)
-	ListRepoSecrets(context.Context, string, string, *github.ListOptions) (*github.Secrets, *github.Response, error)
-	ListSelectedReposForOrgSecret(context.Context, string, string, *github.ListOptions) (*github.SelectedReposList, *github.Response, error)
-	RemoveSelectedRepoFromOrgSecret(context.Context, string, string, *github.Repository) (*github.Response, error)
-	SetSelectedReposForOrgSecret(context.Context, string, string, github.DependabotSecretsSelectedRepoIDs) (*github.Response, error)
+	/*
+	   AddSelectedRepoToOrgSecret adds a repository to an organization Dependabot secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#add-selected-repository-to-an-organization-secret
+	*/
+	AddSelectedRepoToOrgSecret(ctx context.Context, org string, name string, repo *github.Repository) (*github.Response, error)
+	/*
+	   CreateOrUpdateOrgSecret creates or updates an organization Dependabot secret with an encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-an-organization-secret
+	*/
+	CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *github.DependabotEncryptedSecret) (*github.Response, error)
+	/*
+	   CreateOrUpdateRepoSecret creates or updates a repository Dependabot secret with an encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-a-repository-secret
+	*/
+	CreateOrUpdateRepoSecret(ctx context.Context, owner string, repo string, eSecret *github.DependabotEncryptedSecret) (*github.Response, error)
+	/*
+	   DeleteOrgSecret deletes a Dependabot secret in an organization using the secret name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-an-organization-secret
+	*/
+	DeleteOrgSecret(ctx context.Context, org string, name string) (*github.Response, error)
+	/*
+	   DeleteRepoSecret deletes a Dependabot secret in a repository using the secret name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-a-repository-secret
+	*/
+	DeleteRepoSecret(ctx context.Context, owner string, repo string, name string) (*github.Response, error)
+	/*
+	   GetOrgPublicKey gets a public key that should be used for Dependabot secret encryption.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-public-key
+	*/
+	GetOrgPublicKey(ctx context.Context, org string) (*github.PublicKey, *github.Response, error)
+	/*
+	   GetOrgSecret gets a single organization Dependabot secret without revealing its encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-secret
+	*/
+	GetOrgSecret(ctx context.Context, org string, name string) (*github.Secret, *github.Response, error)
+	/*
+	   GetRepoPublicKey gets a public key that should be used for Dependabot secret encryption.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-public-key
+	*/
+	GetRepoPublicKey(ctx context.Context, owner string, repo string) (*github.PublicKey, *github.Response, error)
+	/*
+	   GetRepoSecret gets a single repository Dependabot secret without revealing its encrypted value.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-secret
+	*/
+	GetRepoSecret(ctx context.Context, owner string, repo string, name string) (*github.Secret, *github.Response, error)
+	/*
+	   ListOrgSecrets lists all Dependabot secrets available in an organization
+	   without revealing their encrypted values.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-organization-secrets
+	*/
+	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListRepoSecrets lists all Dependabot secrets available in a repository
+	   without revealing their encrypted values.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-repository-secrets
+	*/
+	ListRepoSecrets(ctx context.Context, owner string, repo string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListSelectedReposForOrgSecret lists all repositories that have access to a Dependabot secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-selected-repositories-for-an-organization-secret
+	*/
+	ListSelectedReposForOrgSecret(ctx context.Context, org string, name string, opts *github.ListOptions) (*github.SelectedReposList, *github.Response, error)
+	/*
+	   RemoveSelectedRepoFromOrgSecret removes a repository from an organization Dependabot secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#remove-selected-repository-from-an-organization-secret
+	*/
+	RemoveSelectedRepoFromOrgSecret(ctx context.Context, org string, name string, repo *github.Repository) (*github.Response, error)
+	/*
+	   SetSelectedReposForOrgSecret sets the repositories that have access to a Dependabot secret.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#set-selected-repositories-for-an-organization-secret
+	*/
+	SetSelectedReposForOrgSecret(ctx context.Context, org string, name string, ids github.DependabotSecretsSelectedRepoIDs) (*github.Response, error)
 }
 
+/*
+EnterpriseService provides access to the enterprise related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/
+*/
 type EnterpriseService interface {
-	CreateRegistrationToken(context.Context, string) (*github.RegistrationToken, *github.Response, error)
-	GetAuditLog(context.Context, string, *github.GetAuditLogOptions) ([]*github.AuditEntry, *github.Response, error)
-	ListRunnerApplicationDownloads(context.Context, string) ([]*github.RunnerApplicationDownload, *github.Response, error)
-	ListRunners(context.Context, string, *github.ListOptions) (*github.Runners, *github.Response, error)
-	RemoveRunner(context.Context, string, int64) (*github.Response, error)
+	/*
+	   CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
+	*/
+	CreateRegistrationToken(ctx context.Context, enterprise string) (*github.RegistrationToken, *github.Response, error)
+	/*
+	   GetAuditLog gets the audit-log entries for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/audit-log#get-the-audit-log-for-an-enterprise
+	*/
+	GetAuditLog(ctx context.Context, enterprise string, opts *github.GetAuditLogOptions) ([]*github.AuditEntry, *github.Response, error)
+	/*
+	   ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
+	*/
+	ListRunnerApplicationDownloads(ctx context.Context, enterprise string) ([]*github.RunnerApplicationDownload, *github.Response, error)
+	/*
+	   ListRunners lists all the self-hosted runners for a enterprise.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
+	*/
+	ListRunners(ctx context.Context, enterprise string, opts *github.ListOptions) (*github.Runners, *github.Response, error)
+	/*
+	   RemoveRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-enterprise
+	*/
+	RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*github.Response, error)
 }
 
+/*
+GistsService handles communication with the Gist related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/gists
+*/
 type GistsService interface {
-	Create(context.Context, *github.Gist) (*github.Gist, *github.Response, error)
-	CreateComment(context.Context, string, *github.GistComment) (*github.GistComment, *github.Response, error)
-	Delete(context.Context, string) (*github.Response, error)
-	DeleteComment(context.Context, string, int64) (*github.Response, error)
-	Edit(context.Context, string, *github.Gist) (*github.Gist, *github.Response, error)
-	EditComment(context.Context, string, int64, *github.GistComment) (*github.GistComment, *github.Response, error)
-	Fork(context.Context, string) (*github.Gist, *github.Response, error)
-	Get(context.Context, string) (*github.Gist, *github.Response, error)
-	GetComment(context.Context, string, int64) (*github.GistComment, *github.Response, error)
-	GetRevision(context.Context, string, string) (*github.Gist, *github.Response, error)
-	IsStarred(context.Context, string) (bool, *github.Response, error)
-	List(context.Context, string, *github.GistListOptions) ([]*github.Gist, *github.Response, error)
-	ListAll(context.Context, *github.GistListOptions) ([]*github.Gist, *github.Response, error)
-	ListComments(context.Context, string, *github.ListOptions) ([]*github.GistComment, *github.Response, error)
-	ListCommits(context.Context, string, *github.ListOptions) ([]*github.GistCommit, *github.Response, error)
-	ListForks(context.Context, string, *github.ListOptions) ([]*github.GistFork, *github.Response, error)
-	ListStarred(context.Context, *github.GistListOptions) ([]*github.Gist, *github.Response, error)
-	Star(context.Context, string) (*github.Response, error)
-	Unstar(context.Context, string) (*github.Response, error)
+	/*
+	   Create a gist for authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#create-a-gist
+	*/
+	Create(ctx context.Context, gist *github.Gist) (*github.Gist, *github.Response, error)
+	/*
+	   CreateComment creates a comment for a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/comments#create-a-gist-comment
+	*/
+	CreateComment(ctx context.Context, gistID string, comment *github.GistComment) (*github.GistComment, *github.Response, error)
+	/*
+	   Delete a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#delete-a-gist
+	*/
+	Delete(ctx context.Context, id string) (*github.Response, error)
+	/*
+	   DeleteComment deletes a gist comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/comments#delete-a-gist-comment
+	*/
+	DeleteComment(ctx context.Context, gistID string, commentID int64) (*github.Response, error)
+	/*
+	   Edit a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#update-a-gist
+	*/
+	Edit(ctx context.Context, id string, gist *github.Gist) (*github.Gist, *github.Response, error)
+	/*
+	   EditComment edits an existing gist comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/comments#update-a-gist-comment
+	*/
+	EditComment(ctx context.Context, gistID string, commentID int64, comment *github.GistComment) (*github.GistComment, *github.Response, error)
+	/*
+	   Fork a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#fork-a-gist
+	*/
+	Fork(ctx context.Context, id string) (*github.Gist, *github.Response, error)
+	/*
+	   Get a single gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#get-a-gist
+	*/
+	Get(ctx context.Context, id string) (*github.Gist, *github.Response, error)
+	/*
+	   GetComment retrieves a single comment from a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/comments#get-a-gist-comment
+	*/
+	GetComment(ctx context.Context, gistID string, commentID int64) (*github.GistComment, *github.Response, error)
+	/*
+	   GetRevision gets a specific revision of a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#get-a-gist-revision
+	*/
+	GetRevision(ctx context.Context, id string, sha string) (*github.Gist, *github.Response, error)
+	/*
+	   IsStarred checks if a gist is starred by authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#check-if-a-gist-is-starred
+	*/
+	IsStarred(ctx context.Context, id string) (bool, *github.Response, error)
+	/*
+	   List gists for a user. Passing the empty string will list
+	   all public gists if called anonymously. However, if the call
+	   is authenticated, it will returns all gists for the authenticated
+	   user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gists-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gists-for-a-user
+	*/
+	List(ctx context.Context, user string, opts *github.GistListOptions) ([]*github.Gist, *github.Response, error)
+	/*
+	   ListAll lists all public gists.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-public-gists
+	*/
+	ListAll(ctx context.Context, opts *github.GistListOptions) ([]*github.Gist, *github.Response, error)
+	/*
+	   ListComments lists all comments for a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/comments#list-gist-comments
+	*/
+	ListComments(ctx context.Context, gistID string, opts *github.ListOptions) ([]*github.GistComment, *github.Response, error)
+	/*
+	   ListCommits lists commits of a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gist-commits
+	*/
+	ListCommits(ctx context.Context, id string, opts *github.ListOptions) ([]*github.GistCommit, *github.Response, error)
+	/*
+	   ListForks lists forks of a gist.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gist-forks
+	*/
+	ListForks(ctx context.Context, id string, opts *github.ListOptions) ([]*github.GistFork, *github.Response, error)
+	/*
+	   ListStarred lists starred gists of authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-starred-gists
+	*/
+	ListStarred(ctx context.Context, opts *github.GistListOptions) ([]*github.Gist, *github.Response, error)
+	/*
+	   Star a gist on behalf of authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#star-a-gist
+	*/
+	Star(ctx context.Context, id string) (*github.Response, error)
+	/*
+	   Unstar a gist on a behalf of authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gists/gists#unstar-a-gist
+	*/
+	Unstar(ctx context.Context, id string) (*github.Response, error)
 }
 
+/*
+GitService handles communication with the git data related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/git/
+*/
 type GitService interface {
-	CreateBlob(context.Context, string, string, *github.Blob) (*github.Blob, *github.Response, error)
-	CreateCommit(context.Context, string, string, *github.Commit) (*github.Commit, *github.Response, error)
-	CreateRef(context.Context, string, string, *github.Reference) (*github.Reference, *github.Response, error)
-	CreateTag(context.Context, string, string, *github.Tag) (*github.Tag, *github.Response, error)
-	CreateTree(context.Context, string, string, string, []*github.TreeEntry) (*github.Tree, *github.Response, error)
-	DeleteRef(context.Context, string, string, string) (*github.Response, error)
-	GetBlob(context.Context, string, string, string) (*github.Blob, *github.Response, error)
-	GetBlobRaw(context.Context, string, string, string) ([]uint8, *github.Response, error)
-	GetCommit(context.Context, string, string, string) (*github.Commit, *github.Response, error)
-	GetRef(context.Context, string, string, string) (*github.Reference, *github.Response, error)
-	GetTag(context.Context, string, string, string) (*github.Tag, *github.Response, error)
-	GetTree(context.Context, string, string, string, bool) (*github.Tree, *github.Response, error)
-	ListMatchingRefs(context.Context, string, string, *github.ReferenceListOptions) ([]*github.Reference, *github.Response, error)
-	UpdateRef(context.Context, string, string, *github.Reference, bool) (*github.Reference, *github.Response, error)
+	/*
+	   CreateBlob creates a blob object.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/blobs#create-a-blob
+	*/
+	CreateBlob(ctx context.Context, owner string, repo string, blob *github.Blob) (*github.Blob, *github.Response, error)
+	/*
+	   CreateCommit creates a new commit in a repository.
+	   commit must not be nil.
+
+	   The commit.Committer is optional and will be filled with the commit.Author
+	   data if omitted. If the commit.Author is omitted, it will be filled in with
+	   the authenticated user’s information and the current date.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/commits#create-a-commit
+	*/
+	CreateCommit(ctx context.Context, owner string, repo string, commit *github.Commit) (*github.Commit, *github.Response, error)
+	/*
+	   CreateRef creates a new ref in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/refs#create-a-reference
+	*/
+	CreateRef(ctx context.Context, owner string, repo string, ref *github.Reference) (*github.Reference, *github.Response, error)
+	/*
+	   CreateTag creates a tag object.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/tags#create-a-tag-object
+	*/
+	CreateTag(ctx context.Context, owner string, repo string, tag *github.Tag) (*github.Tag, *github.Response, error)
+	/*
+	   CreateTree creates a new tree in a repository. If both a tree and a nested
+	   path modifying that tree are specified, it will overwrite the contents of
+	   that tree with the new path contents and write a new tree out.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/trees#create-a-tree
+	*/
+	CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []*github.TreeEntry) (*github.Tree, *github.Response, error)
+	/*
+	   DeleteRef deletes a ref from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/refs#delete-a-reference
+	*/
+	DeleteRef(ctx context.Context, owner string, repo string, ref string) (*github.Response, error)
+	/*
+	   GetBlob fetches a blob from a repo given a SHA.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/blobs#get-a-blob
+	*/
+	GetBlob(ctx context.Context, owner string, repo string, sha string) (*github.Blob, *github.Response, error)
+	/*
+	   GetBlobRaw fetches a blob's contents from a repo.
+	   Unlike GetBlob, it returns the raw bytes rather than the base64-encoded data.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/blobs#get-a-blob
+	*/
+	GetBlobRaw(ctx context.Context, owner string, repo string, sha string) ([]uint8, *github.Response, error)
+	/*
+	   GetCommit fetches the Commit object for a given SHA.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/commits#get-a-commit
+	*/
+	GetCommit(ctx context.Context, owner string, repo string, sha string) (*github.Commit, *github.Response, error)
+	/*
+	   GetRef fetches a single reference in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/refs#get-a-reference
+	*/
+	GetRef(ctx context.Context, owner string, repo string, ref string) (*github.Reference, *github.Response, error)
+	/*
+	   GetTag fetches a tag from a repo given a SHA.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/tags#get-a-tag
+	*/
+	GetTag(ctx context.Context, owner string, repo string, sha string) (*github.Tag, *github.Response, error)
+	/*
+	   GetTree fetches the Tree object for a given sha hash from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/trees#get-a-tree
+	*/
+	GetTree(ctx context.Context, owner string, repo string, sha string, recursive bool) (*github.Tree, *github.Response, error)
+	/*
+	   ListMatchingRefs lists references in a repository that match a supplied ref.
+	   Use an empty ref to list all references.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/refs#list-matching-references
+	*/
+	ListMatchingRefs(ctx context.Context, owner string, repo string, opts *github.ReferenceListOptions) ([]*github.Reference, *github.Response, error)
+	/*
+	   UpdateRef updates an existing ref in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/git/refs#update-a-reference
+	*/
+	UpdateRef(ctx context.Context, owner string, repo string, ref *github.Reference, force bool) (*github.Reference, *github.Response, error)
 }
 
+/*
+GitignoresService provides access to the gitignore related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/gitignore/
+*/
 type GitignoresService interface {
-	Get(context.Context, string) (*github.Gitignore, *github.Response, error)
-	List(context.Context) ([]string, *github.Response, error)
+	/*
+	   Get a Gitignore by name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gitignore#get-a-gitignore-template
+	*/
+	Get(ctx context.Context, name string) (*github.Gitignore, *github.Response, error)
+	/*
+	   List all available Gitignore templates.
+
+	   GitHub API docs: https://docs.github.com/en/rest/gitignore/#listing-available-templates
+	*/
+	List(ctx context.Context) ([]string, *github.Response, error)
 }
 
+/*
+InteractionsService handles communication with the repository and organization related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/interactions/
+*/
 type InteractionsService interface {
-	GetRestrictionsForOrg(context.Context, string) (*github.InteractionRestriction, *github.Response, error)
-	GetRestrictionsForRepo(context.Context, string, string) (*github.InteractionRestriction, *github.Response, error)
-	RemoveRestrictionsFromOrg(context.Context, string) (*github.Response, error)
-	RemoveRestrictionsFromRepo(context.Context, string, string) (*github.Response, error)
-	UpdateRestrictionsForOrg(context.Context, string, string) (*github.InteractionRestriction, *github.Response, error)
-	UpdateRestrictionsForRepo(context.Context, string, string, string) (*github.InteractionRestriction, *github.Response, error)
+	/*
+	   GetRestrictionsForOrg fetches the interaction restrictions for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#get-interaction-restrictions-for-an-organization
+	*/
+	GetRestrictionsForOrg(ctx context.Context, organization string) (*github.InteractionRestriction, *github.Response, error)
+	/*
+	   GetRestrictionsForRepo fetches the interaction restrictions for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/repos#get-interaction-restrictions-for-a-repository
+	*/
+	GetRestrictionsForRepo(ctx context.Context, owner string, repo string) (*github.InteractionRestriction, *github.Response, error)
+	/*
+	   RemoveRestrictionsFromOrg removes the interaction restrictions for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#remove-interaction-restrictions-for-an-organization
+	*/
+	RemoveRestrictionsFromOrg(ctx context.Context, organization string) (*github.Response, error)
+	/*
+	   RemoveRestrictionsFromRepo removes the interaction restrictions for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/repos#remove-interaction-restrictions-for-a-repository
+	*/
+	RemoveRestrictionsFromRepo(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   UpdateRestrictionsForOrg adds or updates the interaction restrictions for an organization.
+
+	   limit specifies the group of GitHub users who can comment, open issues, or create pull requests
+	   in public repositories for the given organization.
+	   Possible values are: "existing_users", "contributors_only", "collaborators_only".
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#set-interaction-restrictions-for-an-organization
+	*/
+	UpdateRestrictionsForOrg(ctx context.Context, organization string, limit string) (*github.InteractionRestriction, *github.Response, error)
+	/*
+	   UpdateRestrictionsForRepo adds or updates the interaction restrictions for a repository.
+
+	   limit specifies the group of GitHub users who can comment, open issues, or create pull requests
+	   for the given repository.
+	   Possible values are: "existing_users", "contributors_only", "collaborators_only".
+
+	   GitHub API docs: https://docs.github.com/en/rest/interactions/repos#set-interaction-restrictions-for-a-repository
+	*/
+	UpdateRestrictionsForRepo(ctx context.Context, owner string, repo string, limit string) (*github.InteractionRestriction, *github.Response, error)
 }
 
+/*
+IssueImportService handles communication with the issue import related
+methods of the Issue Import GitHub API.
+*/
 type IssueImportService interface {
-	CheckStatus(context.Context, string, string, int64) (*github.IssueImportResponse, *github.Response, error)
-	CheckStatusSince(context.Context, string, string, time.Time) ([]*github.IssueImportResponse, *github.Response, error)
-	Create(context.Context, string, string, *github.IssueImportRequest) (*github.IssueImportResponse, *github.Response, error)
+	/*
+	   CheckStatus checks the status of an imported issue.
+
+	   https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
+	*/
+	CheckStatus(ctx context.Context, owner string, repo string, issueID int64) (*github.IssueImportResponse, *github.Response, error)
+	/*
+	   CheckStatusSince checks the status of multiple imported issues since a given date.
+
+	   https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
+	*/
+	CheckStatusSince(ctx context.Context, owner string, repo string, since time.Time) ([]*github.IssueImportResponse, *github.Response, error)
+	/*
+	   Create a new imported issue on the specified repository.
+
+	   https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
+	*/
+	Create(ctx context.Context, owner string, repo string, issue *github.IssueImportRequest) (*github.IssueImportResponse, *github.Response, error)
 }
 
+/*
+IssuesService handles communication with the issue related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/issues/
+*/
 type IssuesService interface {
-	AddAssignees(context.Context, string, string, int, []string) (*github.Issue, *github.Response, error)
-	AddLabelsToIssue(context.Context, string, string, int, []string) ([]*github.Label, *github.Response, error)
-	Create(context.Context, string, string, *github.IssueRequest) (*github.Issue, *github.Response, error)
-	CreateComment(context.Context, string, string, int, *github.IssueComment) (*github.IssueComment, *github.Response, error)
-	CreateLabel(context.Context, string, string, *github.Label) (*github.Label, *github.Response, error)
-	CreateMilestone(context.Context, string, string, *github.Milestone) (*github.Milestone, *github.Response, error)
-	DeleteComment(context.Context, string, string, int64) (*github.Response, error)
-	DeleteLabel(context.Context, string, string, string) (*github.Response, error)
-	DeleteMilestone(context.Context, string, string, int) (*github.Response, error)
-	Edit(context.Context, string, string, int, *github.IssueRequest) (*github.Issue, *github.Response, error)
-	EditComment(context.Context, string, string, int64, *github.IssueComment) (*github.IssueComment, *github.Response, error)
-	EditLabel(context.Context, string, string, string, *github.Label) (*github.Label, *github.Response, error)
-	EditMilestone(context.Context, string, string, int, *github.Milestone) (*github.Milestone, *github.Response, error)
-	Get(context.Context, string, string, int) (*github.Issue, *github.Response, error)
-	GetComment(context.Context, string, string, int64) (*github.IssueComment, *github.Response, error)
-	GetEvent(context.Context, string, string, int64) (*github.IssueEvent, *github.Response, error)
-	GetLabel(context.Context, string, string, string) (*github.Label, *github.Response, error)
-	GetMilestone(context.Context, string, string, int) (*github.Milestone, *github.Response, error)
-	IsAssignee(context.Context, string, string, string) (bool, *github.Response, error)
-	List(context.Context, bool, *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
-	ListAssignees(context.Context, string, string, *github.ListOptions) ([]*github.User, *github.Response, error)
-	ListByOrg(context.Context, string, *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
-	ListByRepo(context.Context, string, string, *github.IssueListByRepoOptions) ([]*github.Issue, *github.Response, error)
-	ListComments(context.Context, string, string, int, *github.IssueListCommentsOptions) ([]*github.IssueComment, *github.Response, error)
-	ListIssueEvents(context.Context, string, string, int, *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
-	ListIssueTimeline(context.Context, string, string, int, *github.ListOptions) ([]*github.Timeline, *github.Response, error)
-	ListLabels(context.Context, string, string, *github.ListOptions) ([]*github.Label, *github.Response, error)
-	ListLabelsByIssue(context.Context, string, string, int, *github.ListOptions) ([]*github.Label, *github.Response, error)
-	ListLabelsForMilestone(context.Context, string, string, int, *github.ListOptions) ([]*github.Label, *github.Response, error)
-	ListMilestones(context.Context, string, string, *github.MilestoneListOptions) ([]*github.Milestone, *github.Response, error)
-	ListRepositoryEvents(context.Context, string, string, *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
-	Lock(context.Context, string, string, int, *github.LockIssueOptions) (*github.Response, error)
-	RemoveAssignees(context.Context, string, string, int, []string) (*github.Issue, *github.Response, error)
-	RemoveLabelForIssue(context.Context, string, string, int, string) (*github.Response, error)
-	RemoveLabelsForIssue(context.Context, string, string, int) (*github.Response, error)
-	RemoveMilestone(context.Context, string, string, int) (*github.Issue, *github.Response, error)
-	ReplaceLabelsForIssue(context.Context, string, string, int, []string) ([]*github.Label, *github.Response, error)
-	Unlock(context.Context, string, string, int) (*github.Response, error)
+	/*
+	   AddAssignees adds the provided GitHub users as assignees to the issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/assignees#add-assignees-to-an-issue
+	*/
+	AddAssignees(ctx context.Context, owner string, repo string, number int, assignees []string) (*github.Issue, *github.Response, error)
+	/*
+	   AddLabelsToIssue adds labels to an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#add-labels-to-an-issue
+	*/
+	AddLabelsToIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*github.Label, *github.Response, error)
+	/*
+	   Create a new issue on the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#create-an-issue
+	*/
+	Create(ctx context.Context, owner string, repo string, issue *github.IssueRequest) (*github.Issue, *github.Response, error)
+	/*
+	   CreateComment creates a new comment on the specified issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#create-an-issue-comment
+	*/
+	CreateComment(ctx context.Context, owner string, repo string, number int, comment *github.IssueComment) (*github.IssueComment, *github.Response, error)
+	/*
+	   CreateLabel creates a new label on the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#create-a-label
+	*/
+	CreateLabel(ctx context.Context, owner string, repo string, label *github.Label) (*github.Label, *github.Response, error)
+	/*
+	   CreateMilestone creates a new milestone on the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/milestones#create-a-milestone
+	*/
+	CreateMilestone(ctx context.Context, owner string, repo string, milestone *github.Milestone) (*github.Milestone, *github.Response, error)
+	/*
+	   DeleteComment deletes an issue comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#delete-an-issue-comment
+	*/
+	DeleteComment(ctx context.Context, owner string, repo string, commentID int64) (*github.Response, error)
+	/*
+	   DeleteLabel deletes a label.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#delete-a-label
+	*/
+	DeleteLabel(ctx context.Context, owner string, repo string, name string) (*github.Response, error)
+	/*
+	   DeleteMilestone deletes a milestone.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/milestones#delete-a-milestone
+	*/
+	DeleteMilestone(ctx context.Context, owner string, repo string, number int) (*github.Response, error)
+	/*
+	   Edit (update) an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#update-an-issue
+	*/
+	Edit(ctx context.Context, owner string, repo string, number int, issue *github.IssueRequest) (*github.Issue, *github.Response, error)
+	/*
+	   EditComment updates an issue comment.
+	   A non-nil comment.Body must be provided. Other comment fields should be left nil.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#update-an-issue-comment
+	*/
+	EditComment(ctx context.Context, owner string, repo string, commentID int64, comment *github.IssueComment) (*github.IssueComment, *github.Response, error)
+	/*
+	   EditLabel edits a label.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#update-a-label
+	*/
+	EditLabel(ctx context.Context, owner string, repo string, name string, label *github.Label) (*github.Label, *github.Response, error)
+	/*
+	   EditMilestone edits a milestone.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/milestones#update-a-milestone
+	*/
+	EditMilestone(ctx context.Context, owner string, repo string, number int, milestone *github.Milestone) (*github.Milestone, *github.Response, error)
+	/*
+	   Get a single issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#get-an-issue
+	*/
+	Get(ctx context.Context, owner string, repo string, number int) (*github.Issue, *github.Response, error)
+	/*
+	   GetComment fetches the specified issue comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#get-an-issue-comment
+	*/
+	GetComment(ctx context.Context, owner string, repo string, commentID int64) (*github.IssueComment, *github.Response, error)
+	/*
+	   GetEvent returns the specified issue event.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/events#get-an-issue-event
+	*/
+	GetEvent(ctx context.Context, owner string, repo string, id int64) (*github.IssueEvent, *github.Response, error)
+	/*
+	   GetLabel gets a single label.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#get-a-label
+	*/
+	GetLabel(ctx context.Context, owner string, repo string, name string) (*github.Label, *github.Response, error)
+	/*
+	   GetMilestone gets a single milestone.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/milestones#get-a-milestone
+	*/
+	GetMilestone(ctx context.Context, owner string, repo string, number int) (*github.Milestone, *github.Response, error)
+	/*
+	   IsAssignee checks if a user is an assignee for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/assignees#check-if-a-user-can-be-assigned
+	*/
+	IsAssignee(ctx context.Context, owner string, repo string, user string) (bool, *github.Response, error)
+	/*
+	   List the issues for the authenticated user. If all is true, list issues
+	   across all the user's visible repositories including owned, member, and
+	   organization repositories; if false, list only owned and member
+	   repositories.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-user-account-issues-assigned-to-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
+	*/
+	List(ctx context.Context, all bool, opts *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
+	/*
+	   ListAssignees fetches all available assignees (owners and collaborators) to
+	   which issues may be assigned.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/assignees#list-assignees
+	*/
+	ListAssignees(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListByOrg fetches the issues in the specified organization for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
+	*/
+	ListByOrg(ctx context.Context, org string, opts *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
+	/*
+	   ListByRepo lists the issues for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-repository-issues
+	*/
+	ListByRepo(ctx context.Context, owner string, repo string, opts *github.IssueListByRepoOptions) ([]*github.Issue, *github.Response, error)
+	/*
+	   ListComments lists all comments on the specified issue. Specifying an issue
+	   number of 0 will return all comments on all issues for the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#list-issue-comments
+	   GitHub API docs: https://docs.github.com/en/rest/issues/comments#list-issue-comments-for-a-repository
+	*/
+	ListComments(ctx context.Context, owner string, repo string, number int, opts *github.IssueListCommentsOptions) ([]*github.IssueComment, *github.Response, error)
+	/*
+	   ListIssueEvents lists events for the specified issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events
+	*/
+	ListIssueEvents(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
+	/*
+	   ListIssueTimeline lists events for the specified issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/timeline#list-timeline-events-for-an-issue
+	*/
+	ListIssueTimeline(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.Timeline, *github.Response, error)
+	/*
+	   ListLabels lists all labels for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#list-labels-for-a-repository
+	*/
+	ListLabels(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Label, *github.Response, error)
+	/*
+	   ListLabelsByIssue lists all labels for an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#list-labels-for-an-issue
+	*/
+	ListLabelsByIssue(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.Label, *github.Response, error)
+	/*
+	   ListLabelsForMilestone lists labels for every issue in a milestone.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#list-labels-for-issues-in-a-milestone
+	*/
+	ListLabelsForMilestone(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.Label, *github.Response, error)
+	/*
+	   ListMilestones lists all milestones for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/milestones#list-milestones
+	*/
+	ListMilestones(ctx context.Context, owner string, repo string, opts *github.MilestoneListOptions) ([]*github.Milestone, *github.Response, error)
+	/*
+	   ListRepositoryEvents lists events for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events-for-a-repository
+	*/
+	ListRepositoryEvents(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.IssueEvent, *github.Response, error)
+	/*
+	   Lock an issue's conversation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#lock-an-issue
+	*/
+	Lock(ctx context.Context, owner string, repo string, number int, opts *github.LockIssueOptions) (*github.Response, error)
+	/*
+	   RemoveAssignees removes the provided GitHub users as assignees from the issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/assignees#remove-assignees-from-an-issue
+	*/
+	RemoveAssignees(ctx context.Context, owner string, repo string, number int, assignees []string) (*github.Issue, *github.Response, error)
+	/*
+	   RemoveLabelForIssue removes a label for an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#remove-a-label-from-an-issue
+	*/
+	RemoveLabelForIssue(ctx context.Context, owner string, repo string, number int, label string) (*github.Response, error)
+	/*
+	   RemoveLabelsForIssue removes all labels for an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#remove-all-labels-from-an-issue
+	*/
+	RemoveLabelsForIssue(ctx context.Context, owner string, repo string, number int) (*github.Response, error)
+	/*
+	   Remove a milestone from an issue.
+
+	   This is a helper method to explicitly update an issue with a `null` milestone, thereby removing it.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#update-an-issue
+	*/
+	RemoveMilestone(ctx context.Context, owner string, repo string, issueNumber int) (*github.Issue, *github.Response, error)
+	/*
+	   ReplaceLabelsForIssue replaces all labels for an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/labels#set-labels-for-an-issue
+	*/
+	ReplaceLabelsForIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*github.Label, *github.Response, error)
+	/*
+	   Unlock an issue's conversation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/issues/issues#unlock-an-issue
+	*/
+	Unlock(ctx context.Context, owner string, repo string, number int) (*github.Response, error)
 }
 
+/*
+LicensesService handles communication with the license related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/licenses/
+*/
 type LicensesService interface {
-	Get(context.Context, string) (*github.License, *github.Response, error)
-	List(context.Context) ([]*github.License, *github.Response, error)
+	/*
+	   Get extended metadata for one license.
+
+	   GitHub API docs: https://docs.github.com/en/rest/licenses#get-a-license
+	*/
+	Get(ctx context.Context, licenseName string) (*github.License, *github.Response, error)
+	/*
+	   List popular open source licenses.
+
+	   GitHub API docs: https://docs.github.com/en/rest/licenses/#list-all-licenses
+	*/
+	List(ctx context.Context) ([]*github.License, *github.Response, error)
 }
 
+/*
+MarketplaceService handles communication with the marketplace related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/apps#marketplace
+*/
 type MarketplaceService interface {
-	GetPlanAccountForAccount(context.Context, int64) (*github.MarketplacePlanAccount, *github.Response, error)
-	ListMarketplacePurchasesForUser(context.Context, *github.ListOptions) ([]*github.MarketplacePurchase, *github.Response, error)
-	ListPlanAccountsForPlan(context.Context, int64, *github.ListOptions) ([]*github.MarketplacePlanAccount, *github.Response, error)
-	ListPlans(context.Context, *github.ListOptions) ([]*github.MarketplacePlan, *github.Response, error)
+	/*
+	   GetPlanAccountForAccount get GitHub account (user or organization) associated with an account.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#get-a-subscription-plan-for-an-account
+	*/
+	GetPlanAccountForAccount(ctx context.Context, accountID int64) (*github.MarketplacePlanAccount, *github.Response, error)
+	/*
+	   ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user-stubbed
+	   GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user
+	*/
+	ListMarketplacePurchasesForUser(ctx context.Context, opts *github.ListOptions) ([]*github.MarketplacePurchase, *github.Response, error)
+	/*
+	   ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#list-accounts-for-a-plan
+	*/
+	ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *github.ListOptions) ([]*github.MarketplacePlanAccount, *github.Response, error)
+	/*
+	   ListPlans lists all plans for your Marketplace listing.
+
+	   GitHub API docs: https://docs.github.com/en/rest/apps#list-plans
+	*/
+	ListPlans(ctx context.Context, opts *github.ListOptions) ([]*github.MarketplacePlan, *github.Response, error)
 }
 
 type MigrationsService interface {
@@ -558,453 +2635,3030 @@ type MigrationsService interface {
 	UserMigrationStatus(context.Context, int64) (*github.UserMigration, *github.Response, error)
 }
 
+/*
+OrganizationsService provides access to the organization related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/orgs/
+*/
 type OrganizationsService interface {
-	BlockUser(context.Context, string, string) (*github.Response, error)
-	ConcealMembership(context.Context, string, string) (*github.Response, error)
-	ConvertMemberToOutsideCollaborator(context.Context, string, string) (*github.Response, error)
-	CreateCustomRepoRole(context.Context, string, *github.CreateOrUpdateCustomRoleOptions) (*github.CustomRepoRoles, *github.Response, error)
-	CreateHook(context.Context, string, *github.Hook) (*github.Hook, *github.Response, error)
-	CreateOrgInvitation(context.Context, string, *github.CreateOrgInvitationOptions) (*github.Invitation, *github.Response, error)
-	CreateProject(context.Context, string, *github.ProjectOptions) (*github.Project, *github.Response, error)
-	DeleteCustomRepoRole(context.Context, string, string) (*github.Response, error)
-	DeleteHook(context.Context, string, int64) (*github.Response, error)
-	DeletePackage(context.Context, string, string, string) (*github.Response, error)
-	Edit(context.Context, string, *github.Organization) (*github.Organization, *github.Response, error)
-	EditActionsAllowed(context.Context, string, github.ActionsAllowed) (*github.ActionsAllowed, *github.Response, error)
-	EditActionsPermissions(context.Context, string, github.ActionsPermissions) (*github.ActionsPermissions, *github.Response, error)
-	EditHook(context.Context, string, int64, *github.Hook) (*github.Hook, *github.Response, error)
-	EditOrgMembership(context.Context, string, string, *github.Membership) (*github.Membership, *github.Response, error)
-	Get(context.Context, string) (*github.Organization, *github.Response, error)
-	GetActionsAllowed(context.Context, string) (*github.ActionsAllowed, *github.Response, error)
-	GetActionsPermissions(context.Context, string) (*github.ActionsPermissions, *github.Response, error)
-	GetAuditLog(context.Context, string, *github.GetAuditLogOptions) ([]*github.AuditEntry, *github.Response, error)
-	GetByID(context.Context, int64) (*github.Organization, *github.Response, error)
-	GetHook(context.Context, string, int64) (*github.Hook, *github.Response, error)
-	GetHookDelivery(context.Context, string, int64, int64) (*github.HookDelivery, *github.Response, error)
-	GetOrgMembership(context.Context, string, string) (*github.Membership, *github.Response, error)
-	GetPackage(context.Context, string, string, string) (*github.Package, *github.Response, error)
-	IsBlocked(context.Context, string, string) (bool, *github.Response, error)
-	IsMember(context.Context, string, string) (bool, *github.Response, error)
-	IsPublicMember(context.Context, string, string) (bool, *github.Response, error)
-	List(context.Context, string, *github.ListOptions) ([]*github.Organization, *github.Response, error)
-	ListAll(context.Context, *github.OrganizationsListOptions) ([]*github.Organization, *github.Response, error)
-	ListBlockedUsers(context.Context, string, *github.ListOptions) ([]*github.User, *github.Response, error)
-	ListCustomRepoRoles(context.Context, string) (*github.OrganizationCustomRepoRoles, *github.Response, error)
-	ListFailedOrgInvitations(context.Context, string, *github.ListOptions) ([]*github.Invitation, *github.Response, error)
-	ListHookDeliveries(context.Context, string, int64, *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
-	ListHooks(context.Context, string, *github.ListOptions) ([]*github.Hook, *github.Response, error)
-	ListInstallations(context.Context, string, *github.ListOptions) (*github.OrganizationInstallations, *github.Response, error)
-	ListMembers(context.Context, string, *github.ListMembersOptions) ([]*github.User, *github.Response, error)
-	ListOrgInvitationTeams(context.Context, string, string, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	ListOrgMemberships(context.Context, *github.ListOrgMembershipsOptions) ([]*github.Membership, *github.Response, error)
-	ListOutsideCollaborators(context.Context, string, *github.ListOutsideCollaboratorsOptions) ([]*github.User, *github.Response, error)
-	ListPackages(context.Context, string, *github.PackageListOptions) ([]*github.Package, *github.Response, error)
-	ListPendingOrgInvitations(context.Context, string, *github.ListOptions) ([]*github.Invitation, *github.Response, error)
-	ListProjects(context.Context, string, *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
-	PackageDeleteVersion(context.Context, string, string, string, int64) (*github.Response, error)
-	PackageGetAllVersions(context.Context, string, string, string, *github.PackageListOptions) ([]*github.PackageVersion, *github.Response, error)
-	PackageGetVersion(context.Context, string, string, string, int64) (*github.PackageVersion, *github.Response, error)
-	PackageRestoreVersion(context.Context, string, string, string, int64) (*github.Response, error)
-	PingHook(context.Context, string, int64) (*github.Response, error)
-	PublicizeMembership(context.Context, string, string) (*github.Response, error)
-	RedeliverHookDelivery(context.Context, string, int64, int64) (*github.HookDelivery, *github.Response, error)
-	RemoveMember(context.Context, string, string) (*github.Response, error)
-	RemoveOrgMembership(context.Context, string, string) (*github.Response, error)
-	RemoveOutsideCollaborator(context.Context, string, string) (*github.Response, error)
-	RestorePackage(context.Context, string, string, string) (*github.Response, error)
-	UnblockUser(context.Context, string, string) (*github.Response, error)
-	UpdateCustomRepoRole(context.Context, string, string, *github.CreateOrUpdateCustomRoleOptions) (*github.CustomRepoRoles, *github.Response, error)
+	/*
+	   BlockUser blocks specified user from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#block-a-user-from-an-organization
+	*/
+	BlockUser(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   ConcealMembership conceals a user's membership in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#remove-public-organization-membership-for-the-authenticated-user
+	*/
+	ConcealMembership(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   ConvertMemberToOutsideCollaborator reduces the permission level of a member of the
+	   organization to that of an outside collaborator. Therefore, they will only
+	   have access to the repositories that their current team membership allows.
+	   Responses for converting a non-member or the last owner to an outside collaborator
+	   are listed in GitHub API docs.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#convert-an-organization-member-to-outside-collaborator
+	*/
+	ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   CreateCustomRepoRole creates a custom repository role in this organization.
+	   In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#create-a-custom-role
+	*/
+	CreateCustomRepoRole(ctx context.Context, org string, opts *github.CreateOrUpdateCustomRoleOptions) (*github.CustomRepoRoles, *github.Response, error)
+	/*
+	   CreateHook creates a Hook for the specified org.
+	   Config is a required field.
+
+	   Note that only a subset of the hook fields are used and hook must
+	   not be nil.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#create-an-organization-webhook
+	*/
+	CreateHook(ctx context.Context, org string, hook *github.Hook) (*github.Hook, *github.Response, error)
+	/*
+	   CreateOrgInvitation invites people to an organization by using their GitHub user ID or their email address.
+	   In order to create invitations in an organization,
+	   the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#create-an-organization-invitation
+	*/
+	CreateOrgInvitation(ctx context.Context, org string, opts *github.CreateOrgInvitationOptions) (*github.Invitation, *github.Response, error)
+	/*
+	   CreateProject creates a GitHub Project for the specified organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-an-organization-project
+	*/
+	CreateProject(ctx context.Context, org string, opts *github.ProjectOptions) (*github.Project, *github.Response, error)
+	/*
+	   DeleteCustomRepoRole deletes an existing custom repository role in this organization.
+	   In order to delete custom repository roles in an organization, the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#delete-a-custom-role
+	*/
+	DeleteCustomRepoRole(ctx context.Context, org string, roleID string) (*github.Response, error)
+	/*
+	   DeleteHook deletes a specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#delete-an-organization-webhook
+	*/
+	DeleteHook(ctx context.Context, org string, id int64) (*github.Response, error)
+	/*
+	   Delete a package from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-for-an-organization
+	*/
+	DeletePackage(ctx context.Context, org string, packageType string, packageName string) (*github.Response, error)
+	/*
+	   Edit an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#update-an-organization
+	*/
+	Edit(ctx context.Context, name string, org *github.Organization) (*github.Organization, *github.Response, error)
+	/*
+	   EditActionsAllowed sets the actions that are allowed in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+	*/
+	EditActionsAllowed(ctx context.Context, org string, actionsAllowed github.ActionsAllowed) (*github.ActionsAllowed, *github.Response, error)
+	/*
+	   EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
+	*/
+	EditActionsPermissions(ctx context.Context, org string, actionsPermissions github.ActionsPermissions) (*github.ActionsPermissions, *github.Response, error)
+	/*
+	   EditHook updates a specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#update-an-organization-webhook
+	*/
+	EditHook(ctx context.Context, org string, id int64, hook *github.Hook) (*github.Hook, *github.Response, error)
+	/*
+	   EditOrgMembership edits the membership for user in specified organization.
+	   Passing an empty string for user will edit the membership for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#update-an-organization-membership-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#set-organization-membership-for-a-user
+	*/
+	EditOrgMembership(ctx context.Context, user string, org string, membership *github.Membership) (*github.Membership, *github.Response, error)
+	/*
+	   Get fetches an organization by name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-an-organization
+	*/
+	Get(ctx context.Context, org string) (*github.Organization, *github.Response, error)
+	/*
+	   GetActionsAllowed gets the actions that are allowed in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+	*/
+	GetActionsAllowed(ctx context.Context, org string) (*github.ActionsAllowed, *github.Response, error)
+	/*
+	   GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
+	*/
+	GetActionsPermissions(ctx context.Context, org string) (*github.ActionsPermissions, *github.Response, error)
+	/*
+	   GetAuditLog gets the audit-log entries for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-the-audit-log-for-an-organization
+	*/
+	GetAuditLog(ctx context.Context, org string, opts *github.GetAuditLogOptions) ([]*github.AuditEntry, *github.Response, error)
+	/*
+	   GetByID fetches an organization.
+
+	   Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
+	*/
+	GetByID(ctx context.Context, id int64) (*github.Organization, *github.Response, error)
+	/*
+	   GetHook returns a single specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#get-an-organization-webhook
+	*/
+	GetHook(ctx context.Context, org string, id int64) (*github.Hook, *github.Response, error)
+	/*
+	   GetHookDelivery returns a delivery for a webhook configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#get-a-webhook-delivery-for-an-organization-webhook
+	*/
+	GetHookDelivery(ctx context.Context, owner string, hookID int64, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   GetOrgMembership gets the membership for a user in a specified organization.
+	   Passing an empty string for user will get the membership for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#get-an-organization-membership-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#get-organization-membership-for-a-user
+	*/
+	GetOrgMembership(ctx context.Context, user string, org string) (*github.Membership, *github.Response, error)
+	/*
+	   Get a package by name from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-for-an-organization
+	*/
+	GetPackage(ctx context.Context, org string, packageType string, packageName string) (*github.Package, *github.Response, error)
+	/*
+	   IsBlocked reports whether specified user is blocked from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#check-if-a-user-is-blocked-by-an-organization
+	*/
+	IsBlocked(ctx context.Context, org string, user string) (bool, *github.Response, error)
+	/*
+	   IsMember checks if a user is a member of an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#check-organization-membership-for-a-user
+	*/
+	IsMember(ctx context.Context, org string, user string) (bool, *github.Response, error)
+	/*
+	   IsPublicMember checks if a user is a public member of an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#check-public-organization-membership-for-a-user
+	*/
+	IsPublicMember(ctx context.Context, org string, user string) (bool, *github.Response, error)
+	/*
+	   List the organizations for a user. Passing the empty string will list
+	   organizations for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-a-user
+	*/
+	List(ctx context.Context, user string, opts *github.ListOptions) ([]*github.Organization, *github.Response, error)
+	/*
+	   ListAll lists all organizations, in the order that they were created on GitHub.
+
+	   Note: Pagination is powered exclusively by the since parameter. To continue
+	   listing the next set of organizations, use the ID of the last-returned organization
+	   as the opts.Since parameter for the next call.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations
+	*/
+	ListAll(ctx context.Context, opts *github.OrganizationsListOptions) ([]*github.Organization, *github.Response, error)
+	/*
+	   ListBlockedUsers lists all the users blocked by an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#list-users-blocked-by-an-organization
+	*/
+	ListBlockedUsers(ctx context.Context, org string, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListCustomRepoRoles lists the custom repository roles available in this organization.
+	   In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
+	*/
+	ListCustomRepoRoles(ctx context.Context, org string) (*github.OrganizationCustomRepoRoles, *github.Response, error)
+	/*
+	   ListFailedOrgInvitations returns a list of failed inviatations.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-failed-organization-invitations
+	*/
+	ListFailedOrgInvitations(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Invitation, *github.Response, error)
+	/*
+	   ListHookDeliveries lists webhook deliveries for a webhook configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#list-deliveries-for-an-organization-webhook
+	*/
+	ListHookDeliveries(ctx context.Context, org string, id int64, opts *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
+	/*
+	   ListHooks lists all Hooks for the specified organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#list-organization-webhooks
+	*/
+	ListHooks(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Hook, *github.Response, error)
+	/*
+	   ListInstallations lists installations for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-app-installations-for-an-organization
+	*/
+	ListInstallations(ctx context.Context, org string, opts *github.ListOptions) (*github.OrganizationInstallations, *github.Response, error)
+	/*
+	   ListMembers lists the members for an organization. If the authenticated
+	   user is an owner of the organization, this will return both concealed and
+	   public members, otherwise it will only return public members.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-organization-members
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-public-organization-members
+	*/
+	ListMembers(ctx context.Context, org string, opts *github.ListMembersOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListOrgInvitationTeams lists all teams associated with an invitation. In order to see invitations in an organization,
+	   the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-organization-invitation-teams
+	*/
+	ListOrgInvitationTeams(ctx context.Context, org string, invitationID string, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   ListOrgMemberships lists the organization memberships for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-organization-memberships-for-the-authenticated-user
+	*/
+	ListOrgMemberships(ctx context.Context, opts *github.ListOrgMembershipsOptions) ([]*github.Membership, *github.Response, error)
+	/*
+	   ListOutsideCollaborators lists outside collaborators of organization's repositories.
+	   This will only work if the authenticated
+	   user is an owner of the organization.
+
+	   Warning: The API may change without advance notice during the preview period.
+	   Preview features are not supported for production use.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#list-outside-collaborators-for-an-organization
+	*/
+	ListOutsideCollaborators(ctx context.Context, org string, opts *github.ListOutsideCollaboratorsOptions) ([]*github.User, *github.Response, error)
+	/*
+	   List the packages for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#list-packages-for-an-organization
+	*/
+	ListPackages(ctx context.Context, org string, opts *github.PackageListOptions) ([]*github.Package, *github.Response, error)
+	/*
+	   ListPendingOrgInvitations returns a list of pending invitations.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#list-pending-organization-invitations
+	*/
+	ListPendingOrgInvitations(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Invitation, *github.Response, error)
+	/*
+	   ListProjects lists the projects for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-organization-projects
+	*/
+	ListProjects(ctx context.Context, org string, opts *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
+	/*
+	   Delete a package version from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-package-version-for-an-organization
+	*/
+	PackageDeleteVersion(ctx context.Context, org string, packageType string, packageName string, packageVersionID int64) (*github.Response, error)
+	/*
+	   Get all versions of a package in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-all-package-versions-for-a-package-owned-by-an-organization
+	*/
+	PackageGetAllVersions(ctx context.Context, org string, packageType string, packageName string, opts *github.PackageListOptions) ([]*github.PackageVersion, *github.Response, error)
+	/*
+	   Get a specific version of a package in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-version-for-an-organization
+	*/
+	PackageGetVersion(ctx context.Context, org string, packageType string, packageName string, packageVersionID int64) (*github.PackageVersion, *github.Response, error)
+	/*
+	   Restore a package version to an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-package-version-for-an-organization
+	*/
+	PackageRestoreVersion(ctx context.Context, org string, packageType string, packageName string, packageVersionID int64) (*github.Response, error)
+	/*
+	   PingHook triggers a 'ping' event to be sent to the Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#ping-an-organization-webhook
+	*/
+	PingHook(ctx context.Context, org string, id int64) (*github.Response, error)
+	/*
+	   PublicizeMembership publicizes a user's membership in an organization. (A
+	   user cannot publicize the membership for another user.)
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#set-public-organization-membership-for-the-authenticated-user
+	*/
+	PublicizeMembership(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   RedeliverHookDelivery redelivers a delivery for a webhook configured in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#redeliver-a-delivery-for-an-organization-webhook
+	*/
+	RedeliverHookDelivery(ctx context.Context, owner string, hookID int64, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   RemoveMember removes a user from all teams of an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#remove-an-organization-member
+	*/
+	RemoveMember(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   RemoveOrgMembership removes user from the specified organization. If the
+	   user has been invited to the organization, this will cancel their invitation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/members#remove-organization-membership-for-a-user
+	*/
+	RemoveOrgMembership(ctx context.Context, user string, org string) (*github.Response, error)
+	/*
+	   RemoveOutsideCollaborator removes a user from the list of outside collaborators;
+	   consequently, removing them from all the organization's repositories.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#remove-outside-collaborator-from-an-organization
+	*/
+	RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   Restore a package to an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-for-an-organization
+	*/
+	RestorePackage(ctx context.Context, org string, packageType string, packageName string) (*github.Response, error)
+	/*
+	   UnblockUser unblocks specified user from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#unblock-a-user-from-an-organization
+	*/
+	UnblockUser(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   UpdateCustomRepoRole updates a custom repository role in this organization.
+	   In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#update-a-custom-role
+	*/
+	UpdateCustomRepoRole(ctx context.Context, org string, roleID string, opts *github.CreateOrUpdateCustomRoleOptions) (*github.CustomRepoRoles, *github.Response, error)
 }
 
+/*
+ProjectsService provides access to the projects functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/projects
+*/
 type ProjectsService interface {
-	AddProjectCollaborator(context.Context, int64, string, *github.ProjectCollaboratorOptions) (*github.Response, error)
-	CreateProjectCard(context.Context, int64, *github.ProjectCardOptions) (*github.ProjectCard, *github.Response, error)
-	CreateProjectColumn(context.Context, int64, *github.ProjectColumnOptions) (*github.ProjectColumn, *github.Response, error)
-	DeleteProject(context.Context, int64) (*github.Response, error)
-	DeleteProjectCard(context.Context, int64) (*github.Response, error)
-	DeleteProjectColumn(context.Context, int64) (*github.Response, error)
-	GetProject(context.Context, int64) (*github.Project, *github.Response, error)
-	GetProjectCard(context.Context, int64) (*github.ProjectCard, *github.Response, error)
-	GetProjectColumn(context.Context, int64) (*github.ProjectColumn, *github.Response, error)
-	ListProjectCards(context.Context, int64, *github.ProjectCardListOptions) ([]*github.ProjectCard, *github.Response, error)
-	ListProjectCollaborators(context.Context, int64, *github.ListCollaboratorOptions) ([]*github.User, *github.Response, error)
-	ListProjectColumns(context.Context, int64, *github.ListOptions) ([]*github.ProjectColumn, *github.Response, error)
-	MoveProjectCard(context.Context, int64, *github.ProjectCardMoveOptions) (*github.Response, error)
-	MoveProjectColumn(context.Context, int64, *github.ProjectColumnMoveOptions) (*github.Response, error)
-	RemoveProjectCollaborator(context.Context, int64, string) (*github.Response, error)
-	ReviewProjectCollaboratorPermission(context.Context, int64, string) (*github.ProjectPermissionLevel, *github.Response, error)
-	UpdateProject(context.Context, int64, *github.ProjectOptions) (*github.Project, *github.Response, error)
-	UpdateProjectCard(context.Context, int64, *github.ProjectCardOptions) (*github.ProjectCard, *github.Response, error)
-	UpdateProjectColumn(context.Context, int64, *github.ProjectColumnOptions) (*github.ProjectColumn, *github.Response, error)
+	/*
+	   AddProjectCollaborator adds a collaborator to an organization project and sets
+	   their permission level. You must be an organization owner or a project admin to add a collaborator.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#add-project-collaborator
+	*/
+	AddProjectCollaborator(ctx context.Context, id int64, username string, opts *github.ProjectCollaboratorOptions) (*github.Response, error)
+	/*
+	   CreateProjectCard creates a card in the specified column of a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#create-a-project-card
+	*/
+	CreateProjectCard(ctx context.Context, columnID int64, opts *github.ProjectCardOptions) (*github.ProjectCard, *github.Response, error)
+	/*
+	   CreateProjectColumn creates a column for the specified (by number) project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#create-a-project-column
+	*/
+	CreateProjectColumn(ctx context.Context, projectID int64, opts *github.ProjectColumnOptions) (*github.ProjectColumn, *github.Response, error)
+	/*
+	   DeleteProject deletes a GitHub Project from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#delete-a-project
+	*/
+	DeleteProject(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   DeleteProjectCard deletes a card from a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#delete-a-project-card
+	*/
+	DeleteProjectCard(ctx context.Context, cardID int64) (*github.Response, error)
+	/*
+	   DeleteProjectColumn deletes a column from a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#delete-a-project-column
+	*/
+	DeleteProjectColumn(ctx context.Context, columnID int64) (*github.Response, error)
+	/*
+	   GetProject gets a GitHub Project for a repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#get-a-project
+	*/
+	GetProject(ctx context.Context, id int64) (*github.Project, *github.Response, error)
+	/*
+	   GetProjectCard gets a card in a column of a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#get-a-project-card
+	*/
+	GetProjectCard(ctx context.Context, cardID int64) (*github.ProjectCard, *github.Response, error)
+	/*
+	   GetProjectColumn gets a column of a GitHub Project for a repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#get-a-project-column
+	*/
+	GetProjectColumn(ctx context.Context, id int64) (*github.ProjectColumn, *github.Response, error)
+	/*
+	   ListProjectCards lists the cards in a column of a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#list-project-cards
+	*/
+	ListProjectCards(ctx context.Context, columnID int64, opts *github.ProjectCardListOptions) ([]*github.ProjectCard, *github.Response, error)
+	/*
+	   ListProjectCollaborators lists the collaborators for an organization project. For a project,
+	   the list of collaborators includes outside collaborators, organization members that are direct
+	   collaborators, organization members with access through team memberships, organization members
+	   with access through default organization permissions, and organization owners. You must be an
+	   organization owner or a project admin to list collaborators.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#list-project-collaborators
+	*/
+	ListProjectCollaborators(ctx context.Context, id int64, opts *github.ListCollaboratorOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListProjectColumns lists the columns of a GitHub Project for a repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#list-project-columns
+	*/
+	ListProjectColumns(ctx context.Context, projectID int64, opts *github.ListOptions) ([]*github.ProjectColumn, *github.Response, error)
+	/*
+	   MoveProjectCard moves a card within a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#move-a-project-card
+	*/
+	MoveProjectCard(ctx context.Context, cardID int64, opts *github.ProjectCardMoveOptions) (*github.Response, error)
+	/*
+	   MoveProjectColumn moves a column within a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#move-a-project-column
+	*/
+	MoveProjectColumn(ctx context.Context, columnID int64, opts *github.ProjectColumnMoveOptions) (*github.Response, error)
+	/*
+	   RemoveProjectCollaborator removes a collaborator from an organization project.
+	   You must be an organization owner or a project admin to remove a collaborator.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#remove-user-as-a-collaborator
+	*/
+	RemoveProjectCollaborator(ctx context.Context, id int64, username string) (*github.Response, error)
+	/*
+	   ReviewProjectCollaboratorPermission returns the collaborator's permission level for an organization
+	   project. Possible values for the permission key: "admin", "write", "read", "none".
+	   You must be an organization owner or a project admin to review a user's permission level.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#get-project-permission-for-a-user
+	*/
+	ReviewProjectCollaboratorPermission(ctx context.Context, id int64, username string) (*github.ProjectPermissionLevel, *github.Response, error)
+	/*
+	   UpdateProject updates a repository project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#update-a-project
+	*/
+	UpdateProject(ctx context.Context, id int64, opts *github.ProjectOptions) (*github.Project, *github.Response, error)
+	/*
+	   UpdateProjectCard updates a card of a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/cards#update-an-existing-project-card
+	*/
+	UpdateProjectCard(ctx context.Context, cardID int64, opts *github.ProjectCardOptions) (*github.ProjectCard, *github.Response, error)
+	/*
+	   UpdateProjectColumn updates a column of a GitHub Project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/columns#update-an-existing-project-column
+	*/
+	UpdateProjectColumn(ctx context.Context, columnID int64, opts *github.ProjectColumnOptions) (*github.ProjectColumn, *github.Response, error)
 }
 
+/*
+PullRequestsService handles communication with the pull request related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/pulls/
+*/
 type PullRequestsService interface {
-	Create(context.Context, string, string, *github.NewPullRequest) (*github.PullRequest, *github.Response, error)
-	CreateComment(context.Context, string, string, int, *github.PullRequestComment) (*github.PullRequestComment, *github.Response, error)
-	CreateCommentInReplyTo(context.Context, string, string, int, string, int64) (*github.PullRequestComment, *github.Response, error)
-	CreateReview(context.Context, string, string, int, *github.PullRequestReviewRequest) (*github.PullRequestReview, *github.Response, error)
-	DeleteComment(context.Context, string, string, int64) (*github.Response, error)
-	DeletePendingReview(context.Context, string, string, int, int64) (*github.PullRequestReview, *github.Response, error)
-	DismissReview(context.Context, string, string, int, int64, *github.PullRequestReviewDismissalRequest) (*github.PullRequestReview, *github.Response, error)
-	Edit(context.Context, string, string, int, *github.PullRequest) (*github.PullRequest, *github.Response, error)
-	EditComment(context.Context, string, string, int64, *github.PullRequestComment) (*github.PullRequestComment, *github.Response, error)
-	Get(context.Context, string, string, int) (*github.PullRequest, *github.Response, error)
-	GetComment(context.Context, string, string, int64) (*github.PullRequestComment, *github.Response, error)
-	GetRaw(context.Context, string, string, int, github.RawOptions) (string, *github.Response, error)
-	GetReview(context.Context, string, string, int, int64) (*github.PullRequestReview, *github.Response, error)
-	IsMerged(context.Context, string, string, int) (bool, *github.Response, error)
-	List(context.Context, string, string, *github.PullRequestListOptions) ([]*github.PullRequest, *github.Response, error)
-	ListComments(context.Context, string, string, int, *github.PullRequestListCommentsOptions) ([]*github.PullRequestComment, *github.Response, error)
-	ListCommits(context.Context, string, string, int, *github.ListOptions) ([]*github.RepositoryCommit, *github.Response, error)
-	ListFiles(context.Context, string, string, int, *github.ListOptions) ([]*github.CommitFile, *github.Response, error)
-	ListPullRequestsWithCommit(context.Context, string, string, string, *github.PullRequestListOptions) ([]*github.PullRequest, *github.Response, error)
-	ListReviewComments(context.Context, string, string, int, int64, *github.ListOptions) ([]*github.PullRequestComment, *github.Response, error)
-	ListReviewers(context.Context, string, string, int, *github.ListOptions) (*github.Reviewers, *github.Response, error)
-	ListReviews(context.Context, string, string, int, *github.ListOptions) ([]*github.PullRequestReview, *github.Response, error)
-	Merge(context.Context, string, string, int, string, *github.PullRequestOptions) (*github.PullRequestMergeResult, *github.Response, error)
-	RemoveReviewers(context.Context, string, string, int, github.ReviewersRequest) (*github.Response, error)
-	RequestReviewers(context.Context, string, string, int, github.ReviewersRequest) (*github.PullRequest, *github.Response, error)
-	SubmitReview(context.Context, string, string, int, int64, *github.PullRequestReviewRequest) (*github.PullRequestReview, *github.Response, error)
-	UpdateBranch(context.Context, string, string, int, *github.PullRequestBranchUpdateOptions) (*github.PullRequestBranchUpdateResponse, *github.Response, error)
-	UpdateReview(context.Context, string, string, int, int64, string) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   Create a new pull request on the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#create-a-pull-request
+	*/
+	Create(ctx context.Context, owner string, repo string, pull *github.NewPullRequest) (*github.PullRequest, *github.Response, error)
+	/*
+	   CreateComment creates a new comment on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#create-a-review-comment-for-a-pull-request
+	*/
+	CreateComment(ctx context.Context, owner string, repo string, number int, comment *github.PullRequestComment) (*github.PullRequestComment, *github.Response, error)
+	/*
+	   CreateCommentInReplyTo creates a new comment as a reply to an existing pull request comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#create-a-review-comment-for-a-pull-request
+	*/
+	CreateCommentInReplyTo(ctx context.Context, owner string, repo string, number int, body string, commentID int64) (*github.PullRequestComment, *github.Response, error)
+	/*
+	   CreateReview creates a new review on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#create-a-review-for-a-pull-request
+
+	   In order to use multi-line comments, you must use the "comfort fade" preview.
+	   This replaces the use of the "Position" field in comments with 4 new fields:
+
+	   	[Start]Side, and [Start]Line.
+
+	   These new fields must be used for ALL comments (including single-line),
+	   with the following restrictions (empirically observed, so subject to change).
+
+	   For single-line "comfort fade" comments, you must use:
+
+	   	Path:  &path,  // as before
+	   	Body:  &body,  // as before
+	   	Side:  &"RIGHT" (or "LEFT")
+	   	Line:  &123,  // NOT THE SAME AS POSITION, this is an actual line number.
+
+	   If StartSide or StartLine is used with single-line comments, a 422 is returned.
+
+	   For multi-line "comfort fade" comments, you must use:
+
+	   	Path:      &path,  // as before
+	   	Body:      &body,  // as before
+	   	StartSide: &"RIGHT" (or "LEFT")
+	   	Side:      &"RIGHT" (or "LEFT")
+	   	StartLine: &120,
+	   	Line:      &125,
+
+	   Suggested edits are made by commenting on the lines to replace, and including the
+	   suggested edit in a block like this (it may be surrounded in non-suggestion markdown):
+
+	   	```suggestion
+	   	Use this instead.
+	   	It is waaaaaay better.
+	   	```
+	*/
+	CreateReview(ctx context.Context, owner string, repo string, number int, review *github.PullRequestReviewRequest) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   DeleteComment deletes a pull request comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#delete-a-review-comment-for-a-pull-request
+	*/
+	DeleteComment(ctx context.Context, owner string, repo string, commentID int64) (*github.Response, error)
+	/*
+	   DeletePendingReview deletes the specified pull request pending review.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#delete-a-pending-review-for-a-pull-request
+	*/
+	DeletePendingReview(ctx context.Context, owner string, repo string, number int, reviewID int64) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   DismissReview dismisses a specified review on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#dismiss-a-review-for-a-pull-request
+	*/
+	DismissReview(ctx context.Context, owner string, repo string, number int, reviewID int64, review *github.PullRequestReviewDismissalRequest) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   Edit a pull request.
+	   pull must not be nil.
+
+	   The following fields are editable: Title, Body, State, Base.Ref and MaintainerCanModify.
+	   Base.Ref updates the base branch of the pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#update-a-pull-request
+	*/
+	Edit(ctx context.Context, owner string, repo string, number int, pull *github.PullRequest) (*github.PullRequest, *github.Response, error)
+	/*
+	   EditComment updates a pull request comment.
+	   A non-nil comment.Body must be provided. Other comment fields should be left nil.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#update-a-review-comment-for-a-pull-request
+	*/
+	EditComment(ctx context.Context, owner string, repo string, commentID int64, comment *github.PullRequestComment) (*github.PullRequestComment, *github.Response, error)
+	/*
+	   Get a single pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#get-a-pull-request
+	*/
+	Get(ctx context.Context, owner string, repo string, number int) (*github.PullRequest, *github.Response, error)
+	/*
+	   GetComment fetches the specified pull request comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#get-a-review-comment-for-a-pull-request
+	*/
+	GetComment(ctx context.Context, owner string, repo string, commentID int64) (*github.PullRequestComment, *github.Response, error)
+	/*
+	   GetRaw gets a single pull request in raw (diff or patch) format.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#get-a-pull-request
+	*/
+	GetRaw(ctx context.Context, owner string, repo string, number int, opts github.RawOptions) (string, *github.Response, error)
+	/*
+	   GetReview fetches the specified pull request review.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#get-a-review-for-a-pull-request
+	*/
+	GetReview(ctx context.Context, owner string, repo string, number int, reviewID int64) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   IsMerged checks if a pull request has been merged.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#check-if-a-pull-request-has-been-merged
+	*/
+	IsMerged(ctx context.Context, owner string, repo string, number int) (bool, *github.Response, error)
+	/*
+	   List the pull requests for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests
+	*/
+	List(ctx context.Context, owner string, repo string, opts *github.PullRequestListOptions) ([]*github.PullRequest, *github.Response, error)
+	/*
+	   ListComments lists all comments on the specified pull request. Specifying a
+	   pull request number of 0 will return all comments on all pull requests for
+	   the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#list-review-comments-on-a-pull-request
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/comments#list-review-comments-in-a-repository
+	*/
+	ListComments(ctx context.Context, owner string, repo string, number int, opts *github.PullRequestListCommentsOptions) ([]*github.PullRequestComment, *github.Response, error)
+	/*
+	   ListCommits lists the commits in a pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request
+	*/
+	ListCommits(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.RepositoryCommit, *github.Response, error)
+	/*
+	   ListFiles lists the files in a pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files
+	*/
+	ListFiles(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.CommitFile, *github.Response, error)
+	/*
+	   ListPullRequestsWithCommit returns pull requests associated with a commit SHA.
+
+	   The results may include open and closed pull requests.
+	   By default, the PullRequestListOptions State filters for "open".
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-pull-requests-associated-with-a-commit
+	*/
+	ListPullRequestsWithCommit(ctx context.Context, owner string, repo string, sha string, opts *github.PullRequestListOptions) ([]*github.PullRequest, *github.Response, error)
+	/*
+	   ListReviewComments lists all the comments for the specified review.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-comments-for-a-pull-request-review
+	*/
+	ListReviewComments(ctx context.Context, owner string, repo string, number int, reviewID int64, opts *github.ListOptions) ([]*github.PullRequestComment, *github.Response, error)
+	/*
+	   ListReviewers lists reviewers whose reviews have been requested on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#list-requested-reviewers-for-a-pull-request
+	*/
+	ListReviewers(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) (*github.Reviewers, *github.Response, error)
+	/*
+	   ListReviews lists all reviews on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-reviews-for-a-pull-request
+	*/
+	ListReviews(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.PullRequestReview, *github.Response, error)
+	/*
+	   Merge a pull request.
+	   commitMessage is an extra detail to append to automatic commit message.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#merge-a-pull-request
+	*/
+	Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *github.PullRequestOptions) (*github.PullRequestMergeResult, *github.Response, error)
+	/*
+	   RemoveReviewers removes the review request for the provided reviewers for the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
+	*/
+	RemoveReviewers(ctx context.Context, owner string, repo string, number int, reviewers github.ReviewersRequest) (*github.Response, error)
+	/*
+	   RequestReviewers creates a review request for the provided reviewers for the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#request-reviewers-for-a-pull-request
+	*/
+	RequestReviewers(ctx context.Context, owner string, repo string, number int, reviewers github.ReviewersRequest) (*github.PullRequest, *github.Response, error)
+	/*
+	   SubmitReview submits a specified review on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#submit-a-review-for-a-pull-request
+	*/
+	SubmitReview(ctx context.Context, owner string, repo string, number int, reviewID int64, review *github.PullRequestReviewRequest) (*github.PullRequestReview, *github.Response, error)
+	/*
+	   UpdateBranch updates the pull request branch with latest upstream changes.
+
+	   This method might return an AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it has now scheduled the update of the pull request branch in a background task.
+	   A follow up request, after a delay of a second or so, should result
+	   in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#update-a-pull-request-branch
+	*/
+	UpdateBranch(ctx context.Context, owner string, repo string, number int, opts *github.PullRequestBranchUpdateOptions) (*github.PullRequestBranchUpdateResponse, *github.Response, error)
+	/*
+	   UpdateReview updates the review summary on the specified pull request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#update-a-review-for-a-pull-request
+	*/
+	UpdateReview(ctx context.Context, owner string, repo string, number int, reviewID int64, body string) (*github.PullRequestReview, *github.Response, error)
 }
 
+/*
+ReactionsService provides access to the reactions-related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/reactions
+*/
 type ReactionsService interface {
-	CreateCommentReaction(context.Context, string, string, int64, string) (*github.Reaction, *github.Response, error)
-	CreateIssueCommentReaction(context.Context, string, string, int64, string) (*github.Reaction, *github.Response, error)
-	CreateIssueReaction(context.Context, string, string, int, string) (*github.Reaction, *github.Response, error)
-	CreatePullRequestCommentReaction(context.Context, string, string, int64, string) (*github.Reaction, *github.Response, error)
-	CreateReleaseReaction(context.Context, string, string, int64, string) (*github.Reaction, *github.Response, error)
-	CreateTeamDiscussionCommentReaction(context.Context, int64, int, int, string) (*github.Reaction, *github.Response, error)
-	CreateTeamDiscussionReaction(context.Context, int64, int, string) (*github.Reaction, *github.Response, error)
-	DeleteCommentReaction(context.Context, string, string, int64, int64) (*github.Response, error)
-	DeleteCommentReactionByID(context.Context, int64, int64, int64) (*github.Response, error)
-	DeleteIssueCommentReaction(context.Context, string, string, int64, int64) (*github.Response, error)
-	DeleteIssueCommentReactionByID(context.Context, int64, int64, int64) (*github.Response, error)
-	DeleteIssueReaction(context.Context, string, string, int, int64) (*github.Response, error)
-	DeleteIssueReactionByID(context.Context, int, int, int64) (*github.Response, error)
-	DeletePullRequestCommentReaction(context.Context, string, string, int64, int64) (*github.Response, error)
-	DeletePullRequestCommentReactionByID(context.Context, int64, int64, int64) (*github.Response, error)
-	DeleteTeamDiscussionCommentReaction(context.Context, string, string, int, int, int64) (*github.Response, error)
-	DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(context.Context, int, int, int, int, int64) (*github.Response, error)
-	DeleteTeamDiscussionReaction(context.Context, string, string, int, int64) (*github.Response, error)
-	DeleteTeamDiscussionReactionByOrgIDAndTeamID(context.Context, int, int, int, int64) (*github.Response, error)
-	ListCommentReactions(context.Context, string, string, int64, *github.ListCommentReactionOptions) ([]*github.Reaction, *github.Response, error)
-	ListIssueCommentReactions(context.Context, string, string, int64, *github.ListOptions) ([]*github.Reaction, *github.Response, error)
-	ListIssueReactions(context.Context, string, string, int, *github.ListOptions) ([]*github.Reaction, *github.Response, error)
-	ListPullRequestCommentReactions(context.Context, string, string, int64, *github.ListOptions) ([]*github.Reaction, *github.Response, error)
-	ListTeamDiscussionCommentReactions(context.Context, int64, int, int, *github.ListOptions) ([]*github.Reaction, *github.Response, error)
-	ListTeamDiscussionReactions(context.Context, int64, int, *github.ListOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   CreateCommentReaction creates a reaction for a commit comment.
+	   Note that if you have already created a reaction of type content, the
+	   previously created reaction will be returned with Status: 200 OK.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-commit-comment
+	*/
+	CreateCommentReaction(ctx context.Context, owner string, repo string, id int64, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   CreateIssueCommentReaction creates a reaction for an issue comment.
+	   Note that if you have already created a reaction of type content, the
+	   previously created reaction will be returned with Status: 200 OK.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue-comment
+	*/
+	CreateIssueCommentReaction(ctx context.Context, owner string, repo string, id int64, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   CreateIssueReaction creates a reaction for an issue.
+	   Note that if you have already created a reaction of type content, the
+	   previously created reaction will be returned with Status: 200 OK.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue
+	*/
+	CreateIssueReaction(ctx context.Context, owner string, repo string, number int, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   CreatePullRequestCommentReaction creates a reaction for a pull request review comment.
+	   Note that if you have already created a reaction of type content, the
+	   previously created reaction will be returned with Status: 200 OK.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-pull-request-review-comment
+	*/
+	CreatePullRequestCommentReaction(ctx context.Context, owner string, repo string, id int64, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   Create a reaction to a release.
+	   Note that a response with a Status: 200 OK means that you already
+	   added the reaction type to this release.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-release
+	*/
+	CreateReleaseReaction(ctx context.Context, owner string, repo string, releaseID int64, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-comment-legacy
+	*/
+	CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber int, commentNumber int, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   CreateTeamDiscussionReaction creates a reaction for a team discussion.
+	   The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-legacy
+	*/
+	CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*github.Reaction, *github.Response, error)
+	/*
+	   DeleteCommentReaction deletes the reaction for a commit comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-commit-comment-reaction
+	*/
+	DeleteCommentReaction(ctx context.Context, owner string, repo string, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-commit-comment-reaction
+	*/
+	DeleteCommentReactionByID(ctx context.Context, repoID int64, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteIssueCommentReaction deletes the reaction to an issue comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-comment-reaction
+	*/
+	DeleteIssueCommentReaction(ctx context.Context, owner string, repo string, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-comment-reaction
+	*/
+	DeleteIssueCommentReactionByID(ctx context.Context, repoID int64, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteIssueReaction deletes the reaction to an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-reaction
+	*/
+	DeleteIssueReaction(ctx context.Context, owner string, repo string, issueNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-reaction
+	*/
+	DeleteIssueReactionByID(ctx context.Context, repoID int, issueNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-pull-request-comment-reaction
+	*/
+	DeletePullRequestCommentReaction(ctx context.Context, owner string, repo string, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-pull-request-comment-reaction
+	*/
+	DeletePullRequestCommentReactionByID(ctx context.Context, repoID int64, commentID int64, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-team-discussion-comment-reaction
+	*/
+	DeleteTeamDiscussionCommentReaction(ctx context.Context, org string, teamSlug string, discussionNumber int, commentNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-comment
+	*/
+	DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID int, teamID int, discussionNumber int, commentNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#delete-team-discussion-reaction
+	*/
+	DeleteTeamDiscussionReaction(ctx context.Context, org string, teamSlug string, discussionNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion
+	*/
+	DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID int, teamID int, discussionNumber int, reactionID int64) (*github.Response, error)
+	/*
+	   ListCommentReactions lists the reactions for a commit comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-commit-comment
+	*/
+	ListCommentReactions(ctx context.Context, owner string, repo string, id int64, opts *github.ListCommentReactionOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   ListIssueCommentReactions lists the reactions for an issue comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-an-issue-comment
+	*/
+	ListIssueCommentReactions(ctx context.Context, owner string, repo string, id int64, opts *github.ListOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   ListIssueReactions lists the reactions for an issue.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-an-issue
+	*/
+	ListIssueReactions(ctx context.Context, owner string, repo string, number int, opts *github.ListOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   ListPullRequestCommentReactions lists the reactions for a pull request review comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-pull-request-review-comment
+	*/
+	ListPullRequestCommentReactions(ctx context.Context, owner string, repo string, id int64, opts *github.ListOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-team-discussion-comment-legacy
+	*/
+	ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber int, commentNumber int, opts *github.ListOptions) ([]*github.Reaction, *github.Response, error)
+	/*
+	   ListTeamDiscussionReactions lists the reactions for a team discussion.
+
+	   GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-team-discussion-legacy
+	*/
+	ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *github.ListOptions) ([]*github.Reaction, *github.Response, error)
 }
 
+/*
+RepositoriesService handles communication with the repository related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/repos/
+*/
 type RepositoriesService interface {
-	AddAdminEnforcement(context.Context, string, string, string) (*github.AdminEnforcement, *github.Response, error)
-	AddAppRestrictions(context.Context, string, string, string, []string) ([]*github.App, *github.Response, error)
-	AddAutolink(context.Context, string, string, *github.AutolinkOptions) (*github.Autolink, *github.Response, error)
-	AddCollaborator(context.Context, string, string, string, *github.RepositoryAddCollaboratorOptions) (*github.CollaboratorInvitation, *github.Response, error)
-	CompareCommits(context.Context, string, string, string, string, *github.ListOptions) (*github.CommitsComparison, *github.Response, error)
-	CompareCommitsRaw(context.Context, string, string, string, string, github.RawOptions) (string, *github.Response, error)
-	Create(context.Context, string, *github.Repository) (*github.Repository, *github.Response, error)
-	CreateComment(context.Context, string, string, string, *github.RepositoryComment) (*github.RepositoryComment, *github.Response, error)
-	CreateDeployment(context.Context, string, string, *github.DeploymentRequest) (*github.Deployment, *github.Response, error)
-	CreateDeploymentStatus(context.Context, string, string, int64, *github.DeploymentStatusRequest) (*github.DeploymentStatus, *github.Response, error)
-	CreateFile(context.Context, string, string, string, *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
-	CreateFork(context.Context, string, string, *github.RepositoryCreateForkOptions) (*github.Repository, *github.Response, error)
-	CreateFromTemplate(context.Context, string, string, *github.TemplateRepoRequest) (*github.Repository, *github.Response, error)
-	CreateHook(context.Context, string, string, *github.Hook) (*github.Hook, *github.Response, error)
-	CreateKey(context.Context, string, string, *github.Key) (*github.Key, *github.Response, error)
-	CreateProject(context.Context, string, string, *github.ProjectOptions) (*github.Project, *github.Response, error)
-	CreateRelease(context.Context, string, string, *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error)
-	CreateStatus(context.Context, string, string, string, *github.RepoStatus) (*github.RepoStatus, *github.Response, error)
-	CreateTagProtection(context.Context, string, string, string) (*github.TagProtection, *github.Response, error)
-	CreateUpdateEnvironment(context.Context, string, string, string, *github.CreateUpdateEnvironment) (*github.Environment, *github.Response, error)
-	Delete(context.Context, string, string) (*github.Response, error)
-	DeleteAutolink(context.Context, string, string, int64) (*github.Response, error)
-	DeleteComment(context.Context, string, string, int64) (*github.Response, error)
-	DeleteDeployment(context.Context, string, string, int64) (*github.Response, error)
-	DeleteEnvironment(context.Context, string, string, string) (*github.Response, error)
-	DeleteFile(context.Context, string, string, string, *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
-	DeleteHook(context.Context, string, string, int64) (*github.Response, error)
-	DeleteInvitation(context.Context, string, string, int64) (*github.Response, error)
-	DeleteKey(context.Context, string, string, int64) (*github.Response, error)
-	DeletePreReceiveHook(context.Context, string, string, int64) (*github.Response, error)
-	DeleteRelease(context.Context, string, string, int64) (*github.Response, error)
-	DeleteReleaseAsset(context.Context, string, string, int64) (*github.Response, error)
-	DeleteTagProtection(context.Context, string, string, int64) (*github.Response, error)
-	DisableAutomatedSecurityFixes(context.Context, string, string) (*github.Response, error)
-	DisableDismissalRestrictions(context.Context, string, string, string) (*github.PullRequestReviewsEnforcement, *github.Response, error)
-	DisableLFS(context.Context, string, string) (*github.Response, error)
-	DisablePages(context.Context, string, string) (*github.Response, error)
-	DisableVulnerabilityAlerts(context.Context, string, string) (*github.Response, error)
-	Dispatch(context.Context, string, string, github.DispatchRequestOptions) (*github.Repository, *github.Response, error)
-	DownloadContents(context.Context, string, string, string, *github.RepositoryContentGetOptions) (io.ReadCloser, *github.Response, error)
-	DownloadContentsWithMeta(context.Context, string, string, string, *github.RepositoryContentGetOptions) (io.ReadCloser, *github.RepositoryContent, *github.Response, error)
-	DownloadReleaseAsset(context.Context, string, string, int64, *http.Client) (io.ReadCloser, string, error)
-	Edit(context.Context, string, string, *github.Repository) (*github.Repository, *github.Response, error)
-	EditActionsAllowed(context.Context, string, string, github.ActionsAllowed) (*github.ActionsAllowed, *github.Response, error)
-	EditActionsPermissions(context.Context, string, string, github.ActionsPermissionsRepository) (*github.ActionsPermissionsRepository, *github.Response, error)
-	EditHook(context.Context, string, string, int64, *github.Hook) (*github.Hook, *github.Response, error)
-	EditRelease(context.Context, string, string, int64, *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error)
-	EditReleaseAsset(context.Context, string, string, int64, *github.ReleaseAsset) (*github.ReleaseAsset, *github.Response, error)
-	EnableAutomatedSecurityFixes(context.Context, string, string) (*github.Response, error)
-	EnableLFS(context.Context, string, string) (*github.Response, error)
-	EnablePages(context.Context, string, string, *github.Pages) (*github.Pages, *github.Response, error)
-	EnableVulnerabilityAlerts(context.Context, string, string) (*github.Response, error)
-	GenerateReleaseNotes(context.Context, string, string, *github.GenerateNotesOptions) (*github.RepositoryReleaseNotes, *github.Response, error)
-	Get(context.Context, string, string) (*github.Repository, *github.Response, error)
-	GetActionsAllowed(context.Context, string, string) (*github.ActionsAllowed, *github.Response, error)
-	GetActionsPermissions(context.Context, string, string) (*github.ActionsPermissionsRepository, *github.Response, error)
-	GetAdminEnforcement(context.Context, string, string, string) (*github.AdminEnforcement, *github.Response, error)
-	GetArchiveLink(context.Context, string, string, github.ArchiveFormat, *github.RepositoryContentGetOptions, bool) (*url.URL, *github.Response, error)
-	GetAutolink(context.Context, string, string, int64) (*github.Autolink, *github.Response, error)
-	GetBranch(context.Context, string, string, string, bool) (*github.Branch, *github.Response, error)
-	GetBranchProtection(context.Context, string, string, string) (*github.Protection, *github.Response, error)
-	GetByID(context.Context, int64) (*github.Repository, *github.Response, error)
-	GetCodeOfConduct(context.Context, string, string) (*github.CodeOfConduct, *github.Response, error)
-	GetCodeownersErrors(context.Context, string, string) (*github.CodeownersErrors, *github.Response, error)
-	GetCombinedStatus(context.Context, string, string, string, *github.ListOptions) (*github.CombinedStatus, *github.Response, error)
-	GetComment(context.Context, string, string, int64) (*github.RepositoryComment, *github.Response, error)
-	GetCommit(context.Context, string, string, string, *github.ListOptions) (*github.RepositoryCommit, *github.Response, error)
-	GetCommitRaw(context.Context, string, string, string, github.RawOptions) (string, *github.Response, error)
-	GetCommitSHA1(context.Context, string, string, string, string) (string, *github.Response, error)
-	GetCommunityHealthMetrics(context.Context, string, string) (*github.CommunityHealthMetrics, *github.Response, error)
-	GetContents(context.Context, string, string, string, *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error)
-	GetDeployment(context.Context, string, string, int64) (*github.Deployment, *github.Response, error)
-	GetDeploymentStatus(context.Context, string, string, int64, int64) (*github.DeploymentStatus, *github.Response, error)
-	GetEnvironment(context.Context, string, string, string) (*github.Environment, *github.Response, error)
-	GetHook(context.Context, string, string, int64) (*github.Hook, *github.Response, error)
-	GetHookDelivery(context.Context, string, string, int64, int64) (*github.HookDelivery, *github.Response, error)
-	GetKey(context.Context, string, string, int64) (*github.Key, *github.Response, error)
-	GetLatestPagesBuild(context.Context, string, string) (*github.PagesBuild, *github.Response, error)
-	GetLatestRelease(context.Context, string, string) (*github.RepositoryRelease, *github.Response, error)
-	GetPageBuild(context.Context, string, string, int64) (*github.PagesBuild, *github.Response, error)
-	GetPagesInfo(context.Context, string, string) (*github.Pages, *github.Response, error)
-	GetPermissionLevel(context.Context, string, string, string) (*github.RepositoryPermissionLevel, *github.Response, error)
-	GetPreReceiveHook(context.Context, string, string, int64) (*github.PreReceiveHook, *github.Response, error)
-	GetPullRequestReviewEnforcement(context.Context, string, string, string) (*github.PullRequestReviewsEnforcement, *github.Response, error)
-	GetReadme(context.Context, string, string, *github.RepositoryContentGetOptions) (*github.RepositoryContent, *github.Response, error)
-	GetRelease(context.Context, string, string, int64) (*github.RepositoryRelease, *github.Response, error)
-	GetReleaseAsset(context.Context, string, string, int64) (*github.ReleaseAsset, *github.Response, error)
-	GetReleaseByTag(context.Context, string, string, string) (*github.RepositoryRelease, *github.Response, error)
-	GetRequiredStatusChecks(context.Context, string, string, string) (*github.RequiredStatusChecks, *github.Response, error)
-	GetSignaturesProtectedBranch(context.Context, string, string, string) (*github.SignaturesProtectedBranch, *github.Response, error)
-	GetVulnerabilityAlerts(context.Context, string, string) (bool, *github.Response, error)
-	IsCollaborator(context.Context, string, string, string) (bool, *github.Response, error)
-	License(context.Context, string, string) (*github.RepositoryLicense, *github.Response, error)
-	List(context.Context, string, *github.RepositoryListOptions) ([]*github.Repository, *github.Response, error)
-	ListAll(context.Context, *github.RepositoryListAllOptions) ([]*github.Repository, *github.Response, error)
-	ListAllTopics(context.Context, string, string) ([]string, *github.Response, error)
-	ListApps(context.Context, string, string, string) ([]*github.App, *github.Response, error)
-	ListAutolinks(context.Context, string, string, *github.ListOptions) ([]*github.Autolink, *github.Response, error)
-	ListBranches(context.Context, string, string, *github.BranchListOptions) ([]*github.Branch, *github.Response, error)
-	ListBranchesHeadCommit(context.Context, string, string, string) ([]*github.BranchCommit, *github.Response, error)
-	ListByOrg(context.Context, string, *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
-	ListCodeFrequency(context.Context, string, string) ([]*github.WeeklyStats, *github.Response, error)
-	ListCollaborators(context.Context, string, string, *github.ListCollaboratorsOptions) ([]*github.User, *github.Response, error)
-	ListComments(context.Context, string, string, *github.ListOptions) ([]*github.RepositoryComment, *github.Response, error)
-	ListCommitActivity(context.Context, string, string) ([]*github.WeeklyCommitActivity, *github.Response, error)
-	ListCommitComments(context.Context, string, string, string, *github.ListOptions) ([]*github.RepositoryComment, *github.Response, error)
-	ListCommits(context.Context, string, string, *github.CommitsListOptions) ([]*github.RepositoryCommit, *github.Response, error)
-	ListContributors(context.Context, string, string, *github.ListContributorsOptions) ([]*github.Contributor, *github.Response, error)
-	ListContributorsStats(context.Context, string, string) ([]*github.ContributorStats, *github.Response, error)
-	ListDeploymentStatuses(context.Context, string, string, int64, *github.ListOptions) ([]*github.DeploymentStatus, *github.Response, error)
-	ListDeployments(context.Context, string, string, *github.DeploymentsListOptions) ([]*github.Deployment, *github.Response, error)
-	ListEnvironments(context.Context, string, string, *github.EnvironmentListOptions) (*github.EnvResponse, *github.Response, error)
-	ListForks(context.Context, string, string, *github.RepositoryListForksOptions) ([]*github.Repository, *github.Response, error)
-	ListHookDeliveries(context.Context, string, string, int64, *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
-	ListHooks(context.Context, string, string, *github.ListOptions) ([]*github.Hook, *github.Response, error)
-	ListInvitations(context.Context, string, string, *github.ListOptions) ([]*github.RepositoryInvitation, *github.Response, error)
-	ListKeys(context.Context, string, string, *github.ListOptions) ([]*github.Key, *github.Response, error)
-	ListLanguages(context.Context, string, string) (map[string]int, *github.Response, error)
-	ListPagesBuilds(context.Context, string, string, *github.ListOptions) ([]*github.PagesBuild, *github.Response, error)
-	ListParticipation(context.Context, string, string) (*github.RepositoryParticipation, *github.Response, error)
-	ListPreReceiveHooks(context.Context, string, string, *github.ListOptions) ([]*github.PreReceiveHook, *github.Response, error)
-	ListProjects(context.Context, string, string, *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
-	ListPunchCard(context.Context, string, string) ([]*github.PunchCard, *github.Response, error)
-	ListReleaseAssets(context.Context, string, string, int64, *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
-	ListReleases(context.Context, string, string, *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
-	ListRequiredStatusChecksContexts(context.Context, string, string, string) ([]string, *github.Response, error)
-	ListStatuses(context.Context, string, string, string, *github.ListOptions) ([]*github.RepoStatus, *github.Response, error)
-	ListTagProtection(context.Context, string, string) ([]*github.TagProtection, *github.Response, error)
-	ListTags(context.Context, string, string, *github.ListOptions) ([]*github.RepositoryTag, *github.Response, error)
-	ListTeams(context.Context, string, string, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	ListTrafficClones(context.Context, string, string, *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error)
-	ListTrafficPaths(context.Context, string, string) ([]*github.TrafficPath, *github.Response, error)
-	ListTrafficReferrers(context.Context, string, string) ([]*github.TrafficReferrer, *github.Response, error)
-	ListTrafficViews(context.Context, string, string, *github.TrafficBreakdownOptions) (*github.TrafficViews, *github.Response, error)
-	Merge(context.Context, string, string, *github.RepositoryMergeRequest) (*github.RepositoryCommit, *github.Response, error)
-	MergeUpstream(context.Context, string, string, *github.RepoMergeUpstreamRequest) (*github.RepoMergeUpstreamResult, *github.Response, error)
-	OptionalSignaturesOnProtectedBranch(context.Context, string, string, string) (*github.Response, error)
-	PingHook(context.Context, string, string, int64) (*github.Response, error)
-	RedeliverHookDelivery(context.Context, string, string, int64, int64) (*github.HookDelivery, *github.Response, error)
-	RemoveAdminEnforcement(context.Context, string, string, string) (*github.Response, error)
-	RemoveAppRestrictions(context.Context, string, string, string, []string) ([]*github.App, *github.Response, error)
-	RemoveBranchProtection(context.Context, string, string, string) (*github.Response, error)
-	RemoveCollaborator(context.Context, string, string, string) (*github.Response, error)
-	RemovePullRequestReviewEnforcement(context.Context, string, string, string) (*github.Response, error)
-	RemoveRequiredStatusChecks(context.Context, string, string, string) (*github.Response, error)
-	RenameBranch(context.Context, string, string, string, string) (*github.Branch, *github.Response, error)
-	ReplaceAllTopics(context.Context, string, string, []string) ([]string, *github.Response, error)
-	ReplaceAppRestrictions(context.Context, string, string, string, []string) ([]*github.App, *github.Response, error)
-	RequestPageBuild(context.Context, string, string) (*github.PagesBuild, *github.Response, error)
-	RequireSignaturesOnProtectedBranch(context.Context, string, string, string) (*github.SignaturesProtectedBranch, *github.Response, error)
-	Subscribe(context.Context, string, string, string, string, []uint8) (*github.Response, error)
-	TestHook(context.Context, string, string, int64) (*github.Response, error)
-	Transfer(context.Context, string, string, github.TransferRequest) (*github.Repository, *github.Response, error)
-	Unsubscribe(context.Context, string, string, string, string, []uint8) (*github.Response, error)
-	UpdateBranchProtection(context.Context, string, string, string, *github.ProtectionRequest) (*github.Protection, *github.Response, error)
-	UpdateComment(context.Context, string, string, int64, *github.RepositoryComment) (*github.RepositoryComment, *github.Response, error)
-	UpdateFile(context.Context, string, string, string, *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
-	UpdateInvitation(context.Context, string, string, int64, string) (*github.RepositoryInvitation, *github.Response, error)
-	UpdatePages(context.Context, string, string, *github.PagesUpdate) (*github.Response, error)
-	UpdatePreReceiveHook(context.Context, string, string, int64, *github.PreReceiveHook) (*github.PreReceiveHook, *github.Response, error)
-	UpdatePullRequestReviewEnforcement(context.Context, string, string, string, *github.PullRequestReviewsEnforcementUpdate) (*github.PullRequestReviewsEnforcement, *github.Response, error)
-	UpdateRequiredStatusChecks(context.Context, string, string, string, *github.RequiredStatusChecksRequest) (*github.RequiredStatusChecks, *github.Response, error)
-	UploadReleaseAsset(context.Context, string, string, int64, *github.UploadOptions, *os.File) (*github.ReleaseAsset, *github.Response, error)
+	/*
+	   AddAdminEnforcement adds admin enforcement to a protected branch.
+	   It requires admin access and branch protection to be enabled.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-admin-branch-protection
+	*/
+	AddAdminEnforcement(ctx context.Context, owner string, repo string, branch string) (*github.AdminEnforcement, *github.Response, error)
+	/*
+	   AddAppRestrictions grants the specified apps push access to a given protected branch.
+	   It requires the GitHub apps to have `write` access to the `content` permission.
+
+	   Note: The list of users, apps, and teams in total is limited to 100 items.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-app-access-restrictions
+	*/
+	AddAppRestrictions(ctx context.Context, owner string, repo string, branch string, slug []string) ([]*github.App, *github.Response, error)
+	/*
+	   AddAutolink creates an autolink reference for a repository.
+	   Users with admin access to the repository can create an autolink.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#create-an-autolink-reference-for-a-repository
+	*/
+	AddAutolink(ctx context.Context, owner string, repo string, opts *github.AutolinkOptions) (*github.Autolink, *github.Response, error)
+	/*
+	   AddCollaborator sends an invitation to the specified GitHub user
+	   to become a collaborator to the given repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#add-a-repository-collaborator
+	*/
+	AddCollaborator(ctx context.Context, owner string, repo string, user string, opts *github.RepositoryAddCollaboratorOptions) (*github.CollaboratorInvitation, *github.Response, error)
+	/*
+	   CompareCommits compares a range of commits with each other.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#compare-two-commits
+	*/
+	CompareCommits(ctx context.Context, owner string, repo string, base string, head string, opts *github.ListOptions) (*github.CommitsComparison, *github.Response, error)
+	/*
+	   CompareCommitsRaw compares a range of commits with each other in raw (diff or patch) format.
+
+	   Both "base" and "head" must be branch names in "repo".
+	   To compare branches across other repositories in the same network as "repo",
+	   use the format "<USERNAME>:branch".
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#compare-two-commits
+	*/
+	CompareCommitsRaw(ctx context.Context, owner string, repo string, base string, head string, opts github.RawOptions) (string, *github.Response, error)
+	/*
+	   Create a new repository. If an organization is specified, the new
+	   repository will be created under that org. If the empty string is
+	   specified, it will be created for the authenticated user.
+
+	   Note that only a subset of the repo fields are used and repo must
+	   not be nil.
+
+	   Also note that this method will return the response without actually
+	   waiting for GitHub to finish creating the repository and letting the
+	   changes propagate throughout its servers. You may set up a loop with
+	   exponential back-off to verify repository's creation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-an-organization-repository
+	*/
+	Create(ctx context.Context, org string, repo *github.Repository) (*github.Repository, *github.Response, error)
+	/*
+	   CreateComment creates a comment for the given commit.
+	   Note: GitHub allows for comments to be created for non-existing files and positions.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#create-a-commit-comment
+	*/
+	CreateComment(ctx context.Context, owner string, repo string, sha string, comment *github.RepositoryComment) (*github.RepositoryComment, *github.Response, error)
+	/*
+	   CreateDeployment creates a new deployment for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#create-a-deployment
+	*/
+	CreateDeployment(ctx context.Context, owner string, repo string, request *github.DeploymentRequest) (*github.Deployment, *github.Response, error)
+	/*
+	   CreateDeploymentStatus creates a new status for a deployment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#create-a-deployment-status
+	*/
+	CreateDeploymentStatus(ctx context.Context, owner string, repo string, deployment int64, request *github.DeploymentStatusRequest) (*github.DeploymentStatus, *github.Response, error)
+	/*
+	   CreateFile creates a new file in a repository at the given path and returns
+	   the commit and file metadata.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents
+	*/
+	CreateFile(ctx context.Context, owner string, repo string, path string, opts *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
+	/*
+	   CreateFork creates a fork of the specified repository.
+
+	   This method might return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing creating the fork in a background task. In this event,
+	   the Repository value will be returned, which includes the details about the pending fork.
+	   A follow up request, after a delay of a second or so, should result
+	   in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/forks#create-a-fork
+	*/
+	CreateFork(ctx context.Context, owner string, repo string, opts *github.RepositoryCreateForkOptions) (*github.Repository, *github.Response, error)
+	/*
+	   CreateFromTemplate generates a repository from a template.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-using-a-template
+	*/
+	CreateFromTemplate(ctx context.Context, templateOwner string, templateRepo string, templateRepoReq *github.TemplateRepoRequest) (*github.Repository, *github.Response, error)
+	/*
+	   CreateHook creates a Hook for the specified repository.
+	   Config is a required field.
+
+	   Note that only a subset of the hook fields are used and hook must
+	   not be nil.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#create-a-repository-webhook
+	*/
+	CreateHook(ctx context.Context, owner string, repo string, hook *github.Hook) (*github.Hook, *github.Response, error)
+	/*
+	   CreateKey adds a deploy key for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deploy-keys#create-a-deploy-key
+	*/
+	CreateKey(ctx context.Context, owner string, repo string, key *github.Key) (*github.Key, *github.Response, error)
+	/*
+	   CreateProject creates a GitHub Project for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-a-repository-project
+	*/
+	CreateProject(ctx context.Context, owner string, repo string, opts *github.ProjectOptions) (*github.Project, *github.Response, error)
+	/*
+	   CreateRelease adds a new release for a repository.
+
+	   Note that only a subset of the release fields are used.
+	   See RepositoryRelease for more information.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#create-a-release
+	*/
+	CreateRelease(ctx context.Context, owner string, repo string, release *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error)
+	/*
+	   CreateStatus creates a new status for a repository at the specified
+	   reference. Ref can be a SHA, a branch name, or a tag name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/statuses#create-a-commit-status
+	*/
+	CreateStatus(ctx context.Context, owner string, repo string, ref string, status *github.RepoStatus) (*github.RepoStatus, *github.Response, error)
+	/*
+	   CreateTagProtection creates the tag protection of the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/tags#create-a-tag-protection-state-for-a-repository
+	*/
+	CreateTagProtection(ctx context.Context, owner string, repo string, pattern string) (*github.TagProtection, *github.Response, error)
+	/*
+	   CreateUpdateEnvironment create or update a new environment for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment
+	*/
+	CreateUpdateEnvironment(ctx context.Context, owner string, repo string, name string, environment *github.CreateUpdateEnvironment) (*github.Environment, *github.Response, error)
+	/*
+	   Delete a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#delete-a-repository
+	*/
+	Delete(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   DeleteAutolink deletes a single autolink reference by ID that was configured for the given repository.
+	   Information about autolinks are only available to repository administrators.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#delete-an-autolink-reference-from-a-repository
+	*/
+	DeleteAutolink(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteComment deletes a single comment from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#delete-a-commit-comment
+	*/
+	DeleteComment(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteDeployment deletes an existing deployment for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#delete-a-deployment
+	*/
+	DeleteDeployment(ctx context.Context, owner string, repo string, deploymentID int64) (*github.Response, error)
+	/*
+	   DeleteEnvironment delete an environment from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/environments#delete-an-environment
+	*/
+	DeleteEnvironment(ctx context.Context, owner string, repo string, name string) (*github.Response, error)
+	/*
+	   DeleteFile deletes a file from a repository and returns the commit.
+	   Requires the blob SHA of the file to be deleted.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents#delete-a-file
+	*/
+	DeleteFile(ctx context.Context, owner string, repo string, path string, opts *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
+	/*
+	   DeleteHook deletes a specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#delete-a-repository-webhook
+	*/
+	DeleteHook(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteInvitation deletes a repository invitation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#delete-a-repository-invitation
+	*/
+	DeleteInvitation(ctx context.Context, owner string, repo string, invitationID int64) (*github.Response, error)
+	/*
+	   DeleteKey deletes a deploy key.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deploy-keys#delete-a-deploy-key
+	*/
+	DeleteKey(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeletePreReceiveHook deletes a specified pre-receive hook.
+
+	   GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#remove-enforcement-overrides-for-a-pre-receive-hook
+	*/
+	DeletePreReceiveHook(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteRelease delete a single release from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#delete-a-release
+	*/
+	DeleteRelease(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteReleaseAsset delete a single release asset from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#delete-a-release-asset
+	*/
+	DeleteReleaseAsset(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   DeleteTagProtection deletes a tag protection from the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/tags#delete-a-tag-protection-state-for-a-repository
+	*/
+	DeleteTagProtection(ctx context.Context, owner string, repo string, tagProtectionID int64) (*github.Response, error)
+	/*
+	   DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-automated-security-fixes
+	*/
+	DisableAutomatedSecurityFixes(ctx context.Context, owner string, repository string) (*github.Response, error)
+	/*
+	   DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
+	   It requires admin access and branch protection to be enabled.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
+	*/
+	DisableDismissalRestrictions(ctx context.Context, owner string, repo string, branch string) (*github.PullRequestReviewsEnforcement, *github.Response, error)
+	/*
+	   DisableLFS turns the LFS (Large File Storage) feature OFF for the selected repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/lfs#disable-git-lfs-for-a-repository
+	*/
+	DisableLFS(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   DisablePages disables GitHub Pages for the named repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#delete-a-github-pages-site
+	*/
+	DisablePages(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-vulnerability-alerts
+	*/
+	DisableVulnerabilityAlerts(ctx context.Context, owner string, repository string) (*github.Response, error)
+	/*
+	   Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-dispatch-event
+	*/
+	Dispatch(ctx context.Context, owner string, repo string, opts github.DispatchRequestOptions) (*github.Repository, *github.Response, error)
+	/*
+	   DownloadContents returns an io.ReadCloser that reads the contents of the
+	   specified file. This function will work with files of any size, as opposed
+	   to GetContents which is limited to 1 Mb files. It is the caller's
+	   responsibility to close the ReadCloser.
+
+	   It is possible for the download to result in a failed response when the
+	   returned error is nil. Callers should check the returned Response status
+	   code to verify the content is from a successful response.
+	*/
+	DownloadContents(ctx context.Context, owner string, repo string, filepath string, opts *github.RepositoryContentGetOptions) (io.ReadCloser, *github.Response, error)
+	/*
+	   DownloadContentsWithMeta is identical to DownloadContents but additionally
+	   returns the RepositoryContent of the requested file. This additional data
+	   is useful for future operations involving the requested file. For merely
+	   reading the content of a file, DownloadContents is perfectly adequate.
+
+	   It is possible for the download to result in a failed response when the
+	   returned error is nil. Callers should check the returned Response status
+	   code to verify the content is from a successful response.
+	*/
+	DownloadContentsWithMeta(ctx context.Context, owner string, repo string, filepath string, opts *github.RepositoryContentGetOptions) (io.ReadCloser, *github.RepositoryContent, *github.Response, error)
+	/*
+	   DownloadReleaseAsset downloads a release asset or returns a redirect URL.
+
+	   DownloadReleaseAsset returns an io.ReadCloser that reads the contents of the
+	   specified release asset. It is the caller's responsibility to close the ReadCloser.
+	   If a redirect is returned, the redirect URL will be returned as a string instead
+	   of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
+
+	   followRedirectsClient can be passed to download the asset from a redirected
+	   location. Passing http.DefaultClient is recommended unless special circumstances
+	   exist, but it's possible to pass any http.Client. If nil is passed the
+	   redirectURL will be returned instead.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
+	*/
+	DownloadReleaseAsset(ctx context.Context, owner string, repo string, id int64, followRedirectsClient *http.Client) (io.ReadCloser, string, error)
+	/*
+	   Edit updates a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+	*/
+	Edit(ctx context.Context, owner string, repo string, repository *github.Repository) (*github.Repository, *github.Response, error)
+	/*
+	   EditActionsAllowed sets the allowed actions and reusable workflows for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-a-repository
+	*/
+	EditActionsAllowed(ctx context.Context, org string, repo string, actionsAllowed github.ActionsAllowed) (*github.ActionsAllowed, *github.Response, error)
+	/*
+	   EditActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-a-repository
+	*/
+	EditActionsPermissions(ctx context.Context, owner string, repo string, actionsPermissionsRepository github.ActionsPermissionsRepository) (*github.ActionsPermissionsRepository, *github.Response, error)
+	/*
+	   EditHook updates a specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#update-a-repository-webhook
+	*/
+	EditHook(ctx context.Context, owner string, repo string, id int64, hook *github.Hook) (*github.Hook, *github.Response, error)
+	/*
+	   EditRelease edits a repository release.
+
+	   Note that only a subset of the release fields are used.
+	   See RepositoryRelease for more information.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#update-a-release
+	*/
+	EditRelease(ctx context.Context, owner string, repo string, id int64, release *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error)
+	/*
+	   EditReleaseAsset edits a repository release asset.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#update-a-release-asset
+	*/
+	EditReleaseAsset(ctx context.Context, owner string, repo string, id int64, release *github.ReleaseAsset) (*github.ReleaseAsset, *github.Response, error)
+	/*
+	   EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-automated-security-fixes
+	*/
+	EnableAutomatedSecurityFixes(ctx context.Context, owner string, repository string) (*github.Response, error)
+	/*
+	   EnableLFS turns the LFS (Large File Storage) feature ON for the selected repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/lfs#enable-git-lfs-for-a-repository
+	*/
+	EnableLFS(ctx context.Context, owner string, repo string) (*github.Response, error)
+	/*
+	   EnablePages enables GitHub Pages for the named repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#create-a-github-pages-site
+	*/
+	EnablePages(ctx context.Context, owner string, repo string, pages *github.Pages) (*github.Pages, *github.Response, error)
+	/*
+	   EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-vulnerability-alerts
+	*/
+	EnableVulnerabilityAlerts(ctx context.Context, owner string, repository string) (*github.Response, error)
+	/*
+	   GenerateReleaseNotes generates the release notes for the given tag.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#generate-release-notes-content-for-a-release
+	*/
+	GenerateReleaseNotes(ctx context.Context, owner string, repo string, opts *github.GenerateNotesOptions) (*github.RepositoryReleaseNotes, *github.Response, error)
+	/*
+	   Get fetches a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+	*/
+	Get(ctx context.Context, owner string, repo string) (*github.Repository, *github.Response, error)
+	/*
+	   GetActionsAllowed gets the allowed actions and reusable workflows for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-a-repository
+	*/
+	GetActionsAllowed(ctx context.Context, org string, repo string) (*github.ActionsAllowed, *github.Response, error)
+	/*
+	   GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-a-repository
+	*/
+	GetActionsPermissions(ctx context.Context, owner string, repo string) (*github.ActionsPermissionsRepository, *github.Response, error)
+	/*
+	   GetAdminEnforcement gets admin enforcement information of a protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-admin-branch-protection
+	*/
+	GetAdminEnforcement(ctx context.Context, owner string, repo string, branch string) (*github.AdminEnforcement, *github.Response, error)
+	/*
+	   GetArchiveLink returns an URL to download a tarball or zipball archive for a
+	   repository. The archiveFormat can be specified by either the github.Tarball
+	   or github.Zipball constant.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents/#get-archive-link
+	*/
+	GetArchiveLink(ctx context.Context, owner string, repo string, archiveformat github.ArchiveFormat, opts *github.RepositoryContentGetOptions, followRedirects bool) (*url.URL, *github.Response, error)
+	/*
+	   GetAutolink returns a single autolink reference by ID that was configured for the given repository.
+	   Information about autolinks are only available to repository administrators.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#get-an-autolink-reference-of-a-repository
+	*/
+	GetAutolink(ctx context.Context, owner string, repo string, id int64) (*github.Autolink, *github.Response, error)
+	/*
+	   GetBranch gets the specified branch for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branches#get-a-branch
+	*/
+	GetBranch(ctx context.Context, owner string, repo string, branch string, followRedirects bool) (*github.Branch, *github.Response, error)
+	/*
+	   GetBranchProtection gets the protection of a given branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-branch-protection
+	*/
+	GetBranchProtection(ctx context.Context, owner string, repo string, branch string) (*github.Protection, *github.Response, error)
+	/*
+	   GetByID fetches a repository.
+
+	   Note: GetByID uses the undocumented GitHub API endpoint /repositories/:id.
+	*/
+	GetByID(ctx context.Context, id int64) (*github.Repository, *github.Response, error)
+	/*
+	   GetCodeOfConduct gets the contents of a repository's code of conduct.
+	   Note that https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
+	   says to use the GET /repos/{owner}/{repo} endpoint.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+	*/
+	GetCodeOfConduct(ctx context.Context, owner string, repo string) (*github.CodeOfConduct, *github.Response, error)
+	/*
+	   GetCodeownersErrors lists any syntax errors that are detected in the CODEOWNERS file.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-codeowners-errors
+	*/
+	GetCodeownersErrors(ctx context.Context, owner string, repo string) (*github.CodeownersErrors, *github.Response, error)
+	/*
+	   GetCombinedStatus returns the combined status of a repository at the specified
+	   reference. ref can be a SHA, a branch name, or a tag name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/statuses#get-the-combined-status-for-a-specific-reference
+	*/
+	GetCombinedStatus(ctx context.Context, owner string, repo string, ref string, opts *github.ListOptions) (*github.CombinedStatus, *github.Response, error)
+	/*
+	   GetComment gets a single comment from a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#get-a-commit-comment
+	*/
+	GetComment(ctx context.Context, owner string, repo string, id int64) (*github.RepositoryComment, *github.Response, error)
+	/*
+	   GetCommit fetches the specified commit, including all details about it.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-single-commit
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
+	*/
+	GetCommit(ctx context.Context, owner string, repo string, sha string, opts *github.ListOptions) (*github.RepositoryCommit, *github.Response, error)
+	/*
+	   GetCommitRaw fetches the specified commit in raw (diff or patch) format.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
+	*/
+	GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts github.RawOptions) (string, *github.Response, error)
+	/*
+	   GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
+	   supplied and no new commits have occurred, a 304 Unmodified response is returned.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
+	*/
+	GetCommitSHA1(ctx context.Context, owner string, repo string, ref string, lastSHA string) (string, *github.Response, error)
+	/*
+	   GetCommunityHealthMetrics retrieves all the community health  metrics for a  repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/community#get-community-profile-metrics
+	*/
+	GetCommunityHealthMetrics(ctx context.Context, owner string, repo string) (*github.CommunityHealthMetrics, *github.Response, error)
+	/*
+	   GetContents can return either the metadata and content of a single file
+	   (when path references a file) or the metadata of all the files and/or
+	   subdirectories of a directory (when path references a directory). To make it
+	   easy to distinguish between both result types and to mimic the API as much
+	   as possible, both result types will be returned but only one will contain a
+	   value and the other will be nil.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-repository-content
+	*/
+	GetContents(ctx context.Context, owner string, repo string, path string, opts *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error)
+	/*
+	   GetDeployment returns a single deployment of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#get-a-deployment
+	*/
+	GetDeployment(ctx context.Context, owner string, repo string, deploymentID int64) (*github.Deployment, *github.Response, error)
+	/*
+	   GetDeploymentStatus returns a single deployment status of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#get-a-deployment-status
+	*/
+	GetDeploymentStatus(ctx context.Context, owner string, repo string, deploymentID int64, deploymentStatusID int64) (*github.DeploymentStatus, *github.Response, error)
+	/*
+	   GetEnvironment get a single environment for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-an-environment
+	*/
+	GetEnvironment(ctx context.Context, owner string, repo string, name string) (*github.Environment, *github.Response, error)
+	/*
+	   GetHook returns a single specified Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#get-a-repository-webhook
+	*/
+	GetHook(ctx context.Context, owner string, repo string, id int64) (*github.Hook, *github.Response, error)
+	/*
+	   GetHookDelivery returns a delivery for a webhook configured in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
+	*/
+	GetHookDelivery(ctx context.Context, owner string, repo string, hookID int64, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   GetKey fetches a single deploy key.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deploy-keys#get-a-deploy-key
+	*/
+	GetKey(ctx context.Context, owner string, repo string, id int64) (*github.Key, *github.Response, error)
+	/*
+	   GetLatestPagesBuild fetches the latest build information for a GitHub pages site.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#get-latest-pages-build
+	*/
+	GetLatestPagesBuild(ctx context.Context, owner string, repo string) (*github.PagesBuild, *github.Response, error)
+	/*
+	   GetLatestRelease fetches the latest published release for the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-the-latest-release
+	*/
+	GetLatestRelease(ctx context.Context, owner string, repo string) (*github.RepositoryRelease, *github.Response, error)
+	/*
+	   GetPageBuild fetches the specific build information for a GitHub pages site.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#get-github-pages-build
+	*/
+	GetPageBuild(ctx context.Context, owner string, repo string, id int64) (*github.PagesBuild, *github.Response, error)
+	/*
+	   GetPagesInfo fetches information about a GitHub Pages site.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#get-a-github-pages-site
+	*/
+	GetPagesInfo(ctx context.Context, owner string, repo string) (*github.Pages, *github.Response, error)
+	/*
+	   GetPermissionLevel retrieves the specific permission level a collaborator has for a given repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#get-repository-permissions-for-a-user
+	*/
+	GetPermissionLevel(ctx context.Context, owner string, repo string, user string) (*github.RepositoryPermissionLevel, *github.Response, error)
+	/*
+	   GetPreReceiveHook returns a single specified pre-receive hook.
+
+	   GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#get-a-single-pre-receive-hook
+	*/
+	GetPreReceiveHook(ctx context.Context, owner string, repo string, id int64) (*github.PreReceiveHook, *github.Response, error)
+	/*
+	   GetPullRequestReviewEnforcement gets pull request review enforcement of a protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-pull-request-review-protection
+	*/
+	GetPullRequestReviewEnforcement(ctx context.Context, owner string, repo string, branch string) (*github.PullRequestReviewsEnforcement, *github.Response, error)
+	/*
+	   GetReadme gets the Readme file for the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-a-repository-readme
+	*/
+	GetReadme(ctx context.Context, owner string, repo string, opts *github.RepositoryContentGetOptions) (*github.RepositoryContent, *github.Response, error)
+	/*
+	   GetRelease fetches a single release.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release
+	*/
+	GetRelease(ctx context.Context, owner string, repo string, id int64) (*github.RepositoryRelease, *github.Response, error)
+	/*
+	   GetReleaseAsset fetches a single release asset.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
+	*/
+	GetReleaseAsset(ctx context.Context, owner string, repo string, id int64) (*github.ReleaseAsset, *github.Response, error)
+	/*
+	   GetReleaseByTag fetches a release with the specified tag.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release-by-tag-name
+	*/
+	GetReleaseByTag(ctx context.Context, owner string, repo string, tag string) (*github.RepositoryRelease, *github.Response, error)
+	/*
+	   GetRequiredStatusChecks gets the required status checks for a given protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-status-checks-protection
+	*/
+	GetRequiredStatusChecks(ctx context.Context, owner string, repo string, branch string) (*github.RequiredStatusChecks, *github.Response, error)
+	/*
+	   GetSignaturesProtectedBranch gets required signatures of protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-commit-signature-protection
+	*/
+	GetSignaturesProtectedBranch(ctx context.Context, owner string, repo string, branch string) (*github.SignaturesProtectedBranch, *github.Response, error)
+	/*
+	   GetVulnerabilityAlerts checks if vulnerability alerts are enabled for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository
+	*/
+	GetVulnerabilityAlerts(ctx context.Context, owner string, repository string) (bool, *github.Response, error)
+	/*
+	   IsCollaborator checks whether the specified GitHub user has collaborator
+	   access to the given repo.
+	   Note: This will return false if the user is not a collaborator OR the user
+	   is not a GitHub user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#check-if-a-user-is-a-repository-collaborator
+	*/
+	IsCollaborator(ctx context.Context, owner string, repo string, user string) (bool, *github.Response, error)
+	/*
+	   License gets the contents of a repository's license if one is detected.
+
+	   GitHub API docs: https://docs.github.com/en/rest/licenses#get-the-license-for-a-repository
+	*/
+	License(ctx context.Context, owner string, repo string) (*github.RepositoryLicense, *github.Response, error)
+	/*
+	   List the repositories for a user. Passing the empty string will list
+	   repositories for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user
+	*/
+	List(ctx context.Context, user string, opts *github.RepositoryListOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListAll lists all GitHub repositories in the order that they were created.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-public-repositories
+	*/
+	ListAll(ctx context.Context, opts *github.RepositoryListAllOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListAllTopics lists topics for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-all-repository-topics
+	*/
+	ListAllTopics(ctx context.Context, owner string, repo string) ([]string, *github.Response, error)
+	/*
+	   ListApps lists the GitHub apps that have push access to a given protected branch.
+	   It requires the GitHub apps to have `write` access to the `content` permission.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
+	*/
+	ListApps(ctx context.Context, owner string, repo string, branch string) ([]*github.App, *github.Response, error)
+	/*
+	   ListAutolinks returns a list of autolinks configured for the given repository.
+	   Information about autolinks are only available to repository administrators.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#list-all-autolinks-of-a-repository
+	*/
+	ListAutolinks(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Autolink, *github.Response, error)
+	/*
+	   ListBranches lists branches for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branches#list-branches
+	*/
+	ListBranches(ctx context.Context, owner string, repo string, opts *github.BranchListOptions) ([]*github.Branch, *github.Response, error)
+	/*
+	   ListBranchesHeadCommit gets all branches where the given commit SHA is the HEAD,
+	   or latest commit for the branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-branches-for-head-commit
+	*/
+	ListBranchesHeadCommit(ctx context.Context, owner string, repo string, sha string) ([]*github.BranchCommit, *github.Response, error)
+	/*
+	   ListByOrg lists the repositories for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-organization-repositories
+	*/
+	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListCodeFrequency returns a weekly aggregate of the number of additions and
+	   deletions pushed to a repository. Returned WeeklyStats will contain
+	   additions and deletions, but not total commits.
+
+	   If this is the first time these statistics are requested for the given
+	   repository, this method will return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing the requested statistics. A follow up request, after a
+	   delay of a second or so, should result in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-weekly-commit-activity
+	*/
+	ListCodeFrequency(ctx context.Context, owner string, repo string) ([]*github.WeeklyStats, *github.Response, error)
+	/*
+	   ListCollaborators lists the GitHub users that have access to the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#list-repository-collaborators
+	*/
+	ListCollaborators(ctx context.Context, owner string, repo string, opts *github.ListCollaboratorsOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListComments lists all the comments for the repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments-for-a-repository
+	*/
+	ListComments(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.RepositoryComment, *github.Response, error)
+	/*
+	   ListCommitActivity returns the last year of commit activity
+	   grouped by week. The days array is a group of commits per day,
+	   starting on Sunday.
+
+	   If this is the first time these statistics are requested for the given
+	   repository, this method will return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing the requested statistics. A follow up request, after a
+	   delay of a second or so, should result in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-last-year-of-commit-activity
+	*/
+	ListCommitActivity(ctx context.Context, owner string, repo string) ([]*github.WeeklyCommitActivity, *github.Response, error)
+	/*
+	   ListCommitComments lists all the comments for a given commit SHA.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments
+	*/
+	ListCommitComments(ctx context.Context, owner string, repo string, sha string, opts *github.ListOptions) ([]*github.RepositoryComment, *github.Response, error)
+	/*
+	   ListCommits lists the commits of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-commits
+	*/
+	ListCommits(ctx context.Context, owner string, repo string, opts *github.CommitsListOptions) ([]*github.RepositoryCommit, *github.Response, error)
+	/*
+	   ListContributors lists contributors for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-contributors
+	*/
+	ListContributors(ctx context.Context, owner string, repository string, opts *github.ListContributorsOptions) ([]*github.Contributor, *github.Response, error)
+	/*
+	   ListContributorsStats gets a repo's contributor list with additions,
+	   deletions and commit counts.
+
+	   If this is the first time these statistics are requested for the given
+	   repository, this method will return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing the requested statistics. A follow up request, after a
+	   delay of a second or so, should result in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-all-contributor-commit-activity
+	*/
+	ListContributorsStats(ctx context.Context, owner string, repo string) ([]*github.ContributorStats, *github.Response, error)
+	/*
+	   ListDeploymentStatuses lists the statuses of a given deployment of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#list-deployment-statuses
+	*/
+	ListDeploymentStatuses(ctx context.Context, owner string, repo string, deployment int64, opts *github.ListOptions) ([]*github.DeploymentStatus, *github.Response, error)
+	/*
+	   ListDeployments lists the deployments of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#list-deployments
+	*/
+	ListDeployments(ctx context.Context, owner string, repo string, opts *github.DeploymentsListOptions) ([]*github.Deployment, *github.Response, error)
+	/*
+	   ListEnvironments lists all environments for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-all-environments
+	*/
+	ListEnvironments(ctx context.Context, owner string, repo string, opts *github.EnvironmentListOptions) (*github.EnvResponse, *github.Response, error)
+	/*
+	   ListForks lists the forks of the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/forks#list-forks
+	*/
+	ListForks(ctx context.Context, owner string, repo string, opts *github.RepositoryListForksOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListHookDeliveries lists webhook deliveries for a webhook configured in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
+	*/
+	ListHookDeliveries(ctx context.Context, owner string, repo string, id int64, opts *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
+	/*
+	   ListHooks lists all Hooks for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#list-repository-webhooks
+	*/
+	ListHooks(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Hook, *github.Response, error)
+	/*
+	   ListInvitations lists all currently-open repository invitations.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#list-repository-invitations
+	*/
+	ListInvitations(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.RepositoryInvitation, *github.Response, error)
+	/*
+	   ListKeys lists the deploy keys for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/deploy-keys#list-deploy-keys
+	*/
+	ListKeys(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Key, *github.Response, error)
+	/*
+	   ListLanguages lists languages for the specified repository. The returned map
+	   specifies the languages and the number of bytes of code written in that
+	   language. For example:
+
+	   	{
+	   	  "C": 78769,
+	   	  "Python": 7769
+	   	}
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-languages
+	*/
+	ListLanguages(ctx context.Context, owner string, repo string) (map[string]int, *github.Response, error)
+	/*
+	   ListPagesBuilds lists the builds for a GitHub Pages site.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#list-github-pages-builds
+	*/
+	ListPagesBuilds(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.PagesBuild, *github.Response, error)
+	/*
+	   ListParticipation returns the total commit counts for the 'owner'
+	   and total commit counts in 'all'. 'all' is everyone combined,
+	   including the 'owner' in the last 52 weeks. If you’d like to get
+	   the commit counts for non-owners, you can subtract 'all' from 'owner'.
+
+	   The array order is oldest week (index 0) to most recent week.
+
+	   If this is the first time these statistics are requested for the given
+	   repository, this method will return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing the requested statistics. A follow up request, after a
+	   delay of a second or so, should result in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-weekly-commit-count
+	*/
+	ListParticipation(ctx context.Context, owner string, repo string) (*github.RepositoryParticipation, *github.Response, error)
+	/*
+	   ListPreReceiveHooks lists all pre-receive hooks for the specified repository.
+
+	   GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#list-pre-receive-hooks
+	*/
+	ListPreReceiveHooks(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.PreReceiveHook, *github.Response, error)
+	/*
+	   ListProjects lists the projects for a repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-repository-projects
+	*/
+	ListProjects(ctx context.Context, owner string, repo string, opts *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
+	/*
+	   ListPunchCard returns the number of commits per hour in each day.
+
+	   If this is the first time these statistics are requested for the given
+	   repository, this method will return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it is now computing the requested statistics. A follow up request, after a
+	   delay of a second or so, should result in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-hourly-commit-count-for-each-day
+	*/
+	ListPunchCard(ctx context.Context, owner string, repo string) ([]*github.PunchCard, *github.Response, error)
+	/*
+	   ListReleaseAssets lists the release's assets.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#list-release-assets
+	*/
+	ListReleaseAssets(ctx context.Context, owner string, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
+	/*
+	   ListReleases lists the releases for a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/releases#list-releases
+	*/
+	ListReleases(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
+	/*
+	   ListRequiredStatusChecksContexts lists the required status checks contexts for a given protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-all-status-check-contexts
+	*/
+	ListRequiredStatusChecksContexts(ctx context.Context, owner string, repo string, branch string) ([]string, *github.Response, error)
+	/*
+	   ListStatuses lists the statuses of a repository at the specified
+	   reference. ref can be a SHA, a branch name, or a tag name.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/statuses#list-commit-statuses-for-a-reference
+	*/
+	ListStatuses(ctx context.Context, owner string, repo string, ref string, opts *github.ListOptions) ([]*github.RepoStatus, *github.Response, error)
+	/*
+	   ListTagProtection lists tag protection of the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/tags#list-tag-protection-states-for-a-repository
+	*/
+	ListTagProtection(ctx context.Context, owner string, repo string) ([]*github.TagProtection, *github.Response, error)
+	/*
+	   ListTags lists tags for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-tags
+	*/
+	ListTags(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.RepositoryTag, *github.Response, error)
+	/*
+	   ListTeams lists the teams for the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-teams
+	*/
+	ListTeams(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   ListTrafficClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-repository-clones
+	*/
+	ListTrafficClones(ctx context.Context, owner string, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error)
+	/*
+	   ListTrafficPaths list the top 10 popular content over the last 14 days.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-paths
+	*/
+	ListTrafficPaths(ctx context.Context, owner string, repo string) ([]*github.TrafficPath, *github.Response, error)
+	/*
+	   ListTrafficReferrers list the top 10 referrers over the last 14 days.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-sources
+	*/
+	ListTrafficReferrers(ctx context.Context, owner string, repo string) ([]*github.TrafficReferrer, *github.Response, error)
+	/*
+	   ListTrafficViews get total number of views for the last 14 days and breaks it down either per day or week.
+
+	   GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-page-views
+	*/
+	ListTrafficViews(ctx context.Context, owner string, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficViews, *github.Response, error)
+	/*
+	   Merge a branch in the specified repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branches#merge-a-branch
+	*/
+	Merge(ctx context.Context, owner string, repo string, request *github.RepositoryMergeRequest) (*github.RepositoryCommit, *github.Response, error)
+	/*
+	   MergeUpstream syncs a branch of a forked repository to keep it up-to-date
+	   with the upstream repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branches#sync-a-fork-branch-with-the-upstream-repository
+	*/
+	MergeUpstream(ctx context.Context, owner string, repo string, request *github.RepoMergeUpstreamRequest) (*github.RepoMergeUpstreamResult, *github.Response, error)
+	/*
+	   OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-commit-signature-protection
+	*/
+	OptionalSignaturesOnProtectedBranch(ctx context.Context, owner string, repo string, branch string) (*github.Response, error)
+	/*
+	   PingHook triggers a 'ping' event to be sent to the Hook.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#ping-a-repository-webhook
+	*/
+	PingHook(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   RedeliverHookDelivery redelivers a delivery for a webhook configured in a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#redeliver-a-delivery-for-a-repository-webhook
+	*/
+	RedeliverHookDelivery(ctx context.Context, owner string, repo string, hookID int64, deliveryID int64) (*github.HookDelivery, *github.Response, error)
+	/*
+	   RemoveAdminEnforcement removes admin enforcement from a protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-admin-branch-protection
+	*/
+	RemoveAdminEnforcement(ctx context.Context, owner string, repo string, branch string) (*github.Response, error)
+	/*
+	   RemoveAppRestrictions removes the ability of an app to push to this branch.
+	   It requires the GitHub apps to have `write` access to the `content` permission.
+
+	   Note: The list of users, apps, and teams in total is limited to 100 items.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-app-access-restrictions
+	*/
+	RemoveAppRestrictions(ctx context.Context, owner string, repo string, branch string, slug []string) ([]*github.App, *github.Response, error)
+	/*
+	   RemoveBranchProtection removes the protection of a given branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-branch-protection
+	*/
+	RemoveBranchProtection(ctx context.Context, owner string, repo string, branch string) (*github.Response, error)
+	/*
+	   RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.
+	   Note: Does not return error if a valid user that is not a collaborator is removed.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#remove-a-repository-collaborator
+	*/
+	RemoveCollaborator(ctx context.Context, owner string, repo string, user string) (*github.Response, error)
+	/*
+	   RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-pull-request-review-protection
+	*/
+	RemovePullRequestReviewEnforcement(ctx context.Context, owner string, repo string, branch string) (*github.Response, error)
+	/*
+	   RemoveRequiredStatusChecks removes the required status checks for a given protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-status-check-protection
+	*/
+	RemoveRequiredStatusChecks(ctx context.Context, owner string, repo string, branch string) (*github.Response, error)
+	/*
+	   RenameBranch renames a branch in a repository.
+
+	   To rename a non-default branch: Users must have push access. GitHub Apps must have the `contents:write` repository permission.
+	   To rename the default branch: Users must have admin or owner permissions. GitHub Apps must have the `administration:write` repository permission.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branches#rename-a-branch
+	*/
+	RenameBranch(ctx context.Context, owner string, repo string, branch string, newName string) (*github.Branch, *github.Response, error)
+	/*
+	   ReplaceAllTopics replaces all repository topics.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics
+	*/
+	ReplaceAllTopics(ctx context.Context, owner string, repo string, topics []string) ([]string, *github.Response, error)
+	/*
+	   ReplaceAppRestrictions replaces the apps that have push access to a given protected branch.
+	   It removes all apps that previously had push access and grants push access to the new list of apps.
+	   It requires the GitHub apps to have `write` access to the `content` permission.
+
+	   Note: The list of users, apps, and teams in total is limited to 100 items.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-app-access-restrictions
+	*/
+	ReplaceAppRestrictions(ctx context.Context, owner string, repo string, branch string, slug []string) ([]*github.App, *github.Response, error)
+	/*
+	   RequestPageBuild requests a build of a GitHub Pages site without needing to push new commit.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#request-a-github-pages-build
+	*/
+	RequestPageBuild(ctx context.Context, owner string, repo string) (*github.PagesBuild, *github.Response, error)
+	/*
+	   RequireSignaturesOnProtectedBranch makes signed commits required on a protected branch.
+	   It requires admin access and branch protection to be enabled.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#create-commit-signature-protection
+	*/
+	RequireSignaturesOnProtectedBranch(ctx context.Context, owner string, repo string, branch string) (*github.SignaturesProtectedBranch, *github.Response, error)
+	/*
+	   Subscribe lets servers register to receive updates when a topic is updated.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+	*/
+	Subscribe(ctx context.Context, owner string, repo string, event string, callback string, secret []uint8) (*github.Response, error)
+	/*
+	   TestHook triggers a test Hook by github.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#test-the-push-repository-webhook
+	*/
+	TestHook(ctx context.Context, owner string, repo string, id int64) (*github.Response, error)
+	/*
+	   Transfer transfers a repository from one account or organization to another.
+
+	   This method might return an *AcceptedError and a status code of
+	   202. This is because this is the status that GitHub returns to signify that
+	   it has now scheduled the transfer of the repository in a background task.
+	   A follow up request, after a delay of a second or so, should result
+	   in a successful request.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/repos#transfer-a-repository
+	*/
+	Transfer(ctx context.Context, owner string, repo string, transfer github.TransferRequest) (*github.Repository, *github.Response, error)
+	/*
+	   Unsubscribe lets servers unregister to no longer receive updates when a topic is updated.
+
+	   GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+	*/
+	Unsubscribe(ctx context.Context, owner string, repo string, event string, callback string, secret []uint8) (*github.Response, error)
+	/*
+	   UpdateBranchProtection updates the protection of a given branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection
+	*/
+	UpdateBranchProtection(ctx context.Context, owner string, repo string, branch string, preq *github.ProtectionRequest) (*github.Protection, *github.Response, error)
+	/*
+	   UpdateComment updates the body of a single comment.
+
+	   GitHub API docs: https://docs.github.com/en/rest/commits/comments#update-a-commit-comment
+	*/
+	UpdateComment(ctx context.Context, owner string, repo string, id int64, comment *github.RepositoryComment) (*github.RepositoryComment, *github.Response, error)
+	/*
+	   UpdateFile updates a file in a repository at the given path and returns the
+	   commit and file metadata. Requires the blob SHA of the file being updated.
+
+	   GitHub API docs: https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents
+	*/
+	UpdateFile(ctx context.Context, owner string, repo string, path string, opts *github.RepositoryContentFileOptions) (*github.RepositoryContentResponse, *github.Response, error)
+	/*
+	   UpdateInvitation updates the permissions associated with a repository
+	   invitation.
+
+	   permissions represents the permissions that the associated user will have
+	   on the repository. Possible values are: "read", "write", "admin".
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#update-a-repository-invitation
+	*/
+	UpdateInvitation(ctx context.Context, owner string, repo string, invitationID int64, permissions string) (*github.RepositoryInvitation, *github.Response, error)
+	/*
+	   UpdatePages updates GitHub Pages for the named repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/pages#update-information-about-a-github-pages-site
+	*/
+	UpdatePages(ctx context.Context, owner string, repo string, opts *github.PagesUpdate) (*github.Response, error)
+	/*
+	   UpdatePreReceiveHook updates a specified pre-receive hook.
+
+	   GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#update-pre-receive-hook-enforcement
+	*/
+	UpdatePreReceiveHook(ctx context.Context, owner string, repo string, id int64, hook *github.PreReceiveHook) (*github.PreReceiveHook, *github.Response, error)
+	/*
+	   UpdatePullRequestReviewEnforcement patches pull request review enforcement of a protected branch.
+	   It requires admin access and branch protection to be enabled.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
+	*/
+	UpdatePullRequestReviewEnforcement(ctx context.Context, owner string, repo string, branch string, patch *github.PullRequestReviewsEnforcementUpdate) (*github.PullRequestReviewsEnforcement, *github.Response, error)
+	/*
+	   UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
+
+	   GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-status-check-protection
+	*/
+	UpdateRequiredStatusChecks(ctx context.Context, owner string, repo string, branch string, sreq *github.RequiredStatusChecksRequest) (*github.RequiredStatusChecks, *github.Response, error)
+	/*
+	   UploadReleaseAsset creates an asset by uploading a file into a release repository.
+	   To upload assets that cannot be represented by an os.File, call NewUploadRequest directly.
+
+	   GitHub API docs: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
+	*/
+	UploadReleaseAsset(ctx context.Context, owner string, repo string, id int64, opts *github.UploadOptions, file *os.File) (*github.ReleaseAsset, *github.Response, error)
 }
 
+/*
+SCIMService provides access to SCIM related functions in the
+GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/scim
+*/
 type SCIMService interface {
-	DeleteSCIMUserFromOrg(context.Context, string, string) (*github.Response, error)
-	GetSCIMProvisioningInfoForUser(context.Context, string, string) (*github.SCIMUserAttributes, *github.Response, error)
-	ListSCIMProvisionedIdentities(context.Context, string, *github.ListSCIMProvisionedIdentitiesOptions) (*github.SCIMProvisionedIdentities, *github.Response, error)
-	ProvisionAndInviteSCIMUser(context.Context, string, *github.SCIMUserAttributes) (*github.Response, error)
-	UpdateAttributeForSCIMUser(context.Context, string, string, *github.UpdateAttributeForSCIMUserOptions) (*github.Response, error)
-	UpdateProvisionedOrgMembership(context.Context, string, string, *github.SCIMUserAttributes) (*github.Response, error)
+	/*
+	   DeleteSCIMUserFromOrg deletes SCIM user from an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#delete-a-scim-user-from-an-organization
+	*/
+	DeleteSCIMUserFromOrg(ctx context.Context, org string, scimUserID string) (*github.Response, error)
+	/*
+	   GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#supported-scim-user-attributes
+	*/
+	GetSCIMProvisioningInfoForUser(ctx context.Context, org string, scimUserID string) (*github.SCIMUserAttributes, *github.Response, error)
+	/*
+	   ListSCIMProvisionedIdentities lists SCIM provisioned identities.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#list-scim-provisioned-identities
+	*/
+	ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *github.ListSCIMProvisionedIdentitiesOptions) (*github.SCIMProvisionedIdentities, *github.Response, error)
+	/*
+	   ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#provision-and-invite-a-scim-user
+	*/
+	ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *github.SCIMUserAttributes) (*github.Response, error)
+	/*
+	   UpdateAttributeForSCIMUser updates an attribute for an SCIM user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#update-an-attribute-for-a-scim-user
+	*/
+	UpdateAttributeForSCIMUser(ctx context.Context, org string, scimUserID string, opts *github.UpdateAttributeForSCIMUserOptions) (*github.Response, error)
+	/*
+	   UpdateProvisionedOrgMembership updates a provisioned organization membership.
+
+	   GitHub API docs: https://docs.github.com/en/rest/scim#update-a-provisioned-organization-membership
+	*/
+	UpdateProvisionedOrgMembership(ctx context.Context, org string, scimUserID string, opts *github.SCIMUserAttributes) (*github.Response, error)
 }
 
+/*
+SearchService provides access to the search related functions
+in the GitHub API.
+
+Each method takes a query string defining the search keywords and any search qualifiers.
+For example, when searching issues, the query "gopher is:issue language:go" will search
+for issues containing the word "gopher" in Go repositories. The method call
+
+	opts :=  &github.SearchOptions{Sort: "created", Order: "asc"}
+	cl.Search.Issues(ctx, "gopher is:issue language:go", opts)
+
+will search for such issues, sorting by creation date in ascending order
+(i.e., oldest first).
+
+If query includes multiple conditions, it MUST NOT include "+" as the condition separator.
+You have to use " " as the separator instead.
+For example, querying with "language:c++" and "leveldb", then query should be
+"language:c++ leveldb" but not "language:c+++leveldb".
+
+GitHub API docs: https://docs.github.com/en/rest/search/
+*/
 type SearchService interface {
-	Code(context.Context, string, *github.SearchOptions) (*github.CodeSearchResult, *github.Response, error)
-	Commits(context.Context, string, *github.SearchOptions) (*github.CommitsSearchResult, *github.Response, error)
-	Issues(context.Context, string, *github.SearchOptions) (*github.IssuesSearchResult, *github.Response, error)
-	Labels(context.Context, int64, string, *github.SearchOptions) (*github.LabelsSearchResult, *github.Response, error)
-	Repositories(context.Context, string, *github.SearchOptions) (*github.RepositoriesSearchResult, *github.Response, error)
-	Topics(context.Context, string, *github.SearchOptions) (*github.TopicsSearchResult, *github.Response, error)
-	Users(context.Context, string, *github.SearchOptions) (*github.UsersSearchResult, *github.Response, error)
+	/*
+	   Code searches code via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-code
+	*/
+	Code(ctx context.Context, query string, opts *github.SearchOptions) (*github.CodeSearchResult, *github.Response, error)
+	/*
+	   Commits searches commits via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-commits
+	*/
+	Commits(ctx context.Context, query string, opts *github.SearchOptions) (*github.CommitsSearchResult, *github.Response, error)
+	/*
+	   Issues searches issues via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-issues-and-pull-requests
+	*/
+	Issues(ctx context.Context, query string, opts *github.SearchOptions) (*github.IssuesSearchResult, *github.Response, error)
+	/*
+	   Labels searches labels in the repository with ID repoID via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-labels
+	*/
+	Labels(ctx context.Context, repoID int64, query string, opts *github.SearchOptions) (*github.LabelsSearchResult, *github.Response, error)
+	/*
+	   Repositories searches repositories via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-repositories
+	*/
+	Repositories(ctx context.Context, query string, opts *github.SearchOptions) (*github.RepositoriesSearchResult, *github.Response, error)
+	/*
+	   Topics finds topics via various criteria. Results are sorted by best match.
+	   Please see https://help.github.com/en/articles/searching-topics for more
+	   information about search qualifiers.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-topics
+	*/
+	Topics(ctx context.Context, query string, opts *github.SearchOptions) (*github.TopicsSearchResult, *github.Response, error)
+	/*
+	   Users searches users via various criteria.
+
+	   GitHub API docs: https://docs.github.com/en/rest/search#search-users
+	*/
+	Users(ctx context.Context, query string, opts *github.SearchOptions) (*github.UsersSearchResult, *github.Response, error)
 }
 
+/*
+SecretScanningService handles communication with the secret scanning related
+methods of the GitHub API.
+*/
 type SecretScanningService interface {
-	GetAlert(context.Context, string, string, int64) (*github.SecretScanningAlert, *github.Response, error)
-	ListAlertsForEnterprise(context.Context, string, *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
-	ListAlertsForOrg(context.Context, string, *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
-	ListAlertsForRepo(context.Context, string, string, *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
-	ListLocationsForAlert(context.Context, string, string, int64, *github.ListOptions) ([]*github.SecretScanningAlertLocation, *github.Response, error)
-	UpdateAlert(context.Context, string, string, int64, *github.SecretScanningAlertUpdateOptions) (*github.SecretScanningAlert, *github.Response, error)
+	/*
+	   Gets a single secret scanning alert detected in a private repository.
+
+	   To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+	   the repo scope or security_events scope.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#get-a-secret-scanning-alert
+	*/
+	GetAlert(ctx context.Context, owner string, repo string, number int64) (*github.SecretScanningAlert, *github.Response, error)
+	/*
+	   Lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
+
+	   To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
+	   security_events scope. Alerts are only returned for organizations in the enterprise for which you are an organization owner or a security manager.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
+	*/
+	ListAlertsForEnterprise(ctx context.Context, enterprise string, opts *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
+	/*
+	   Lists secret scanning alerts for eligible repositories in an organization, from newest to oldest.
+
+	   To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+	   the repo scope or security_events scope.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
+	*/
+	ListAlertsForOrg(ctx context.Context, org string, opts *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
+	/*
+	   Lists secret scanning alerts for a private repository, from newest to oldest.
+
+	   To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+	   the repo scope or security_events scope.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#list-secret-scanning-alerts-for-a-repository
+	*/
+	ListAlertsForRepo(ctx context.Context, owner string, repo string, opts *github.SecretScanningAlertListOptions) ([]*github.SecretScanningAlert, *github.Response, error)
+	/*
+	   Lists all locations for a given secret scanning alert for a private repository.
+
+	   To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+	   the repo scope or security_events scope.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#list-locations-for-a-secret-scanning-alert
+	*/
+	ListLocationsForAlert(ctx context.Context, owner string, repo string, number int64, opts *github.ListOptions) ([]*github.SecretScanningAlertLocation, *github.Response, error)
+	/*
+	   Updates the status of a secret scanning alert in a private repository.
+
+	   To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+	   the repo scope or security_events scope.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-server@3.5/rest/secret-scanning#update-a-secret-scanning-alert
+	*/
+	UpdateAlert(ctx context.Context, owner string, repo string, number int64, opts *github.SecretScanningAlertUpdateOptions) (*github.SecretScanningAlert, *github.Response, error)
 }
 
+/*
+TeamsService provides access to the team-related functions
+in the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/teams/
+*/
 type TeamsService interface {
-	AddTeamMembershipByID(context.Context, int64, int64, string, *github.TeamAddTeamMembershipOptions) (*github.Membership, *github.Response, error)
-	AddTeamMembershipBySlug(context.Context, string, string, string, *github.TeamAddTeamMembershipOptions) (*github.Membership, *github.Response, error)
-	AddTeamProjectByID(context.Context, int64, int64, int64, *github.TeamProjectOptions) (*github.Response, error)
-	AddTeamProjectBySlug(context.Context, string, string, int64, *github.TeamProjectOptions) (*github.Response, error)
-	AddTeamRepoByID(context.Context, int64, int64, string, string, *github.TeamAddTeamRepoOptions) (*github.Response, error)
-	AddTeamRepoBySlug(context.Context, string, string, string, string, *github.TeamAddTeamRepoOptions) (*github.Response, error)
-	CreateCommentByID(context.Context, int64, int64, int, github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
-	CreateCommentBySlug(context.Context, string, string, int, github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
-	CreateDiscussionByID(context.Context, int64, int64, github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
-	CreateDiscussionBySlug(context.Context, string, string, github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
-	CreateOrUpdateIDPGroupConnectionsByID(context.Context, int64, int64, github.IDPGroupList) (*github.IDPGroupList, *github.Response, error)
-	CreateOrUpdateIDPGroupConnectionsBySlug(context.Context, string, string, github.IDPGroupList) (*github.IDPGroupList, *github.Response, error)
-	CreateTeam(context.Context, string, github.NewTeam) (*github.Team, *github.Response, error)
-	DeleteCommentByID(context.Context, int64, int64, int, int) (*github.Response, error)
-	DeleteCommentBySlug(context.Context, string, string, int, int) (*github.Response, error)
-	DeleteDiscussionByID(context.Context, int64, int64, int) (*github.Response, error)
-	DeleteDiscussionBySlug(context.Context, string, string, int) (*github.Response, error)
-	DeleteTeamByID(context.Context, int64, int64) (*github.Response, error)
-	DeleteTeamBySlug(context.Context, string, string) (*github.Response, error)
-	EditCommentByID(context.Context, int64, int64, int, int, github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
-	EditCommentBySlug(context.Context, string, string, int, int, github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
-	EditDiscussionByID(context.Context, int64, int64, int, github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
-	EditDiscussionBySlug(context.Context, string, string, int, github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
-	EditTeamByID(context.Context, int64, int64, github.NewTeam, bool) (*github.Team, *github.Response, error)
-	EditTeamBySlug(context.Context, string, string, github.NewTeam, bool) (*github.Team, *github.Response, error)
-	GetCommentByID(context.Context, int64, int64, int, int) (*github.DiscussionComment, *github.Response, error)
-	GetCommentBySlug(context.Context, string, string, int, int) (*github.DiscussionComment, *github.Response, error)
-	GetDiscussionByID(context.Context, int64, int64, int) (*github.TeamDiscussion, *github.Response, error)
-	GetDiscussionBySlug(context.Context, string, string, int) (*github.TeamDiscussion, *github.Response, error)
-	GetExternalGroup(context.Context, string, int64) (*github.ExternalGroup, *github.Response, error)
-	GetTeamByID(context.Context, int64, int64) (*github.Team, *github.Response, error)
-	GetTeamBySlug(context.Context, string, string) (*github.Team, *github.Response, error)
-	GetTeamMembershipByID(context.Context, int64, int64, string) (*github.Membership, *github.Response, error)
-	GetTeamMembershipBySlug(context.Context, string, string, string) (*github.Membership, *github.Response, error)
-	IsTeamRepoByID(context.Context, int64, int64, string, string) (*github.Repository, *github.Response, error)
-	IsTeamRepoBySlug(context.Context, string, string, string, string) (*github.Repository, *github.Response, error)
-	ListChildTeamsByParentID(context.Context, int64, int64, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	ListChildTeamsByParentSlug(context.Context, string, string, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	ListCommentsByID(context.Context, int64, int64, int, *github.DiscussionCommentListOptions) ([]*github.DiscussionComment, *github.Response, error)
-	ListCommentsBySlug(context.Context, string, string, int, *github.DiscussionCommentListOptions) ([]*github.DiscussionComment, *github.Response, error)
-	ListDiscussionsByID(context.Context, int64, int64, *github.DiscussionListOptions) ([]*github.TeamDiscussion, *github.Response, error)
-	ListDiscussionsBySlug(context.Context, string, string, *github.DiscussionListOptions) ([]*github.TeamDiscussion, *github.Response, error)
-	ListExternalGroups(context.Context, string, *github.ListExternalGroupsOptions) (*github.ExternalGroupList, *github.Response, error)
-	ListIDPGroupsForTeamByID(context.Context, int64, int64) (*github.IDPGroupList, *github.Response, error)
-	ListIDPGroupsForTeamBySlug(context.Context, string, string) (*github.IDPGroupList, *github.Response, error)
-	ListIDPGroupsInOrganization(context.Context, string, *github.ListCursorOptions) (*github.IDPGroupList, *github.Response, error)
-	ListPendingTeamInvitationsByID(context.Context, int64, int64, *github.ListOptions) ([]*github.Invitation, *github.Response, error)
-	ListPendingTeamInvitationsBySlug(context.Context, string, string, *github.ListOptions) ([]*github.Invitation, *github.Response, error)
-	ListTeamMembersByID(context.Context, int64, int64, *github.TeamListTeamMembersOptions) ([]*github.User, *github.Response, error)
-	ListTeamMembersBySlug(context.Context, string, string, *github.TeamListTeamMembersOptions) ([]*github.User, *github.Response, error)
-	ListTeamProjectsByID(context.Context, int64, int64) ([]*github.Project, *github.Response, error)
-	ListTeamProjectsBySlug(context.Context, string, string) ([]*github.Project, *github.Response, error)
-	ListTeamReposByID(context.Context, int64, int64, *github.ListOptions) ([]*github.Repository, *github.Response, error)
-	ListTeamReposBySlug(context.Context, string, string, *github.ListOptions) ([]*github.Repository, *github.Response, error)
-	ListTeams(context.Context, string, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	ListUserTeams(context.Context, *github.ListOptions) ([]*github.Team, *github.Response, error)
-	RemoveConnectedExternalGroup(context.Context, string, string) (*github.Response, error)
-	RemoveTeamMembershipByID(context.Context, int64, int64, string) (*github.Response, error)
-	RemoveTeamMembershipBySlug(context.Context, string, string, string) (*github.Response, error)
-	RemoveTeamProjectByID(context.Context, int64, int64, int64) (*github.Response, error)
-	RemoveTeamProjectBySlug(context.Context, string, string, int64) (*github.Response, error)
-	RemoveTeamRepoByID(context.Context, int64, int64, string, string) (*github.Response, error)
-	RemoveTeamRepoBySlug(context.Context, string, string, string, string) (*github.Response, error)
-	ReviewTeamProjectsByID(context.Context, int64, int64, int64) (*github.Project, *github.Response, error)
-	ReviewTeamProjectsBySlug(context.Context, string, string, int64) (*github.Project, *github.Response, error)
-	UpdateConnectedExternalGroup(context.Context, string, string, *github.ExternalGroup) (*github.ExternalGroup, *github.Response, error)
+	/*
+	   AddTeamMembershipByID adds or invites a user to a team, given a specified
+	   organization ID, by team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
+	*/
+	AddTeamMembershipByID(ctx context.Context, orgID int64, teamID int64, user string, opts *github.TeamAddTeamMembershipOptions) (*github.Membership, *github.Response, error)
+	/*
+	   AddTeamMembershipBySlug adds or invites a user to a team, given a specified
+	   organization name, by team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
+	*/
+	AddTeamMembershipBySlug(ctx context.Context, org string, slug string, user string, opts *github.TeamAddTeamMembershipOptions) (*github.Membership, *github.Response, error)
+	/*
+	   AddTeamProjectByID adds an organization project to a team given the team ID.
+	   To add a project to a team or update the team's permission on a project, the
+	   authenticated user must have admin permissions for the project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-project-permissions
+	*/
+	AddTeamProjectByID(ctx context.Context, orgID int64, teamID int64, projectID int64, opts *github.TeamProjectOptions) (*github.Response, error)
+	/*
+	   AddTeamProjectBySlug adds an organization project to a team given the team slug.
+	   To add a project to a team or update the team's permission on a project, the
+	   authenticated user must have admin permissions for the project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-project-permissions
+	*/
+	AddTeamProjectBySlug(ctx context.Context, org string, slug string, projectID int64, opts *github.TeamProjectOptions) (*github.Response, error)
+	/*
+	   AddTeamRepoByID adds a repository to be managed by the specified team given the team ID.
+	   The specified repository must be owned by the organization to which the team
+	   belongs, or a direct fork of a repository owned by the organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-repository-permissions
+	*/
+	AddTeamRepoByID(ctx context.Context, orgID int64, teamID int64, owner string, repo string, opts *github.TeamAddTeamRepoOptions) (*github.Response, error)
+	/*
+	   AddTeamRepoBySlug adds a repository to be managed by the specified team given the team slug.
+	   The specified repository must be owned by the organization to which the team
+	   belongs, or a direct fork of a repository owned by the organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-repository-permissions
+	*/
+	AddTeamRepoBySlug(ctx context.Context, org string, slug string, owner string, repo string, opts *github.TeamAddTeamRepoOptions) (*github.Response, error)
+	/*
+	   CreateCommentByID creates a new comment on a team discussion by team ID.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#create-a-discussion-comment
+	*/
+	CreateCommentByID(ctx context.Context, orgID int64, teamID int64, discsusionNumber int, comment github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   CreateCommentBySlug creates a new comment on a team discussion by team slug.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#create-a-discussion-comment
+	*/
+	CreateCommentBySlug(ctx context.Context, org string, slug string, discsusionNumber int, comment github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   CreateDiscussionByID creates a new discussion post on a team's page given Organization and Team ID.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#create-a-discussion
+	*/
+	CreateDiscussionByID(ctx context.Context, orgID int64, teamID int64, discussion github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   CreateDiscussionBySlug creates a new discussion post on a team's page given Organization name and Team's slug.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#create-a-discussion
+	*/
+	CreateDiscussionBySlug(ctx context.Context, org string, slug string, discussion github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
+	   between a team and an IDP group given organization and team IDs.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#create-or-update-idp-group-connections
+	*/
+	CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID int64, teamID int64, opts github.IDPGroupList) (*github.IDPGroupList, *github.Response, error)
+	/*
+	   CreateOrUpdateIDPGroupConnectionsBySlug creates, updates, or removes a connection
+	   between a team and an IDP group given organization name and team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#create-or-update-idp-group-connections
+	*/
+	CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org string, slug string, opts github.IDPGroupList) (*github.IDPGroupList, *github.Response, error)
+	/*
+	   CreateTeam creates a new team within an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#create-a-team
+	*/
+	CreateTeam(ctx context.Context, org string, team github.NewTeam) (*github.Team, *github.Response, error)
+	/*
+	   DeleteCommentByID deletes a comment on a team discussion by team ID.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#delete-a-discussion-comment
+	*/
+	DeleteCommentByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int, commentNumber int) (*github.Response, error)
+	/*
+	   DeleteCommentBySlug deletes a comment on a team discussion by team slug.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#delete-a-discussion-comment
+	*/
+	DeleteCommentBySlug(ctx context.Context, org string, slug string, discussionNumber int, commentNumber int) (*github.Response, error)
+	/*
+	   DeleteDiscussionByID deletes a discussion from team's page given Organization and Team ID.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#delete-a-discussion
+	*/
+	DeleteDiscussionByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int) (*github.Response, error)
+	/*
+	   DeleteDiscussionBySlug deletes a discussion from team's page given Organization name and Team's slug.
+	   Authenticated user must grant write:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#delete-a-discussion
+	*/
+	DeleteDiscussionBySlug(ctx context.Context, org string, slug string, discussionNumber int) (*github.Response, error)
+	/*
+	   DeleteTeamByID deletes a team referenced by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#delete-a-team
+	*/
+	DeleteTeamByID(ctx context.Context, orgID int64, teamID int64) (*github.Response, error)
+	/*
+	   DeleteTeamBySlug deletes a team reference by slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#delete-a-team
+	*/
+	DeleteTeamBySlug(ctx context.Context, org string, slug string) (*github.Response, error)
+	/*
+	   EditCommentByID edits the body text of a discussion comment by team ID.
+	   Authenticated user must grant write:discussion scope.
+	   User is allowed to edit body of a comment only.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#update-a-discussion-comment
+	*/
+	EditCommentByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int, commentNumber int, comment github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   EditCommentBySlug edits the body text of a discussion comment by team slug.
+	   Authenticated user must grant write:discussion scope.
+	   User is allowed to edit body of a comment only.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#update-a-discussion-comment
+	*/
+	EditCommentBySlug(ctx context.Context, org string, slug string, discussionNumber int, commentNumber int, comment github.DiscussionComment) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   EditDiscussionByID edits the title and body text of a discussion post given Organization and Team ID.
+	   Authenticated user must grant write:discussion scope.
+	   User is allowed to change Title and Body of a discussion only.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#update-a-discussion
+	*/
+	EditDiscussionByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int, discussion github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   EditDiscussionBySlug edits the title and body text of a discussion post given Organization name and Team's slug.
+	   Authenticated user must grant write:discussion scope.
+	   User is allowed to change Title and Body of a discussion only.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#update-a-discussion
+	*/
+	EditDiscussionBySlug(ctx context.Context, org string, slug string, discussionNumber int, discussion github.TeamDiscussion) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   EditTeamByID edits a team, given an organization ID, selected by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#update-a-team
+	*/
+	EditTeamByID(ctx context.Context, orgID int64, teamID int64, team github.NewTeam, removeParent bool) (*github.Team, *github.Response, error)
+	/*
+	   EditTeamBySlug edits a team, given an organization name, by slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#update-a-team
+	*/
+	EditTeamBySlug(ctx context.Context, org string, slug string, team github.NewTeam, removeParent bool) (*github.Team, *github.Response, error)
+	/*
+	   GetCommentByID gets a specific comment on a team discussion by team ID.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#get-a-discussion-comment
+	*/
+	GetCommentByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int, commentNumber int) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   GetCommentBySlug gets a specific comment on a team discussion by team slug.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#get-a-discussion-comment
+	*/
+	GetCommentBySlug(ctx context.Context, org string, slug string, discussionNumber int, commentNumber int) (*github.DiscussionComment, *github.Response, error)
+	/*
+	   GetDiscussionByID gets a specific discussion on a team's page given Organization and Team ID.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#get-a-discussion
+	*/
+	GetDiscussionByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   GetDiscussionBySlug gets a specific discussion on a team's page given Organization name and Team's slug.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#get-a-discussion
+	*/
+	GetDiscussionBySlug(ctx context.Context, org string, slug string, discussionNumber int) (*github.TeamDiscussion, *github.Response, error)
+	/*
+	   GetExternalGroup fetches an external group.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#get-an-external-group
+	*/
+	GetExternalGroup(ctx context.Context, org string, groupID int64) (*github.ExternalGroup, *github.Response, error)
+	/*
+	   GetTeamByID fetches a team, given a specified organization ID, by ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#get-a-team-by-name
+	*/
+	GetTeamByID(ctx context.Context, orgID int64, teamID int64) (*github.Team, *github.Response, error)
+	/*
+	   GetTeamBySlug fetches a team, given a specified organization name, by slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#get-a-team-by-name
+	*/
+	GetTeamBySlug(ctx context.Context, org string, slug string) (*github.Team, *github.Response, error)
+	/*
+	   GetTeamMembershipByID returns the membership status for a user in a team, given a specified
+	   organization ID, by team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
+	*/
+	GetTeamMembershipByID(ctx context.Context, orgID int64, teamID int64, user string) (*github.Membership, *github.Response, error)
+	/*
+	   GetTeamMembershipBySlug returns the membership status for a user in a team, given a specified
+	   organization name, by team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#get-team-membership-for-a-user
+	*/
+	GetTeamMembershipBySlug(ctx context.Context, org string, slug string, user string) (*github.Membership, *github.Response, error)
+	/*
+	   IsTeamRepoByID checks if a team, given its ID, manages the specified repository. If the
+	   repository is managed by team, a Repository is returned which includes the
+	   permissions team has for that repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-repository
+	*/
+	IsTeamRepoByID(ctx context.Context, orgID int64, teamID int64, owner string, repo string) (*github.Repository, *github.Response, error)
+	/*
+	   IsTeamRepoBySlug checks if a team, given its slug, manages the specified repository. If the
+	   repository is managed by team, a Repository is returned which includes the
+	   permissions team has for that repo.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-repository
+	*/
+	IsTeamRepoBySlug(ctx context.Context, org string, slug string, owner string, repo string) (*github.Repository, *github.Response, error)
+	/*
+	   ListChildTeamsByParentID lists child teams for a parent team given parent ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-child-teams
+	*/
+	ListChildTeamsByParentID(ctx context.Context, orgID int64, teamID int64, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   ListChildTeamsByParentSlug lists child teams for a parent team given parent slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-child-teams
+	*/
+	ListChildTeamsByParentSlug(ctx context.Context, org string, slug string, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   ListCommentsByID lists all comments on a team discussion by team ID.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#list-discussion-comments
+	*/
+	ListCommentsByID(ctx context.Context, orgID int64, teamID int64, discussionNumber int, options *github.DiscussionCommentListOptions) ([]*github.DiscussionComment, *github.Response, error)
+	/*
+	   ListCommentsBySlug lists all comments on a team discussion by team slug.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#list-discussion-comments
+	*/
+	ListCommentsBySlug(ctx context.Context, org string, slug string, discussionNumber int, options *github.DiscussionCommentListOptions) ([]*github.DiscussionComment, *github.Response, error)
+	/*
+	   ListDiscussionsByID lists all discussions on team's page given Organization and Team ID.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#list-discussions
+	*/
+	ListDiscussionsByID(ctx context.Context, orgID int64, teamID int64, opts *github.DiscussionListOptions) ([]*github.TeamDiscussion, *github.Response, error)
+	/*
+	   ListDiscussionsBySlug lists all discussions on team's page given Organization name and Team's slug.
+	   Authenticated user must grant read:discussion scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/discussions#list-discussions
+	*/
+	ListDiscussionsBySlug(ctx context.Context, org string, slug string, opts *github.DiscussionListOptions) ([]*github.TeamDiscussion, *github.Response, error)
+	/*
+	   ListExternalGroups lists external groups connected to a team on GitHub.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-in-an-organization
+	*/
+	ListExternalGroups(ctx context.Context, org string, opts *github.ListExternalGroupsOptions) (*github.ExternalGroupList, *github.Response, error)
+	/*
+	   ListIDPGroupsForTeamByID lists IDP groups connected to a team on GitHub
+	   given organization and team IDs.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
+	*/
+	ListIDPGroupsForTeamByID(ctx context.Context, orgID int64, teamID int64) (*github.IDPGroupList, *github.Response, error)
+	/*
+	   ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
+	   given organization name and team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
+	*/
+	ListIDPGroupsForTeamBySlug(ctx context.Context, org string, slug string) (*github.IDPGroupList, *github.Response, error)
+	/*
+	   ListIDPGroupsInOrganization lists IDP groups available in an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-an-organization
+	*/
+	ListIDPGroupsInOrganization(ctx context.Context, org string, opts *github.ListCursorOptions) (*github.IDPGroupList, *github.Response, error)
+	/*
+	   ListPendingTeamInvitationsByID gets pending invitation list of a team, given a specified
+	   organization ID, by team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#list-pending-team-invitations
+	*/
+	ListPendingTeamInvitationsByID(ctx context.Context, orgID int64, teamID int64, opts *github.ListOptions) ([]*github.Invitation, *github.Response, error)
+	/*
+	   ListPendingTeamInvitationsBySlug get pending invitation list of a team, given a specified
+	   organization name, by team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#list-pending-team-invitations
+	*/
+	ListPendingTeamInvitationsBySlug(ctx context.Context, org string, slug string, opts *github.ListOptions) ([]*github.Invitation, *github.Response, error)
+	/*
+	   ListTeamMembersByID lists all of the users who are members of a team, given a specified
+	   organization ID, by team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
+	*/
+	ListTeamMembersByID(ctx context.Context, orgID int64, teamID int64, opts *github.TeamListTeamMembersOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListTeamMembersBySlug lists all of the users who are members of a team, given a specified
+	   organization name, by team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
+	*/
+	ListTeamMembersBySlug(ctx context.Context, org string, slug string, opts *github.TeamListTeamMembersOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListTeamProjectsByID lists the organization projects for a team given the team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-projects
+	*/
+	ListTeamProjectsByID(ctx context.Context, orgID int64, teamID int64) ([]*github.Project, *github.Response, error)
+	/*
+	   ListTeamProjectsBySlug lists the organization projects for a team given the team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-projects
+	*/
+	ListTeamProjectsBySlug(ctx context.Context, org string, slug string) ([]*github.Project, *github.Response, error)
+	/*
+	   ListTeamReposByID lists the repositories given a team ID that the specified team has access to.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-repositories
+	*/
+	ListTeamReposByID(ctx context.Context, orgID int64, teamID int64, opts *github.ListOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListTeamReposBySlug lists the repositories given a team slug that the specified team has access to.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-repositories
+	*/
+	ListTeamReposBySlug(ctx context.Context, org string, slug string, opts *github.ListOptions) ([]*github.Repository, *github.Response, error)
+	/*
+	   ListTeams lists all of the teams for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-teams
+	*/
+	ListTeams(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   ListUserTeams lists a user's teams
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-teams-for-the-authenticated-user
+	*/
+	ListUserTeams(ctx context.Context, opts *github.ListOptions) ([]*github.Team, *github.Response, error)
+	/*
+	   RemoveConnectedExternalGroup removes the connection between an external group and a team.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#remove-the-connection-between-an-external-group-and-a-team
+	*/
+	RemoveConnectedExternalGroup(ctx context.Context, org string, slug string) (*github.Response, error)
+	/*
+	   RemoveTeamMembershipByID removes a user from a team, given a specified
+	   organization ID, by team ID.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#remove-team-membership-for-a-user
+	*/
+	RemoveTeamMembershipByID(ctx context.Context, orgID int64, teamID int64, user string) (*github.Response, error)
+	/*
+	   RemoveTeamMembershipBySlug removes a user from a team, given a specified
+	   organization name, by team slug.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/members#remove-team-membership-for-a-user
+	*/
+	RemoveTeamMembershipBySlug(ctx context.Context, org string, slug string, user string) (*github.Response, error)
+	/*
+	   RemoveTeamProjectByID removes an organization project from a team given team ID.
+	   An organization owner or a team maintainer can remove any project from the team.
+	   To remove a project from a team as an organization member, the authenticated user
+	   must have "read" access to both the team and project, or "admin" access to the team
+	   or project.
+	   Note: This endpoint removes the project from the team, but does not delete it.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-project-from-a-team
+	*/
+	RemoveTeamProjectByID(ctx context.Context, orgID int64, teamID int64, projectID int64) (*github.Response, error)
+	/*
+	   RemoveTeamProjectBySlug removes an organization project from a team given team slug.
+	   An organization owner or a team maintainer can remove any project from the team.
+	   To remove a project from a team as an organization member, the authenticated user
+	   must have "read" access to both the team and project, or "admin" access to the team
+	   or project.
+	   Note: This endpoint removes the project from the team, but does not delete it.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-project-from-a-team
+	*/
+	RemoveTeamProjectBySlug(ctx context.Context, org string, slug string, projectID int64) (*github.Response, error)
+	/*
+	   RemoveTeamRepoByID removes a repository from being managed by the specified
+	   team given the team ID. Note that this does not delete the repository, it
+	   just removes it from the team.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-repository-from-a-team
+	*/
+	RemoveTeamRepoByID(ctx context.Context, orgID int64, teamID int64, owner string, repo string) (*github.Response, error)
+	/*
+	   RemoveTeamRepoBySlug removes a repository from being managed by the specified
+	   team given the team slug. Note that this does not delete the repository, it
+	   just removes it from the team.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-repository-from-a-team
+	*/
+	RemoveTeamRepoBySlug(ctx context.Context, org string, slug string, owner string, repo string) (*github.Response, error)
+	/*
+	   ReviewTeamProjectsByID checks whether a team, given its ID, has read, write, or admin
+	   permissions for an organization project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-project
+	*/
+	ReviewTeamProjectsByID(ctx context.Context, orgID int64, teamID int64, projectID int64) (*github.Project, *github.Response, error)
+	/*
+	   ReviewTeamProjectsBySlug checks whether a team, given its slug, has read, write, or admin
+	   permissions for an organization project.
+
+	   GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-project
+	*/
+	ReviewTeamProjectsBySlug(ctx context.Context, org string, slug string, projectID int64) (*github.Project, *github.Response, error)
+	/*
+	   UpdateConnectedExternalGroup updates the connection between an external group and a team.
+
+	   GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#update-the-connection-between-an-external-group-and-a-team
+	*/
+	UpdateConnectedExternalGroup(ctx context.Context, org string, slug string, eg *github.ExternalGroup) (*github.ExternalGroup, *github.Response, error)
 }
 
+/*
+UsersService handles communication with the user related
+methods of the GitHub API.
+
+GitHub API docs: https://docs.github.com/en/rest/users/
+*/
 type UsersService interface {
-	AcceptInvitation(context.Context, int64) (*github.Response, error)
-	AddEmails(context.Context, []string) ([]*github.UserEmail, *github.Response, error)
-	BlockUser(context.Context, string) (*github.Response, error)
-	CreateGPGKey(context.Context, string) (*github.GPGKey, *github.Response, error)
-	CreateKey(context.Context, *github.Key) (*github.Key, *github.Response, error)
-	CreateProject(context.Context, *github.CreateUserProjectOptions) (*github.Project, *github.Response, error)
-	CreateSSHSigningKey(context.Context, *github.Key) (*github.SSHSigningKey, *github.Response, error)
-	DeclineInvitation(context.Context, int64) (*github.Response, error)
-	DeleteEmails(context.Context, []string) (*github.Response, error)
-	DeleteGPGKey(context.Context, int64) (*github.Response, error)
-	DeleteKey(context.Context, int64) (*github.Response, error)
-	DeletePackage(context.Context, string, string, string) (*github.Response, error)
-	DeleteSSHSigningKey(context.Context, int64) (*github.Response, error)
-	DemoteSiteAdmin(context.Context, string) (*github.Response, error)
-	Edit(context.Context, *github.User) (*github.User, *github.Response, error)
-	Follow(context.Context, string) (*github.Response, error)
-	Get(context.Context, string) (*github.User, *github.Response, error)
-	GetByID(context.Context, int64) (*github.User, *github.Response, error)
-	GetGPGKey(context.Context, int64) (*github.GPGKey, *github.Response, error)
-	GetHovercard(context.Context, string, *github.HovercardOptions) (*github.Hovercard, *github.Response, error)
-	GetKey(context.Context, int64) (*github.Key, *github.Response, error)
-	GetPackage(context.Context, string, string, string) (*github.Package, *github.Response, error)
-	GetSSHSigningKey(context.Context, int64) (*github.SSHSigningKey, *github.Response, error)
-	IsBlocked(context.Context, string) (bool, *github.Response, error)
-	IsFollowing(context.Context, string, string) (bool, *github.Response, error)
-	ListAll(context.Context, *github.UserListOptions) ([]*github.User, *github.Response, error)
-	ListBlockedUsers(context.Context, *github.ListOptions) ([]*github.User, *github.Response, error)
-	ListEmails(context.Context, *github.ListOptions) ([]*github.UserEmail, *github.Response, error)
-	ListFollowers(context.Context, string, *github.ListOptions) ([]*github.User, *github.Response, error)
-	ListFollowing(context.Context, string, *github.ListOptions) ([]*github.User, *github.Response, error)
-	ListGPGKeys(context.Context, string, *github.ListOptions) ([]*github.GPGKey, *github.Response, error)
-	ListInvitations(context.Context, *github.ListOptions) ([]*github.RepositoryInvitation, *github.Response, error)
-	ListKeys(context.Context, string, *github.ListOptions) ([]*github.Key, *github.Response, error)
-	ListPackages(context.Context, string, *github.PackageListOptions) ([]*github.Package, *github.Response, error)
-	ListProjects(context.Context, string, *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
-	ListSSHSigningKeys(context.Context, string, *github.ListOptions) ([]*github.SSHSigningKey, *github.Response, error)
-	PackageDeleteVersion(context.Context, string, string, string, int64) (*github.Response, error)
-	PackageGetAllVersions(context.Context, string, string, string, *github.PackageListOptions) ([]*github.PackageVersion, *github.Response, error)
-	PackageGetVersion(context.Context, string, string, string, int64) (*github.PackageVersion, *github.Response, error)
-	PackageRestoreVersion(context.Context, string, string, string, int64) (*github.Response, error)
-	PromoteSiteAdmin(context.Context, string) (*github.Response, error)
-	RestorePackage(context.Context, string, string, string) (*github.Response, error)
-	Suspend(context.Context, string, *github.UserSuspendOptions) (*github.Response, error)
-	UnblockUser(context.Context, string) (*github.Response, error)
-	Unfollow(context.Context, string) (*github.Response, error)
-	Unsuspend(context.Context, string) (*github.Response, error)
+	/*
+	   AcceptInvitation accepts the currently-open repository invitation for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#accept-a-repository-invitation
+	*/
+	AcceptInvitation(ctx context.Context, invitationID int64) (*github.Response, error)
+	/*
+	   AddEmails adds email addresses of the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/emails#add-an-email-address-for-the-authenticated-user
+	*/
+	AddEmails(ctx context.Context, emails []string) ([]*github.UserEmail, *github.Response, error)
+	/*
+	   BlockUser blocks specified user for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/blocking#block-a-user
+	*/
+	BlockUser(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   CreateGPGKey creates a GPG key. It requires authenticatation via Basic Auth
+	   or OAuth with at least write:gpg_key scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#create-a-gpg-key
+	*/
+	CreateGPGKey(ctx context.Context, armoredPublicKey string) (*github.GPGKey, *github.Response, error)
+	/*
+	   CreateKey adds a public key for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/keys#create-a-public-ssh-key-for-the-authenticated-user
+	*/
+	CreateKey(ctx context.Context, key *github.Key) (*github.Key, *github.Response, error)
+	/*
+	   CreateProject creates a GitHub Project for the current user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-a-user-project
+	*/
+	CreateProject(ctx context.Context, opts *github.CreateUserProjectOptions) (*github.Project, *github.Response, error)
+	/*
+	   CreateSSHSigningKey adds a SSH signing key for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#create-a-ssh-signing-key-for-the-authenticated-user
+	*/
+	CreateSSHSigningKey(ctx context.Context, key *github.Key) (*github.SSHSigningKey, *github.Response, error)
+	/*
+	   DeclineInvitation declines the currently-open repository invitation for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#decline-a-repository-invitation
+	*/
+	DeclineInvitation(ctx context.Context, invitationID int64) (*github.Response, error)
+	/*
+	   DeleteEmails deletes email addresses from authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/emails#delete-an-email-address-for-the-authenticated-user
+	*/
+	DeleteEmails(ctx context.Context, emails []string) (*github.Response, error)
+	/*
+	   DeleteGPGKey deletes a GPG key. It requires authentication via Basic Auth or
+	   via OAuth with at least admin:gpg_key scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#delete-a-gpg-key-for-the-authenticated-user
+	*/
+	DeleteGPGKey(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   DeleteKey deletes a public key.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/keys#delete-a-public-ssh-key-for-the-authenticated-user
+	*/
+	DeleteKey(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   Delete a package from a user. Passing the empty string for "user" will
+	   delete the package for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-for-a-user
+	*/
+	DeletePackage(ctx context.Context, user string, packageType string, packageName string) (*github.Response, error)
+	/*
+	   DeleteKey deletes a SSH signing key for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#delete-an-ssh-signing-key-for-the-authenticated-user
+	*/
+	DeleteSSHSigningKey(ctx context.Context, id int64) (*github.Response, error)
+	/*
+	   DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#demote-a-site-administrator-to-an-ordinary-user
+	*/
+	DemoteSiteAdmin(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   Edit the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/users#update-the-authenticated-user
+	*/
+	Edit(ctx context.Context, user *github.User) (*github.User, *github.Response, error)
+	/*
+	   Follow will cause the authenticated user to follow the specified user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#follow-a-user
+	*/
+	Follow(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   Get fetches a user. Passing the empty string will fetch the authenticated
+	   user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/users#get-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/users#get-a-user
+	*/
+	Get(ctx context.Context, user string) (*github.User, *github.Response, error)
+	/*
+	   GetByID fetches a user.
+
+	   Note: GetByID uses the undocumented GitHub API endpoint /user/:id.
+	*/
+	GetByID(ctx context.Context, id int64) (*github.User, *github.Response, error)
+	/*
+	   GetGPGKey gets extended details for a single GPG key. It requires authentication
+	   via Basic Auth or via OAuth with at least read:gpg_key scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#get-a-gpg-key-for-the-authenticated-user
+	*/
+	GetGPGKey(ctx context.Context, id int64) (*github.GPGKey, *github.Response, error)
+	/*
+	   GetHovercard fetches contextual information about user. It requires authentication
+	   via Basic Auth or via OAuth with the repo scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/users#get-contextual-information-for-a-user
+	*/
+	GetHovercard(ctx context.Context, user string, opts *github.HovercardOptions) (*github.Hovercard, *github.Response, error)
+	/*
+	   GetKey fetches a single public key.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/keys#get-a-public-ssh-key-for-the-authenticated-user
+	*/
+	GetKey(ctx context.Context, id int64) (*github.Key, *github.Response, error)
+	/*
+	   Get a package by name for a user. Passing the empty string for "user" will
+	   get the package for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-for-a-user
+	*/
+	GetPackage(ctx context.Context, user string, packageType string, packageName string) (*github.Package, *github.Response, error)
+	/*
+	   GetSSHSigningKey fetches a single SSH signing key for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#get-an-ssh-signing-key-for-the-authenticated-user
+	*/
+	GetSSHSigningKey(ctx context.Context, id int64) (*github.SSHSigningKey, *github.Response, error)
+	/*
+	   IsBlocked reports whether specified user is blocked by the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/blocking#check-if-a-user-is-blocked-by-the-authenticated-user
+	*/
+	IsBlocked(ctx context.Context, user string) (bool, *github.Response, error)
+	/*
+	   IsFollowing checks if "user" is following "target". Passing the empty
+	   string for "user" will check if the authenticated user is following "target".
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#check-if-a-person-is-followed-by-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#check-if-a-user-follows-another-user
+	*/
+	IsFollowing(ctx context.Context, user string, target string) (bool, *github.Response, error)
+	/*
+	   ListAll lists all GitHub users.
+
+	   To paginate through all users, populate 'Since' with the ID of the last user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/users#list-users
+	*/
+	ListAll(ctx context.Context, opts *github.UserListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListBlockedUsers lists all the blocked users by the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/blocking#list-users-blocked-by-the-authenticated-user
+	*/
+	ListBlockedUsers(ctx context.Context, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListEmails lists all email addresses for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/emails#list-email-addresses-for-the-authenticated-user
+	*/
+	ListEmails(ctx context.Context, opts *github.ListOptions) ([]*github.UserEmail, *github.Response, error)
+	/*
+	   ListFollowers lists the followers for a user. Passing the empty string will
+	   fetch followers for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#list-followers-of-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#list-followers-of-a-user
+	*/
+	ListFollowers(ctx context.Context, user string, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListFollowing lists the people that a user is following. Passing the empty
+	   string will list people the authenticated user is following.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#list-the-people-the-authenticated-user-follows
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#list-the-people-a-user-follows
+	*/
+	ListFollowing(ctx context.Context, user string, opts *github.ListOptions) ([]*github.User, *github.Response, error)
+	/*
+	   ListGPGKeys lists the public GPG keys for a user. Passing the empty
+	   string will fetch keys for the authenticated user. It requires authentication
+	   via Basic Auth or via OAuth with at least read:gpg_key scope.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#list-gpg-keys-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#list-gpg-keys-for-a-user
+	*/
+	ListGPGKeys(ctx context.Context, user string, opts *github.ListOptions) ([]*github.GPGKey, *github.Response, error)
+	/*
+	   ListInvitations lists all currently-open repository invitations for the
+	   authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
+	*/
+	ListInvitations(ctx context.Context, opts *github.ListOptions) ([]*github.RepositoryInvitation, *github.Response, error)
+	/*
+	   ListKeys lists the verified public keys for a user. Passing the empty
+	   string will fetch keys for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/keys#list-public-ssh-keys-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/keys#list-public-keys-for-a-user
+	*/
+	ListKeys(ctx context.Context, user string, opts *github.ListOptions) ([]*github.Key, *github.Response, error)
+	/*
+	   List the packages for a user. Passing the empty string for "user" will
+	   list packages for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#list-packages-for-the-authenticated-users-namespace
+	   GitHub API docs: https://docs.github.com/en/rest/packages#list-packages-for-a-user
+	*/
+	ListPackages(ctx context.Context, user string, opts *github.PackageListOptions) ([]*github.Package, *github.Response, error)
+	/*
+	   ListProjects lists the projects for the specified user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-user-projects
+	*/
+	ListProjects(ctx context.Context, user string, opts *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
+	/*
+	   ListSSHSigningKeys lists the SSH signing keys for a user. Passing an empty
+	   username string will fetch SSH signing keys for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-a-user
+	*/
+	ListSSHSigningKeys(ctx context.Context, user string, opts *github.ListOptions) ([]*github.SSHSigningKey, *github.Response, error)
+	/*
+	   Delete a package version for a user. Passing the empty string for "user" will
+	   delete the version for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-version-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-package-version-for-a-user
+	*/
+	PackageDeleteVersion(ctx context.Context, user string, packageType string, packageName string, packageVersionID int64) (*github.Response, error)
+	/*
+	   Get all versions of a package for a user. Passing the empty string for "user" will
+	   get versions for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-all-package-versions-for-a-package-owned-by-a-user
+	*/
+	PackageGetAllVersions(ctx context.Context, user string, packageType string, packageName string, opts *github.PackageListOptions) ([]*github.PackageVersion, *github.Response, error)
+	/*
+	   Get a specific version of a package for a user. Passing the empty string for "user" will
+	   get the version for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-version-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-version-for-a-user
+	*/
+	PackageGetVersion(ctx context.Context, user string, packageType string, packageName string, packageVersionID int64) (*github.PackageVersion, *github.Response, error)
+	/*
+	   Restore a package version to a user. Passing the empty string for "user" will
+	   restore the version for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-version-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-package-version-for-a-user
+	*/
+	PackageRestoreVersion(ctx context.Context, user string, packageType string, packageName string, packageVersionID int64) (*github.Response, error)
+	/*
+	   PromoteSiteAdmin promotes a user to a site administrator of a GitHub Enterprise instance.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#promote-an-ordinary-user-to-a-site-administrator
+	*/
+	PromoteSiteAdmin(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   Restore a package to a user. Passing the empty string for "user" will
+	   restore the package for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-for-the-authenticated-user
+	   GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-for-a-user
+	*/
+	RestorePackage(ctx context.Context, user string, packageType string, packageName string) (*github.Response, error)
+	/*
+	   Suspend a user on a GitHub Enterprise instance.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#suspend-a-user
+	*/
+	Suspend(ctx context.Context, user string, opts *github.UserSuspendOptions) (*github.Response, error)
+	/*
+	   UnblockUser unblocks specified user for the authenticated user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/blocking#unblock-a-user
+	*/
+	UnblockUser(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   Unfollow will cause the authenticated user to unfollow the specified user.
+
+	   GitHub API docs: https://docs.github.com/en/rest/users/followers#unfollow-a-user
+	*/
+	Unfollow(ctx context.Context, user string) (*github.Response, error)
+	/*
+	   Unsuspend a user on a GitHub Enterprise instance.
+
+	   GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#unsuspend-a-user
+	*/
+	Unsuspend(ctx context.Context, user string) (*github.Response, error)
 }

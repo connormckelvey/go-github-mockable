@@ -2,27 +2,37 @@ package generator
 
 import (
 	"fmt"
+	"go/ast"
+	"go/build"
+	"go/doc"
+	"go/parser"
+	"go/token"
 	"io"
 	"reflect"
 	"strings"
 
 	"github.com/dave/jennifer/jen"
 	"github.com/google/go-github/v48/github"
+	"github.com/google/uuid"
 )
 
 type Generator struct {
-	f        *jen.File
-	t        reflect.Type
-	configs  []reflect.StructField
-	services []reflect.StructField
+	f           *jen.File
+	t           reflect.Type
+	configs     []reflect.StructField
+	services    []reflect.StructField
+	methods     []reflect.Method
+	packageInfo *PackageInfo
 }
 
 func New() *Generator {
 	return &Generator{
-		f:        jen.NewFile("gogithubmockable"),
-		t:        reflect.TypeOf(github.Client{}),
-		configs:  make([]reflect.StructField, 0),
-		services: make([]reflect.StructField, 0),
+		f:           jen.NewFile("gogithubmockable"),
+		t:           reflect.TypeOf(github.Client{}),
+		configs:     make([]reflect.StructField, 0),
+		services:    make([]reflect.StructField, 0),
+		methods:     make([]reflect.Method, 0),
+		packageInfo: newPackageInfo(),
 	}
 }
 
@@ -39,6 +49,58 @@ func (g *Generator) Generate(w io.Writer) error {
 		}
 	}
 
+	for i := 0; i < g.t.NumMethod(); i++ {
+		m := g.t.Method(i)
+		if !m.IsExported() {
+			continue
+		}
+		g.methods = append(g.methods, m)
+	}
+
+	pkg, err := build.Import(
+		g.t.PkgPath(),
+		"",
+		build.FindOnly,
+	)
+	if err != nil {
+		return err
+	}
+
+	fs := token.NewFileSet()
+	pkgs, err := parser.ParseDir(fs, pkg.Dir, nil, parser.ParseComments)
+	if err != nil {
+		return err
+	}
+
+	for _, typ := range doc.New(pkgs["github"], "", doc.AllDecls).Types {
+		typeInfo := newTypeInfo(typ.Name)
+		typeInfo.Doc = typ.Doc
+
+		st, ok := typ.Decl.Specs[0].(*ast.TypeSpec).Type.(*ast.StructType)
+		if ok {
+			for _, f := range st.Fields.List {
+				name := uuid.NewString()
+				if len(f.Names) > 0 {
+					name = f.Names[0].Name
+				}
+				typeInfo.FieldDocs[name] = f.Doc.Text()
+			}
+		}
+		for _, m := range typ.Methods {
+			typeInfo.MethodDocs[m.Name] = m.Doc
+			params := []string{}
+			for _, p := range m.Decl.Type.Params.List {
+				for _, name := range p.Names {
+					params = append(params, name.Name)
+
+				}
+			}
+			typeInfo.MethodParams[m.Name] = params
+		}
+
+		g.packageInfo.Types[typeInfo.Name] = typeInfo
+	}
+
 	g.GenClient()
 	g.GenClientAPI()
 
@@ -50,6 +112,7 @@ func (g *Generator) Generate(w io.Writer) error {
 }
 
 func (g *Generator) GenClient() {
+	g.f.Comment(g.packageInfo.Types["Client"].Doc)
 	g.f.Type().Id("Client").Struct(
 		jen.Id("client").Op("*").Qual(g.t.PkgPath(), g.t.Name()),
 	)
@@ -65,9 +128,11 @@ func (g *Generator) GenClient() {
 		Line()
 
 	for _, config := range g.configs {
+		g.f.Comment(fmt.Sprintf("Get%s returns the %s", config.Name, g.packageInfo.Types["Client"].FieldDocs[config.Name]))
 		getter := g.f.Func().Op("(").Id("c").Op("*").Qual("", "Client").Op(")").Id(fmt.Sprintf("Get%s", config.Name)).
 			Params()
 
+		g.f.Comment(fmt.Sprintf("Set%s sets the %s", config.Name, g.packageInfo.Types["Client"].FieldDocs[config.Name]))
 		setter := g.f.Func().Op("(").Id("c").Op("*").Qual("", "Client").Op(")").Id(fmt.Sprintf("Set%s", config.Name))
 
 		ct := config.Type
@@ -92,7 +157,12 @@ func (g *Generator) GenClient() {
 	}
 
 	for _, service := range g.services {
-		g.f.Func().Op("(").Id("c").Op("*").Qual("", "Client").Op(")").Id(fmt.Sprintf("Get%s", service.Name)).
+		serviceInfo := g.packageInfo.Types[service.Name+"Service"]
+		if serviceInfo != nil {
+			g.f.Comment(serviceInfo.Doc)
+		}
+
+		g.f.Func().Op("(").Id("c").Op("*").Qual("", "Client").Op(")").Id(fmt.Sprintf("%s", service.Name)).
 			Params().
 			Qual("", fmt.Sprintf("%sService", service.Name)).
 			Block(jen.Return(jen.Id("c").Dot("client").Dot(service.Name))).
@@ -103,6 +173,7 @@ func (g *Generator) GenClient() {
 func (g *Generator) GenClientAPI() {
 	configs := g.configs
 	services := g.services
+	packageInfo := g.packageInfo
 
 	g.f.Type().Id("ClientAPI").
 		InterfaceFunc(func(g *jen.Group) {
@@ -111,7 +182,11 @@ func (g *Generator) GenClientAPI() {
 				setter := fmt.Sprintf("Set%s", config.Name)
 
 				ct := config.Type
+
+				g.Comment(fmt.Sprintf("Get%s returns the %s", config.Name, packageInfo.Types["Client"].FieldDocs[config.Name]))
 				gid := g.Id(getter).Params()
+
+				g.Comment(fmt.Sprintf("Set%s sets the %s", config.Name, packageInfo.Types["Client"].FieldDocs[config.Name]))
 				sid := g.Id(setter)
 
 				if config.Type.Kind() == reflect.Pointer {
@@ -123,8 +198,14 @@ func (g *Generator) GenClientAPI() {
 				}
 				gid.Qual(ct.PkgPath(), ct.Name())
 			}
+
 			for _, service := range services {
-				name := fmt.Sprintf("Get%s", service.Name)
+				name := fmt.Sprintf("%s", service.Name)
+				serviceInfo := packageInfo.Types[service.Name+"Service"]
+
+				if serviceInfo != nil {
+					g.Comment(serviceInfo.Doc)
+				}
 				g.Id(name).Params().Qual("", fmt.Sprintf("%sService", service.Name))
 			}
 		}).
@@ -132,6 +213,10 @@ func (g *Generator) GenClientAPI() {
 }
 
 func (g *Generator) GenServiceInterface(service reflect.StructField) {
+	serviceInfo := g.packageInfo.Types[service.Name+"Service"]
+	if serviceInfo != nil {
+		g.f.Comment(serviceInfo.Doc)
+	}
 	g.f.Type().Id(fmt.Sprintf("%sService", service.Name)).
 		InterfaceFunc(func(g *jen.Group) {
 			for i := 0; i < service.Type.NumMethod(); i++ {
@@ -139,12 +224,24 @@ func (g *Generator) GenServiceInterface(service reflect.StructField) {
 				if !m.IsExported() {
 					continue
 				}
+				if serviceInfo != nil {
+					g.Comment(serviceInfo.MethodDocs[m.Name])
 
+				}
 				g.Id(m.Name).
 					ParamsFunc(func(g *jen.Group) {
 						for i := 1; i < m.Type.NumIn(); i++ {
 							p := m.Type.In(i)
-							id := g.Id("")
+
+							var idStr string
+							if serviceInfo != nil {
+								paramsInfo := serviceInfo.MethodParams[m.Name]
+								if len(paramsInfo) > i-1 {
+									idStr = paramsInfo[i-1]
+								}
+							}
+
+							id := g.Id(idStr)
 
 							if p.Kind() == reflect.Slice && p.Name() == "" {
 								p = p.Elem()

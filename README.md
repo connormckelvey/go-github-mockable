@@ -31,5 +31,4 @@ func main() {
 
 ## TODO
 
-- Copy GoDoc comments from source (DX)
-- Add names to interface method definitions (DX)
+- Copy remaining util methods on *github.Client (not services or opts)
