@@ -3803,6 +3803,22 @@ func (mr *MockDependabotServiceMockRecorder) GetOrgSecret(ctx, org, name interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrgSecret", reflect.TypeOf((*MockDependabotService)(nil).GetOrgSecret), ctx, org, name)
 }
 
+// GetRepoAlert mocks base method.
+func (m *MockDependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*github.DependabotAlert, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRepoAlert", ctx, owner, repo, number)
+	ret0, _ := ret[0].(*github.DependabotAlert)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetRepoAlert indicates an expected call of GetRepoAlert.
+func (mr *MockDependabotServiceMockRecorder) GetRepoAlert(ctx, owner, repo, number interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRepoAlert", reflect.TypeOf((*MockDependabotService)(nil).GetRepoAlert), ctx, owner, repo, number)
+}
+
 // GetRepoPublicKey mocks base method.
 func (m *MockDependabotService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*github.PublicKey, *github.Response, error) {
 	m.ctrl.T.Helper()
@@ -3835,6 +3851,22 @@ func (mr *MockDependabotServiceMockRecorder) GetRepoSecret(ctx, owner, repo, nam
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRepoSecret", reflect.TypeOf((*MockDependabotService)(nil).GetRepoSecret), ctx, owner, repo, name)
 }
 
+// ListOrgAlerts mocks base method.
+func (m *MockDependabotService) ListOrgAlerts(ctx context.Context, org string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListOrgAlerts", ctx, org, opts)
+	ret0, _ := ret[0].([]*github.DependabotAlert)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListOrgAlerts indicates an expected call of ListOrgAlerts.
+func (mr *MockDependabotServiceMockRecorder) ListOrgAlerts(ctx, org, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOrgAlerts", reflect.TypeOf((*MockDependabotService)(nil).ListOrgAlerts), ctx, org, opts)
+}
+
 // ListOrgSecrets mocks base method.
 func (m *MockDependabotService) ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error) {
 	m.ctrl.T.Helper()
@@ -3849,6 +3881,22 @@ func (m *MockDependabotService) ListOrgSecrets(ctx context.Context, org string, 
 func (mr *MockDependabotServiceMockRecorder) ListOrgSecrets(ctx, org, opts interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOrgSecrets", reflect.TypeOf((*MockDependabotService)(nil).ListOrgSecrets), ctx, org, opts)
+}
+
+// ListRepoAlerts mocks base method.
+func (m *MockDependabotService) ListRepoAlerts(ctx context.Context, owner, repo string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListRepoAlerts", ctx, owner, repo, opts)
+	ret0, _ := ret[0].([]*github.DependabotAlert)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListRepoAlerts indicates an expected call of ListRepoAlerts.
+func (mr *MockDependabotServiceMockRecorder) ListRepoAlerts(ctx, owner, repo, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRepoAlerts", reflect.TypeOf((*MockDependabotService)(nil).ListRepoAlerts), ctx, owner, repo, opts)
 }
 
 // ListRepoSecrets mocks base method.
@@ -5952,6 +6000,21 @@ func (m *MockOrganizationsService) EXPECT() *MockOrganizationsServiceMockRecorde
 	return m.recorder
 }
 
+// AddSecurityManagerTeam mocks base method.
+func (m *MockOrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddSecurityManagerTeam", ctx, org, team)
+	ret0, _ := ret[0].(*github.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddSecurityManagerTeam indicates an expected call of AddSecurityManagerTeam.
+func (mr *MockOrganizationsServiceMockRecorder) AddSecurityManagerTeam(ctx, org, team interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddSecurityManagerTeam", reflect.TypeOf((*MockOrganizationsService)(nil).AddSecurityManagerTeam), ctx, org, team)
+}
+
 // BlockUser mocks base method.
 func (m *MockOrganizationsService) BlockUser(ctx context.Context, org, user string) (*github.Response, error) {
 	m.ctrl.T.Helper()
@@ -6618,6 +6681,22 @@ func (mr *MockOrganizationsServiceMockRecorder) ListProjects(ctx, org, opts inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProjects", reflect.TypeOf((*MockOrganizationsService)(nil).ListProjects), ctx, org, opts)
 }
 
+// ListSecurityManagerTeams mocks base method.
+func (m *MockOrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*github.Team, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSecurityManagerTeams", ctx, org)
+	ret0, _ := ret[0].([]*github.Team)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListSecurityManagerTeams indicates an expected call of ListSecurityManagerTeams.
+func (mr *MockOrganizationsServiceMockRecorder) ListSecurityManagerTeams(ctx, org interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSecurityManagerTeams", reflect.TypeOf((*MockOrganizationsService)(nil).ListSecurityManagerTeams), ctx, org)
+}
+
 // PackageDeleteVersion mocks base method.
 func (m *MockOrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*github.Response, error) {
 	m.ctrl.T.Helper()
@@ -6769,6 +6848,21 @@ func (m *MockOrganizationsService) RemoveOutsideCollaborator(ctx context.Context
 func (mr *MockOrganizationsServiceMockRecorder) RemoveOutsideCollaborator(ctx, org, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveOutsideCollaborator", reflect.TypeOf((*MockOrganizationsService)(nil).RemoveOutsideCollaborator), ctx, org, user)
+}
+
+// RemoveSecurityManagerTeam mocks base method.
+func (m *MockOrganizationsService) RemoveSecurityManagerTeam(ctx context.Context, org, team string) (*github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveSecurityManagerTeam", ctx, org, team)
+	ret0, _ := ret[0].(*github.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RemoveSecurityManagerTeam indicates an expected call of RemoveSecurityManagerTeam.
+func (mr *MockOrganizationsServiceMockRecorder) RemoveSecurityManagerTeam(ctx, org, team interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveSecurityManagerTeam", reflect.TypeOf((*MockOrganizationsService)(nil).RemoveSecurityManagerTeam), ctx, org, team)
 }
 
 // RestorePackage mocks base method.

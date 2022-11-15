@@ -2146,6 +2146,12 @@ type DependabotService interface {
 	*/
 	GetOrgSecret(ctx context.Context, org string, name string) (*github.Secret, *github.Response, error)
 	/*
+	   GetRepoAlert gets a single repository Dependabot alert.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#get-a-dependabot-alert
+	*/
+	GetRepoAlert(ctx context.Context, owner string, repo string, number int) (*github.DependabotAlert, *github.Response, error)
+	/*
 	   GetRepoPublicKey gets a public key that should be used for Dependabot secret encryption.
 
 	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-public-key
@@ -2158,12 +2164,24 @@ type DependabotService interface {
 	*/
 	GetRepoSecret(ctx context.Context, owner string, repo string, name string) (*github.Secret, *github.Response, error)
 	/*
+	   ListOrgAlerts lists all Dependabot alerts of an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
+	*/
+	ListOrgAlerts(ctx context.Context, org string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
+	/*
 	   ListOrgSecrets lists all Dependabot secrets available in an organization
 	   without revealing their encrypted values.
 
 	   GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-organization-secrets
 	*/
 	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	/*
+	   ListRepoAlerts lists all Dependabot alerts of a repository.
+
+	   GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
+	*/
+	ListRepoAlerts(ctx context.Context, owner string, repo string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
 	/*
 	   ListRepoSecrets lists all Dependabot secrets available in a repository
 	   without revealing their encrypted values.
@@ -2892,6 +2910,12 @@ GitHub API docs: https://docs.github.com/en/rest/orgs/
 */
 type OrganizationsService interface {
 	/*
+	   AddSecurityManagerTeam adds a team to the list of security managers for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#add-a-security-manager-team
+	*/
+	AddSecurityManagerTeam(ctx context.Context, org string, team string) (*github.Response, error)
+	/*
 	   BlockUser blocks specified user from an organization.
 
 	   GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#block-a-user-from-an-organization
@@ -3178,6 +3202,12 @@ type OrganizationsService interface {
 	*/
 	ListProjects(ctx context.Context, org string, opts *github.ProjectListOptions) ([]*github.Project, *github.Response, error)
 	/*
+	   ListSecurityManagerTeams lists all security manager teams for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#list-security-manager-teams
+	*/
+	ListSecurityManagerTeams(ctx context.Context, org string) ([]*github.Team, *github.Response, error)
+	/*
 	   Delete a package version from an organization.
 
 	   GitHub API docs: https://docs.github.com/en/rest/packages#delete-package-version-for-an-organization
@@ -3240,6 +3270,12 @@ type OrganizationsService interface {
 	   GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#remove-outside-collaborator-from-an-organization
 	*/
 	RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*github.Response, error)
+	/*
+	   RemoveSecurityManagerTeam removes a team from the list of security managers for an organization.
+
+	   GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#remove-a-security-manager-team
+	*/
+	RemoveSecurityManagerTeam(ctx context.Context, org string, team string) (*github.Response, error)
 	/*
 	   Restore a package to an organization.
 

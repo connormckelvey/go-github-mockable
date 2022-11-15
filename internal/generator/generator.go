@@ -13,7 +13,6 @@ import (
 
 	"github.com/dave/jennifer/jen"
 	"github.com/google/go-github/v48/github"
-	"github.com/google/uuid"
 )
 
 type Generator struct {
@@ -81,7 +80,7 @@ func (g *Generator) Generate(w io.Writer) error {
 		st, ok := typ.Decl.Specs[0].(*ast.TypeSpec).Type.(*ast.StructType)
 		if ok {
 			for _, f := range st.Fields.List {
-				name := uuid.NewString()
+				name := ""
 				if len(f.Names) > 0 {
 					name = f.Names[0].Name
 				}
