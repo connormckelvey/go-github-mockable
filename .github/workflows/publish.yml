@@ -15,9 +15,8 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.18
-      - name: Check output
+      - name: Publish
         env:
           RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: |
-          echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.tag }}
+          GOPROXY: proxy.golang.org
+        run: go list -m "github.com/connormckelvey/go-github-mockable@${RELEASE_VERSION}"
