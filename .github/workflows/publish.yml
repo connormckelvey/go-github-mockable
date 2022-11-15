@@ -4,11 +4,11 @@ on:
     tags:
       - "v*.*.*"
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set output
+      - name: Set version
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - name: Set up Go
