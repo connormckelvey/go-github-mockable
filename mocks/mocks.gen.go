@@ -41,6 +41,22 @@ func (m *MockClientAPI) EXPECT() *MockClientAPIMockRecorder {
 	return m.recorder
 }
 
+// APIMeta mocks base method.
+func (m *MockClientAPI) APIMeta(ctx context.Context) (*github.APIMeta, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "APIMeta", ctx)
+	ret0, _ := ret[0].(*github.APIMeta)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// APIMeta indicates an expected call of APIMeta.
+func (mr *MockClientAPIMockRecorder) APIMeta(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "APIMeta", reflect.TypeOf((*MockClientAPI)(nil).APIMeta), ctx)
+}
+
 // Actions mocks base method.
 func (m *MockClientAPI) Actions() gogithubmockable.ActionsService {
 	m.ctrl.T.Helper()
@@ -111,6 +127,21 @@ func (mr *MockClientAPIMockRecorder) Authorizations() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authorizations", reflect.TypeOf((*MockClientAPI)(nil).Authorizations))
 }
 
+// BareDo mocks base method.
+func (m *MockClientAPI) BareDo(ctx context.Context, req *http.Request) (*github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BareDo", ctx, req)
+	ret0, _ := ret[0].(*github.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BareDo indicates an expected call of BareDo.
+func (mr *MockClientAPIMockRecorder) BareDo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BareDo", reflect.TypeOf((*MockClientAPI)(nil).BareDo), ctx, req)
+}
+
 // Billing mocks base method.
 func (m *MockClientAPI) Billing() gogithubmockable.BillingService {
 	m.ctrl.T.Helper()
@@ -137,6 +168,20 @@ func (m *MockClientAPI) Checks() gogithubmockable.ChecksService {
 func (mr *MockClientAPIMockRecorder) Checks() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Checks", reflect.TypeOf((*MockClientAPI)(nil).Checks))
+}
+
+// Client mocks base method.
+func (m *MockClientAPI) Client() *http.Client {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Client")
+	ret0, _ := ret[0].(*http.Client)
+	return ret0
+}
+
+// Client indicates an expected call of Client.
+func (mr *MockClientAPIMockRecorder) Client() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Client", reflect.TypeOf((*MockClientAPI)(nil).Client))
 }
 
 // CodeScanning mocks base method.
@@ -167,6 +212,21 @@ func (mr *MockClientAPIMockRecorder) Dependabot() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Dependabot", reflect.TypeOf((*MockClientAPI)(nil).Dependabot))
 }
 
+// Do mocks base method.
+func (m *MockClientAPI) Do(ctx context.Context, req *http.Request, v interface{}) (*github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Do", ctx, req, v)
+	ret0, _ := ret[0].(*github.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Do indicates an expected call of Do.
+func (mr *MockClientAPIMockRecorder) Do(ctx, req, v interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Do", reflect.TypeOf((*MockClientAPI)(nil).Do), ctx, req, v)
+}
+
 // Enterprise mocks base method.
 func (m *MockClientAPI) Enterprise() gogithubmockable.EnterpriseService {
 	m.ctrl.T.Helper()
@@ -193,6 +253,22 @@ func (m *MockClientAPI) GetBaseURL() *url.URL {
 func (mr *MockClientAPIMockRecorder) GetBaseURL() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBaseURL", reflect.TypeOf((*MockClientAPI)(nil).GetBaseURL))
+}
+
+// GetCodeOfConduct mocks base method.
+func (m *MockClientAPI) GetCodeOfConduct(ctx context.Context, key string) (*github.CodeOfConduct, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCodeOfConduct", ctx, key)
+	ret0, _ := ret[0].(*github.CodeOfConduct)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetCodeOfConduct indicates an expected call of GetCodeOfConduct.
+func (mr *MockClientAPIMockRecorder) GetCodeOfConduct(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCodeOfConduct", reflect.TypeOf((*MockClientAPI)(nil).GetCodeOfConduct), ctx, key)
 }
 
 // GetUploadURL mocks base method.
@@ -321,6 +397,70 @@ func (mr *MockClientAPIMockRecorder) Licenses() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Licenses", reflect.TypeOf((*MockClientAPI)(nil).Licenses))
 }
 
+// ListCodesOfConduct mocks base method.
+func (m *MockClientAPI) ListCodesOfConduct(ctx context.Context) ([]*github.CodeOfConduct, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListCodesOfConduct", ctx)
+	ret0, _ := ret[0].([]*github.CodeOfConduct)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListCodesOfConduct indicates an expected call of ListCodesOfConduct.
+func (mr *MockClientAPIMockRecorder) ListCodesOfConduct(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCodesOfConduct", reflect.TypeOf((*MockClientAPI)(nil).ListCodesOfConduct), ctx)
+}
+
+// ListEmojis mocks base method.
+func (m *MockClientAPI) ListEmojis(ctx context.Context) (map[string]string, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListEmojis", ctx)
+	ret0, _ := ret[0].(map[string]string)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListEmojis indicates an expected call of ListEmojis.
+func (mr *MockClientAPIMockRecorder) ListEmojis(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEmojis", reflect.TypeOf((*MockClientAPI)(nil).ListEmojis), ctx)
+}
+
+// ListServiceHooks mocks base method.
+func (m *MockClientAPI) ListServiceHooks(ctx context.Context) ([]*github.ServiceHook, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListServiceHooks", ctx)
+	ret0, _ := ret[0].([]*github.ServiceHook)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListServiceHooks indicates an expected call of ListServiceHooks.
+func (mr *MockClientAPIMockRecorder) ListServiceHooks(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListServiceHooks", reflect.TypeOf((*MockClientAPI)(nil).ListServiceHooks), ctx)
+}
+
+// Markdown mocks base method.
+func (m *MockClientAPI) Markdown(ctx context.Context, text string, opts *github.MarkdownOptions) (string, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Markdown", ctx, text, opts)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// Markdown indicates an expected call of Markdown.
+func (mr *MockClientAPIMockRecorder) Markdown(ctx, text, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Markdown", reflect.TypeOf((*MockClientAPI)(nil).Markdown), ctx, text, opts)
+}
+
 // Marketplace mocks base method.
 func (m *MockClientAPI) Marketplace() gogithubmockable.MarketplaceService {
 	m.ctrl.T.Helper()
@@ -347,6 +487,67 @@ func (m *MockClientAPI) Migrations() gogithubmockable.MigrationsService {
 func (mr *MockClientAPIMockRecorder) Migrations() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Migrations", reflect.TypeOf((*MockClientAPI)(nil).Migrations))
+}
+
+// NewFormRequest mocks base method.
+func (m *MockClientAPI) NewFormRequest(urlStr string, body io.Reader) (*http.Request, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewFormRequest", urlStr, body)
+	ret0, _ := ret[0].(*http.Request)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewFormRequest indicates an expected call of NewFormRequest.
+func (mr *MockClientAPIMockRecorder) NewFormRequest(urlStr, body interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewFormRequest", reflect.TypeOf((*MockClientAPI)(nil).NewFormRequest), urlStr, body)
+}
+
+// NewRequest mocks base method.
+func (m *MockClientAPI) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewRequest", method, urlStr, body)
+	ret0, _ := ret[0].(*http.Request)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewRequest indicates an expected call of NewRequest.
+func (mr *MockClientAPIMockRecorder) NewRequest(method, urlStr, body interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewRequest", reflect.TypeOf((*MockClientAPI)(nil).NewRequest), method, urlStr, body)
+}
+
+// NewUploadRequest mocks base method.
+func (m *MockClientAPI) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewUploadRequest", urlStr, reader, size, mediaType)
+	ret0, _ := ret[0].(*http.Request)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewUploadRequest indicates an expected call of NewUploadRequest.
+func (mr *MockClientAPIMockRecorder) NewUploadRequest(urlStr, reader, size, mediaType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewUploadRequest", reflect.TypeOf((*MockClientAPI)(nil).NewUploadRequest), urlStr, reader, size, mediaType)
+}
+
+// Octocat mocks base method.
+func (m *MockClientAPI) Octocat(ctx context.Context, message string) (string, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Octocat", ctx, message)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// Octocat indicates an expected call of Octocat.
+func (mr *MockClientAPIMockRecorder) Octocat(ctx, message interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Octocat", reflect.TypeOf((*MockClientAPI)(nil).Octocat), ctx, message)
 }
 
 // Organizations mocks base method.
@@ -389,6 +590,22 @@ func (m *MockClientAPI) PullRequests() gogithubmockable.PullRequestsService {
 func (mr *MockClientAPIMockRecorder) PullRequests() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PullRequests", reflect.TypeOf((*MockClientAPI)(nil).PullRequests))
+}
+
+// RateLimits mocks base method.
+func (m *MockClientAPI) RateLimits(ctx context.Context) (*github.RateLimits, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RateLimits", ctx)
+	ret0, _ := ret[0].(*github.RateLimits)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// RateLimits indicates an expected call of RateLimits.
+func (mr *MockClientAPIMockRecorder) RateLimits(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RateLimits", reflect.TypeOf((*MockClientAPI)(nil).RateLimits), ctx)
 }
 
 // Reactions mocks base method.
@@ -523,6 +740,22 @@ func (m *MockClientAPI) Users() gogithubmockable.UsersService {
 func (mr *MockClientAPIMockRecorder) Users() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Users", reflect.TypeOf((*MockClientAPI)(nil).Users))
+}
+
+// Zen mocks base method.
+func (m *MockClientAPI) Zen(ctx context.Context) (string, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Zen", ctx)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// Zen indicates an expected call of Zen.
+func (mr *MockClientAPIMockRecorder) Zen(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Zen", reflect.TypeOf((*MockClientAPI)(nil).Zen), ctx)
 }
 
 // MockActionsService is a mock of ActionsService interface.

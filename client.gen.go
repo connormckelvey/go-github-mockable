@@ -370,6 +370,153 @@ func (c *Client) Users() UsersService {
 	return c.client.Users
 }
 
+/*
+APIMeta returns information about GitHub.com, the service. Or, if you access
+this endpoint on your organization’s GitHub Enterprise installation, this
+endpoint provides information about that installation.
+
+GitHub API docs: https://docs.github.com/en/rest/meta#get-github-meta-information
+*/
+func (c *Client) APIMeta(ctx context.Context) (*github.APIMeta, *github.Response, error) {
+	return c.client.APIMeta(ctx)
+}
+
+/*
+BareDo sends an API request and lets you handle the api response. If an error
+or API Error occurs, the error will contain more information. Otherwise you
+are supposed to read and close the response's Body. If rate limit is exceeded
+and reset time is in the future, BareDo returns *RateLimitError immediately
+without making a network API call.
+
+The provided ctx must be non-nil, if it is nil an error is returned. If it is
+canceled or times out, ctx.Err() will be returned.
+*/
+func (c *Client) BareDo(ctx context.Context, req *http.Request) (*github.Response, error) {
+	return c.client.BareDo(ctx, req)
+}
+
+/*
+Client returns the http.Client used by this GitHub client.
+*/
+func (c *Client) Client() *http.Client {
+	return c.client.Client()
+}
+
+/*
+Do sends an API request and returns the API response. The API response is
+JSON decoded and stored in the value pointed to by v, or returned as an
+error if an API error has occurred. If v implements the io.Writer interface,
+the raw response body will be written to v, without attempting to first
+decode it. If v is nil, and no error hapens, the response is returned as is.
+If rate limit is exceeded and reset time is in the future, Do returns
+*RateLimitError immediately without making a network API call.
+
+The provided ctx must be non-nil, if it is nil an error is returned. If it
+is canceled or times out, ctx.Err() will be returned.
+*/
+func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*github.Response, error) {
+	return c.client.Do(ctx, req, v)
+}
+
+/*
+GetCodeOfConduct returns an individual code of conduct.
+
+https://docs.github.com/en/rest/codes_of_conduct/#get-an-individual-code-of-conduct
+*/
+func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*github.CodeOfConduct, *github.Response, error) {
+	return c.client.GetCodeOfConduct(ctx, key)
+}
+
+/*
+ListCodesOfConduct returns all codes of conduct.
+
+GitHub API docs: https://docs.github.com/en/rest/codes_of_conduct/#list-all-codes-of-conduct
+*/
+func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*github.CodeOfConduct, *github.Response, error) {
+	return c.client.ListCodesOfConduct(ctx)
+}
+
+/*
+ListEmojis returns the emojis available to use on GitHub.
+
+GitHub API docs: https://docs.github.com/en/rest/emojis/
+*/
+func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *github.Response, error) {
+	return c.client.ListEmojis(ctx)
+}
+
+/*
+ListServiceHooks lists all of the available service hooks.
+
+GitHub API docs: https://developer.github.com/webhooks/#services
+*/
+func (c *Client) ListServiceHooks(ctx context.Context) ([]*github.ServiceHook, *github.Response, error) {
+	return c.client.ListServiceHooks(ctx)
+}
+
+/*
+Markdown renders an arbitrary Markdown document.
+
+GitHub API docs: https://docs.github.com/en/rest/markdown/
+*/
+func (c *Client) Markdown(ctx context.Context, text string, opts *github.MarkdownOptions) (string, *github.Response, error) {
+	return c.client.Markdown(ctx, text, opts)
+}
+
+/*
+NewFormRequest creates an API request. A relative URL can be provided in urlStr,
+in which case it is resolved relative to the BaseURL of the Client.
+Relative URLs should always be specified without a preceding slash.
+Body is sent with Content-Type: application/x-www-form-urlencoded.
+*/
+func (c *Client) NewFormRequest(urlStr string, body io.Reader) (*http.Request, error) {
+	return c.client.NewFormRequest(urlStr, body)
+}
+
+/*
+NewRequest creates an API request. A relative URL can be provided in urlStr,
+in which case it is resolved relative to the BaseURL of the Client.
+Relative URLs should always be specified without a preceding slash. If
+specified, the value pointed to by body is JSON encoded and included as the
+request body.
+*/
+func (c *Client) NewRequest(method string, urlStr string, body interface{}) (*http.Request, error) {
+	return c.client.NewRequest(method, urlStr, body)
+}
+
+/*
+NewUploadRequest creates an upload request. A relative URL can be provided in
+urlStr, in which case it is resolved relative to the UploadURL of the Client.
+Relative URLs should always be specified without a preceding slash.
+*/
+func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error) {
+	return c.client.NewUploadRequest(urlStr, reader, size, mediaType)
+}
+
+/*
+Octocat returns an ASCII art octocat with the specified message in a speech
+bubble. If message is empty, a random zen phrase is used.
+*/
+func (c *Client) Octocat(ctx context.Context, message string) (string, *github.Response, error) {
+	return c.client.Octocat(ctx, message)
+}
+
+/*
+RateLimits returns the rate limits for the current client.
+*/
+func (c *Client) RateLimits(ctx context.Context) (*github.RateLimits, *github.Response, error) {
+	return c.client.RateLimits(ctx)
+}
+
+/*
+Zen returns a random line from The Zen of GitHub.
+
+see also: http://warpspire.com/posts/taste/
+*/
+func (c *Client) Zen(ctx context.Context) (string, *github.Response, error) {
+	return c.client.Zen(ctx)
+}
+
 type ClientAPI interface {
 	/*
 	   GetBaseURL returns the Base URL for API requests. Defaults to the public GitHub API, but can be
@@ -611,6 +758,108 @@ type ClientAPI interface {
 	   GitHub API docs: https://docs.github.com/en/rest/users/
 	*/
 	Users() UsersService
+	/*
+	   APIMeta returns information about GitHub.com, the service. Or, if you access
+	   this endpoint on your organization’s GitHub Enterprise installation, this
+	   endpoint provides information about that installation.
+
+	   GitHub API docs: https://docs.github.com/en/rest/meta#get-github-meta-information
+	*/
+	APIMeta(ctx context.Context) (*github.APIMeta, *github.Response, error)
+	/*
+	   BareDo sends an API request and lets you handle the api response. If an error
+	   or API Error occurs, the error will contain more information. Otherwise you
+	   are supposed to read and close the response's Body. If rate limit is exceeded
+	   and reset time is in the future, BareDo returns *RateLimitError immediately
+	   without making a network API call.
+
+	   The provided ctx must be non-nil, if it is nil an error is returned. If it is
+	   canceled or times out, ctx.Err() will be returned.
+	*/
+	BareDo(ctx context.Context, req *http.Request) (*github.Response, error)
+	/*
+	   Client returns the http.Client used by this GitHub client.
+	*/
+	Client() *http.Client
+	/*
+	   Do sends an API request and returns the API response. The API response is
+	   JSON decoded and stored in the value pointed to by v, or returned as an
+	   error if an API error has occurred. If v implements the io.Writer interface,
+	   the raw response body will be written to v, without attempting to first
+	   decode it. If v is nil, and no error hapens, the response is returned as is.
+	   If rate limit is exceeded and reset time is in the future, Do returns
+	   *RateLimitError immediately without making a network API call.
+
+	   The provided ctx must be non-nil, if it is nil an error is returned. If it
+	   is canceled or times out, ctx.Err() will be returned.
+	*/
+	Do(ctx context.Context, req *http.Request, v interface{}) (*github.Response, error)
+	/*
+	   GetCodeOfConduct returns an individual code of conduct.
+
+	   https://docs.github.com/en/rest/codes_of_conduct/#get-an-individual-code-of-conduct
+	*/
+	GetCodeOfConduct(ctx context.Context, key string) (*github.CodeOfConduct, *github.Response, error)
+	/*
+	   ListCodesOfConduct returns all codes of conduct.
+
+	   GitHub API docs: https://docs.github.com/en/rest/codes_of_conduct/#list-all-codes-of-conduct
+	*/
+	ListCodesOfConduct(ctx context.Context) ([]*github.CodeOfConduct, *github.Response, error)
+	/*
+	   ListEmojis returns the emojis available to use on GitHub.
+
+	   GitHub API docs: https://docs.github.com/en/rest/emojis/
+	*/
+	ListEmojis(ctx context.Context) (map[string]string, *github.Response, error)
+	/*
+	   ListServiceHooks lists all of the available service hooks.
+
+	   GitHub API docs: https://developer.github.com/webhooks/#services
+	*/
+	ListServiceHooks(ctx context.Context) ([]*github.ServiceHook, *github.Response, error)
+	/*
+	   Markdown renders an arbitrary Markdown document.
+
+	   GitHub API docs: https://docs.github.com/en/rest/markdown/
+	*/
+	Markdown(ctx context.Context, text string, opts *github.MarkdownOptions) (string, *github.Response, error)
+	/*
+	   NewFormRequest creates an API request. A relative URL can be provided in urlStr,
+	   in which case it is resolved relative to the BaseURL of the Client.
+	   Relative URLs should always be specified without a preceding slash.
+	   Body is sent with Content-Type: application/x-www-form-urlencoded.
+	*/
+	NewFormRequest(urlStr string, body io.Reader) (*http.Request, error)
+	/*
+	   NewRequest creates an API request. A relative URL can be provided in urlStr,
+	   in which case it is resolved relative to the BaseURL of the Client.
+	   Relative URLs should always be specified without a preceding slash. If
+	   specified, the value pointed to by body is JSON encoded and included as the
+	   request body.
+	*/
+	NewRequest(method string, urlStr string, body interface{}) (*http.Request, error)
+	/*
+	   NewUploadRequest creates an upload request. A relative URL can be provided in
+	   urlStr, in which case it is resolved relative to the UploadURL of the Client.
+	   Relative URLs should always be specified without a preceding slash.
+	*/
+	NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error)
+	/*
+	   Octocat returns an ASCII art octocat with the specified message in a speech
+	   bubble. If message is empty, a random zen phrase is used.
+	*/
+	Octocat(ctx context.Context, message string) (string, *github.Response, error)
+	/*
+	   RateLimits returns the rate limits for the current client.
+	*/
+	RateLimits(ctx context.Context) (*github.RateLimits, *github.Response, error)
+	/*
+	   Zen returns a random line from The Zen of GitHub.
+
+	   see also: http://warpspire.com/posts/taste/
+	*/
+	Zen(ctx context.Context) (string, *github.Response, error)
 }
 
 /*

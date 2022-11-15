@@ -23,12 +23,9 @@ func main() {
     client := gogithubmockable.NewClient(gh)
 
 
-    // Instead of client.Repositories, use client.GetRepositories()
-    c.GetRepositories().Get(context.TODO(), "owner", "repo")
+    // Instead of client.Repositories, use client.Repositories()
+    c.Repositories().Get(context.TODO(), "owner", "repo")
     ...
 }
 ```
 
-## TODO
-
-- Copy remaining util methods on *github.Client (not services or opts)

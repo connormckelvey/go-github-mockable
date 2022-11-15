@@ -19,6 +19,7 @@ import (
 type Generator struct {
 	f           *jen.File
 	t           reflect.Type
+	pt          reflect.Type
 	configs     []reflect.StructField
 	services    []reflect.StructField
 	methods     []reflect.Method
@@ -29,6 +30,7 @@ func New() *Generator {
 	return &Generator{
 		f:           jen.NewFile("gogithubmockable"),
 		t:           reflect.TypeOf(github.Client{}),
+		pt:          reflect.TypeOf(&github.Client{}),
 		configs:     make([]reflect.StructField, 0),
 		services:    make([]reflect.StructField, 0),
 		methods:     make([]reflect.Method, 0),
@@ -49,8 +51,8 @@ func (g *Generator) Generate(w io.Writer) error {
 		}
 	}
 
-	for i := 0; i < g.t.NumMethod(); i++ {
-		m := g.t.Method(i)
+	for i := 0; i < g.pt.NumMethod(); i++ {
+		m := g.pt.Method(i)
 		if !m.IsExported() {
 			continue
 		}
@@ -168,11 +170,76 @@ func (g *Generator) GenClient() {
 			Block(jen.Return(jen.Id("c").Dot("client").Dot(service.Name))).
 			Line()
 	}
+
+	for _, m := range g.methods {
+		mDocs := g.packageInfo.Types["Client"].MethodDocs[m.Name]
+		mParams := g.packageInfo.Types["Client"].MethodParams[m.Name]
+
+		g.f.Comment(mDocs)
+		g.f.Func().Op("(").Id("c").Op("*").Qual("", "Client").Op(")").Id(m.Name).
+			ParamsFunc(func(g *jen.Group) {
+				for i := 1; i < m.Type.NumIn(); i++ {
+					p := m.Type.In(i)
+
+					var idStr string
+					if len(mParams) > i-1 {
+						idStr = mParams[i-1]
+					}
+					id := g.Id(idStr)
+
+					if p.Kind() == reflect.Slice && p.Name() == "" {
+						p = p.Elem()
+						id = id.Op("[]")
+					}
+					if p.Kind() == reflect.Pointer {
+						p = p.Elem()
+						id = id.Op("*")
+					} else if p.Kind() == reflect.Interface && p.Name() == "" {
+						id = id.Interface()
+					} else if p.Kind() == reflect.Map {
+						id.Map(jen.Qual(p.Key().PkgPath(), p.Key().Name())).
+							Qual(p.Elem().PkgPath(), p.Elem().Name())
+						continue
+					}
+					id.Qual(p.PkgPath(), p.Name())
+				}
+			}).
+			Op("(").
+			ListFunc(func(g *jen.Group) {
+				for i := 0; i < m.Type.NumOut(); i++ {
+					p := m.Type.Out(i)
+					id := g.Id("")
+
+					if p.Kind() == reflect.Slice {
+						p = p.Elem()
+						id = id.Op("[]")
+					}
+					if p.Kind() == reflect.Pointer {
+						p = p.Elem()
+						id = id.Op("*")
+					} else if p.Kind() == reflect.Map {
+						id.Map(jen.Qual(p.Key().PkgPath(), p.Key().Name())).
+							Qual(p.Elem().PkgPath(), p.Elem().Name())
+						continue
+					}
+					id.Qual(p.PkgPath(), p.Name())
+				}
+			}).
+			Op(")").
+			BlockFunc(func(g *jen.Group) {
+				g.Return(jen.Id("c").Dot("client").Dot(m.Name).CallFunc(func(g *jen.Group) {
+					for _, p := range mParams {
+						g.Id(p)
+					}
+				}))
+			})
+	}
 }
 
 func (g *Generator) GenClientAPI() {
 	configs := g.configs
 	services := g.services
+	methods := g.methods
 	packageInfo := g.packageInfo
 
 	g.f.Type().Id("ClientAPI").
@@ -207,6 +274,63 @@ func (g *Generator) GenClientAPI() {
 					g.Comment(serviceInfo.Doc)
 				}
 				g.Id(name).Params().Qual("", fmt.Sprintf("%sService", service.Name))
+			}
+
+			for _, m := range methods {
+				mDocs := packageInfo.Types["Client"].MethodDocs[m.Name]
+				mParams := packageInfo.Types["Client"].MethodParams[m.Name]
+
+				g.Comment(mDocs)
+				g.Id(m.Name).
+					ParamsFunc(func(g *jen.Group) {
+						for i := 1; i < m.Type.NumIn(); i++ {
+							p := m.Type.In(i)
+
+							var idStr string
+							if len(mParams) > i-1 {
+								idStr = mParams[i-1]
+							}
+							id := g.Id(idStr)
+
+							if p.Kind() == reflect.Slice && p.Name() == "" {
+								p = p.Elem()
+								id = id.Op("[]")
+							}
+							if p.Kind() == reflect.Pointer {
+								p = p.Elem()
+								id = id.Op("*")
+							} else if p.Kind() == reflect.Interface && p.Name() == "" {
+								id = id.Interface()
+							} else if p.Kind() == reflect.Map {
+								id.Map(jen.Qual(p.Key().PkgPath(), p.Key().Name())).
+									Qual(p.Elem().PkgPath(), p.Elem().Name())
+								continue
+							}
+							id.Qual(p.PkgPath(), p.Name())
+						}
+					}).
+					Op("(").
+					ListFunc(func(g *jen.Group) {
+						for i := 0; i < m.Type.NumOut(); i++ {
+							p := m.Type.Out(i)
+							id := g.Id("")
+
+							if p.Kind() == reflect.Slice {
+								p = p.Elem()
+								id = id.Op("[]")
+							}
+							if p.Kind() == reflect.Pointer {
+								p = p.Elem()
+								id = id.Op("*")
+							} else if p.Kind() == reflect.Map {
+								id.Map(jen.Qual(p.Key().PkgPath(), p.Key().Name())).
+									Qual(p.Elem().PkgPath(), p.Elem().Name())
+								continue
+							}
+							id.Qual(p.PkgPath(), p.Name())
+						}
+					}).
+					Op(")")
 			}
 		}).
 		Line()
